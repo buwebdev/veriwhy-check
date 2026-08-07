@@ -1,0 +1,105 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-425/lab-1.1
+course: WEB 425 Angular with TypeScript
+assignment: "Lab 1.1: Application shell and home page"
+version: 1.1.2
+project:
+  kind: npm
+  markers:
+    - package.json
+    - angular.json
+  install: npm-ci
+requirements:
+  - id: environment
+    label: Supported Node and Angular environment
+    rules:
+      - kind: files
+        paths:
+          - .nvmrc
+          - package-lock.json
+      - kind: source
+        roots:
+          - package.json
+        all:
+          - "@angular/core[^\\n]+22\\."
+  - id: home-component
+    label: Standalone HomeComponent and routed root
+    rules:
+      - kind: files
+        paths:
+          - src/app/home/home.component.ts
+          - src/app/app.routes.ts
+      - kind: source
+        roots:
+          - src/app
+        all:
+          - class\s+HomeComponent
+          - RouterOutlet
+          - router-outlet
+  - id: default-route
+    label: Default route maps to HomeComponent
+    rules:
+      - kind: source
+        roots:
+          - src/app/app.routes.ts
+        all:
+          - path\s*:\s*['"]{2}
+          - component\s*:\s*HomeComponent
+  - id: semantic-shell
+    label: Application shell contains header, navigation, main, section, and footer landmarks
+    rules:
+      - kind: source
+        roots:
+          - src/app
+        all:
+          - <header\b
+          - <nav\b
+          - <main\b
+          - <section\b
+          - <footer\b
+  - id: content-structure
+    label: Home page contains h1 through h4 headings and a three-item feature list
+    rules:
+      - kind: source
+        roots:
+          - src/app
+        all:
+          - <h1\b
+          - <h2\b
+          - <h3\b
+          - <h4\b
+          - <ul\b
+          - (?:<li\b[\s\S]*?){3}
+  - id: binding-selectors
+    label: Home page interpolates a component property and uses the published home-page and character-features data-testid
+      values
+    rules:
+      - kind: source
+        roots:
+          - src/app/home
+        all:
+          - \{\{\s*[A-Za-z_$][\w$]*
+          - data-testid=['"]home-page['"]
+          - data-testid=['"]character-features['"]
+  - id: production-build
+    label: Production build succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - run
+          - build
+        timeoutSeconds: 180
+  - id: test-suite
+    label: Published integrated behavior requirements
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - test
+          - --
+          - --watch=false
+          - --browsers=ChromeHeadless
+        timeoutSeconds: 180

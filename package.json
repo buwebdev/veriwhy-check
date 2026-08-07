@@ -1,0 +1,37 @@
+{
+  "name": "veriwhy-check",
+  "version": "1.0.0",
+  "description": "Student-facing, profile-driven functional coursework checker",
+  "author": "Richard Krasso",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "veriwhy-check": "dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build --silent && node --test \"dist/tests/*.test.js\"",
+    "test:coverage": "npm run build --silent && node --test --experimental-test-coverage --test-coverage-lines=90 --test-coverage-functions=90 --test-coverage-branches=85 --test-coverage-include=dist/src/**/*.js \"dist/tests/*.test.js\"",
+    "check": "npm run test && npm run test:coverage",
+    "lint:yaml": "npm run build --silent && node dist/src/cli.js profiles validate",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"#**/node_modules/**\" \"#tmp/**\"",
+    "docs:build": "npm run build --silent && node dist/src/docs-builder.js",
+    "setup:browser": "playwright install chromium",
+    "release:package": "npm run docs:build --silent && node scripts/package-release.mjs",
+    "start": "node dist/src/cli.js",
+    "veriwhy-check": "node dist/src/cli.js"
+  },
+  "engines": {
+    "node": ">=24.18.0 <25"
+  },
+  "dependencies": {
+    "marked": "^18.0.9",
+    "playwright": "^1.62.1",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "markdownlint-cli2": "^0.23.2",
+    "typescript": "^6.0.0"
+  }
+}

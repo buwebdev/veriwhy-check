@@ -1,0 +1,50 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-330/assignment-6.2
+course: WEB 330 Enterprise JavaScript II
+assignment: "Assignment 6.2: Fetch postal-code lookup"
+version: 1.0.0
+project:
+  kind: static-web
+  entry: project11-02.html
+  locate:
+    - project11-02_txt.html
+requirements:
+  - id: required-files
+    label: Required lookup page and JavaScript files are present
+    rules:
+      - kind: file-groups
+        groups:
+          - - project11-02.html
+            - project11-02_txt.html
+          - - project11-02.js
+            - project11-02_txt.js
+  - id: lookup-page
+    label: Postal-code form loads with all required controls
+    rules:
+      - kind: browser
+        test: WEB-330/project11-2
+        case: page-loads
+        timeoutSeconds: 15
+  - id: us-lookup
+    label: United States postal-code response populates place and region
+    rules:
+      - kind: browser
+        test: WEB-330/project11-2
+        case: us-lookup
+        timeoutSeconds: 15
+  - id: international-lookup
+    label: Selected country participates in an international lookup
+    rules:
+      - kind: browser
+        test: WEB-330/project11-2
+        case: international-lookup
+        timeoutSeconds: 15
+  - id: rejected-request
+    label: Rejected Fetch request is handled and leaves outputs empty
+    rules:
+      - kind: browser
+        test: WEB-330/project11-2
+        case: rejected-request
+        timeoutSeconds: 15

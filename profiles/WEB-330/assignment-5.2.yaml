@@ -1,0 +1,46 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-330/assignment-5.2
+course: WEB 330 Enterprise JavaScript II
+assignment: "Assignment 5.2: Callback-based table reservations"
+version: 1.0.0
+project:
+  kind: static-web
+  entry: index.html
+requirements:
+  - id: required-files
+    label: Required reservation page and JavaScript files are present
+    rules:
+      - kind: files
+        paths:
+          - index.html
+          - script.js
+  - id: reservation-page
+    label: Reservation form loads with its required controls
+    rules:
+      - kind: browser
+        test: WEB-330/restaurant-reservation
+        case: page-loads
+        timeoutSeconds: 15
+  - id: callback-delay
+    label: Available-table callback waits for the supplied delay
+    rules:
+      - kind: browser
+        test: WEB-330/restaurant-reservation
+        case: callback-delay
+        timeoutSeconds: 15
+  - id: reservation-states
+    label: Available and already-reserved tables produce the required messages
+    rules:
+      - kind: browser
+        test: WEB-330/restaurant-reservation
+        case: available-and-reserved
+        timeoutSeconds: 20
+  - id: unknown-table
+    label: Unknown table numbers produce the required error message
+    rules:
+      - kind: browser
+        test: WEB-330/restaurant-reservation
+        case: unknown-table
+        timeoutSeconds: 15

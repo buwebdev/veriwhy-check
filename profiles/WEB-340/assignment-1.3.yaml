@@ -1,0 +1,40 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-340/assignment-1.3
+course: WEB 340 Node.js
+assignment: "Assignment 1.3: CLI weight converter"
+version: 1.0.0
+project:
+  kind: node
+  entry: weight-converter.js
+  install: none
+requirements:
+  - id: required-files
+    label: Weight-converter program and package file are present
+    rules:
+      - kind: files
+        paths:
+          - weight-converter.js
+          - package.json
+  - id: conversions
+    label: Representative pound values convert to two-decimal kilograms
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-1.3
+        case: representative-conversions
+        timeoutSeconds: 15
+  - id: missing-input
+    label: Missing argument writes the usage message to stderr and exits unsuccessfully
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-1.3
+        case: missing-input
+        timeoutSeconds: 10
+  - id: invalid-input
+    label: Nonnumeric argument writes the required error to stderr and exits unsuccessfully
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-1.3
+        case: invalid-input
+        timeoutSeconds: 10

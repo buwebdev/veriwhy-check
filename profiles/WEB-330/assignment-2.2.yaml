@@ -1,0 +1,39 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-330/assignment-2.2
+course: WEB 330 Enterprise JavaScript II
+assignment: "Assignment 2.2: Character generator closures"
+version: 1.0.0
+project:
+  kind: static-web
+  entry: index.html
+requirements:
+  - id: required-files
+    label: Required character-generator files are present
+    rules:
+      - kind: files
+        paths:
+          - index.html
+          - script.js
+  - id: character-page
+    label: Character form loads with every required control
+    rules:
+      - kind: browser
+        test: WEB-330/character-generator
+        case: page-loads
+        timeoutSeconds: 15
+  - id: closure-contract
+    label: Character values remain private and are returned through getters
+    rules:
+      - kind: browser
+        test: WEB-330/character-generator
+        case: closure-contract
+        timeoutSeconds: 15
+  - id: form-results
+    label: Submitted character values are rendered on the page
+    rules:
+      - kind: browser
+        test: WEB-330/character-generator
+        case: form-results
+        timeoutSeconds: 15

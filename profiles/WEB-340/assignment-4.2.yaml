@@ -1,0 +1,58 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-340/assignment-4.2
+course: WEB 340 Node.js
+assignment: "Assignment 4.2: Taco stand EventEmitter and CLI"
+version: 1.0.0
+project:
+  kind: node
+  entry: src/taco-stand.js
+  install: none
+requirements:
+  - id: required-files
+    label: EventEmitter module, CLI, package file, and tests are present
+    rules:
+      - kind: files
+        paths:
+          - src/taco-stand.js
+          - src/index.js
+          - test/taco-stand.spec.js
+          - package.json
+  - id: package-scripts
+    label: Package declares the required start and test scripts
+    rules:
+      - kind: source
+        roots:
+          - package.json
+        all:
+          - '"start"\s*:\s*"node\s+src/index\.js"'
+          - '"test"\s*:\s*"node\s+test/taco-stand\.spec\.js"'
+  - id: emitter-behavior
+    label: TacoStandEmitter emits serve, prepare, and rush events with payloads
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-4.2
+        case: event-emitter-behavior
+        timeoutSeconds: 10
+  - id: cli-commands
+    label: CLI accepts all three commands and prints the required results
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-4.2
+        case: cli-commands
+        timeoutSeconds: 15
+  - id: student-tests
+    label: Submission contains at least three student-authored event tests
+    rules:
+      - kind: test-count
+        minimum: 3
+  - id: event-test-evidence
+    label: Student tests register event listeners and make assertions
+    rules:
+      - kind: test-source
+        roots:
+          - test
+        all:
+          - \.on\s*\(
+          - assert\.

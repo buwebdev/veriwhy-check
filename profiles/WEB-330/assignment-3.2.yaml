@@ -1,0 +1,53 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-330/assignment-3.2
+course: WEB 330 Enterprise JavaScript II
+assignment: "Assignment 3.2: Session storage rider profile"
+version: 1.0.0
+project:
+  kind: static-web
+  entry: project09-02a.html
+  locate:
+    - project09-02a_txt.html
+requirements:
+  - id: required-files
+    label: Both rider-profile pages and scripts are present
+    rules:
+      - kind: file-groups
+        groups:
+          - - project09-02a.html
+            - project09-02a_txt.html
+          - - project09-02a.js
+            - project09-02a_txt.js
+          - - project09-02b.html
+            - project09-02b_txt.html
+          - - project09-02b.js
+            - project09-02b_txt.js
+  - id: rider-page
+    label: Rider form loads with all required profile fields
+    rules:
+      - kind: browser
+        test: WEB-330/project9-2
+        case: page-loads
+        timeoutSeconds: 15
+  - id: storage-implementation
+    label: All eight rider values are written to and read from session storage
+    rules:
+      - kind: source
+        roots:
+          - project09-02a.js
+          - project09-02a_txt.js
+          - project09-02b.js
+          - project09-02b_txt.js
+        all:
+          - sessionStorage\.setItem\s*\(
+          - sessionStorage\.getItem\s*\(
+          - location\.href\s*=\s*["']project09-02b\.html["']
+  - id: storage-transfer
+    label: Rider values survive navigation and appear on the results page
+    rules:
+      - kind: browser
+        test: WEB-330/project9-2
+        case: session-storage-transfer
+        timeoutSeconds: 20

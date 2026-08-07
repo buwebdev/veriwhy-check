@@ -1,0 +1,57 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-231/assignment-3.2
+course: WEB 231 Enterprise JavaScript I
+assignment: "Assignment 3.2: Form collection (Project 2-4)"
+version: 1.1.0
+project:
+  kind: static-web
+  entry: project02-04.html
+  locate:
+    - project02-04_txt.html
+requirements:
+  - id: required-files
+    label: Required HTML and JavaScript files
+    rules:
+      - kind: file-groups
+        groups:
+          - - project02-04.html
+            - project02-04_txt.html
+          - - project02-04.js
+            - project02-04_txt.js
+  - id: page-loads
+    label: Menu page loads with required inputs and outputs
+    rules:
+      - kind: browser
+        test: WEB-231/project2-4
+        case: page-loads
+        timeoutSeconds: 20
+  - id: individual-items
+    label: Individual menu-item calculations
+    rules:
+      - kind: browser
+        test: WEB-231/project2-4
+        case: individual-items
+        timeoutSeconds: 20
+  - id: combined-items
+    label: Combined menu-item calculation
+    rules:
+      - kind: browser
+        test: WEB-231/project2-4
+        case: combined-items
+        timeoutSeconds: 20
+  - id: deselection
+    label: Totals update when a menu item is removed
+    rules:
+      - kind: browser
+        test: WEB-231/project2-4
+        case: deselection
+        timeoutSeconds: 20
+  - id: all-items
+    label: Complete menu calculation
+    rules:
+      - kind: browser
+        test: WEB-231/project2-4
+        case: all-items
+        timeoutSeconds: 20

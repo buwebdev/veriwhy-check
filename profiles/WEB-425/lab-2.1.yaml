@@ -1,0 +1,104 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-425/lab-2.1
+course: WEB 425 Angular with TypeScript
+assignment: "Lab 2.1: Character-class routing"
+version: 1.1.1
+project:
+  kind: npm
+  markers:
+    - package.json
+    - angular.json
+  install: npm-ci
+requirements:
+  - id: environment
+    label: Supported project environment
+    rules:
+      - kind: files
+        paths:
+          - .nvmrc
+          - package-lock.json
+  - id: regression-shell
+    label: Lab 1 application shell remains present
+    rules:
+      - kind: files
+        paths:
+          - src/app/home/home.component.ts
+      - kind: source
+        roots:
+          - src/app
+        all:
+          - RouterOutlet
+          - router-outlet
+  - id: structure
+    label: Required routed components and typed model
+    rules:
+      - kind: files
+        paths:
+          - src/app/classes/classes.component.ts
+          - src/app/class-detail/class-detail.component.ts
+          - src/app/about/about.component.ts
+          - src/app/models/character-class.ts
+      - kind: source
+        roots:
+          - src/app/models/character-class.ts
+        all:
+          - interface\s+CharacterClass
+          - id\s*:\s*string
+          - name\s*:\s*string
+          - description\s*:\s*string
+  - id: routes
+    label: Static, parameterized, and data-bearing routes
+    rules:
+      - kind: source
+        roots:
+          - src/app/app.routes.ts
+        all:
+          - classes
+          - :id
+          - about
+          - "data\\s*:"
+          - title
+  - id: collection
+    label: Typed collection rendered with Angular control flow
+    rules:
+      - kind: source
+        roots:
+          - src/app/classes
+        all:
+          - CharacterClass
+          - "@for"
+          - RouterLink
+          - data-testid=['"]class-list['"]
+  - id: route-state
+    label: Detail parameter and route-data title are displayed
+    rules:
+      - kind: source
+        roots:
+          - src/app/class-detail
+          - src/app/about
+        all:
+          - ActivatedRoute
+          - data-testid=['"]class-id['"]
+          - data-testid=['"]about-title['"]
+  - id: production-build
+    label: Production build succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - run
+          - build
+        timeoutSeconds: 180
+  - id: test-suite
+    label: Published integrated behavior requirements
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - test
+          - --
+          - --watch=false
+          - --browsers=ChromeHeadless
+        timeoutSeconds: 180

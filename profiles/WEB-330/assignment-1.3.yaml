@@ -1,0 +1,55 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-330/assignment-1.3
+course: WEB 330 Enterprise JavaScript II
+assignment: "Assignment 1.3: Customized timer object"
+version: 1.0.0
+project:
+  kind: static-web
+  entry: project08-01.html
+  locate:
+    - project08-01_txt.html
+requirements:
+  - id: required-files
+    label: Required timer page and JavaScript files are present
+    rules:
+      - kind: file-groups
+        groups:
+          - - project08-01.html
+            - project08-01_txt.html
+          - - project08-01.js
+            - project08-01_txt.js
+  - id: timer-object
+    label: Timer object stores minutes, seconds, and interval state
+    rules:
+      - kind: source
+        roots:
+          - project08-01.js
+          - project08-01_txt.js
+        all:
+          - function\s+timer\s*\(
+          - this\.minutes\s*=
+          - this\.seconds\s*=
+          - this\.timeID\s*=\s*null
+  - id: timer-page
+    label: Timer page loads with the required controls
+    rules:
+      - kind: browser
+        test: WEB-330/project8-1
+        case: page-loads
+        timeoutSeconds: 15
+  - id: run-pause
+    label: Run/Pause starts and pauses one-second countdown behavior
+    rules:
+      - kind: browser
+        test: WEB-330/project8-1
+        case: run-and-pause
+        timeoutSeconds: 15
+  - id: rollover-stop
+    label: Countdown rolls minutes into seconds and stops at zero
+    rules:
+      - kind: browser
+        test: WEB-330/project8-1
+        case: rollover-and-stop
+        timeoutSeconds: 15

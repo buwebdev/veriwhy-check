@@ -1,0 +1,56 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-340/assignment-3.2
+course: WEB 340 Node.js
+assignment: "Assignment 3.2: Planet distance module and tests"
+version: 1.0.0
+project:
+  kind: node
+  entry: src/distance-calculator.js
+  install: none
+requirements:
+  - id: required-files
+    label: Distance module, package file, and test file are present
+    rules:
+      - kind: files
+        paths:
+          - src/distance-calculator.js
+          - test/distance-calculator.spec.js
+          - package.json
+  - id: test-script
+    label: Package test script runs the student-authored tests
+    rules:
+      - kind: source
+        roots:
+          - package.json
+        all:
+          - '"test"\s*:\s*"node\s+test/distance-calculator\.spec\.js"'
+  - id: planet-distances
+    label: Module calculates representative planet distances in astronomical units
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-3.2
+        case: planet-distances
+        timeoutSeconds: 10
+  - id: invalid-planets
+    label: Unknown planet names produce the required error
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-3.2
+        case: invalid-planets
+        timeoutSeconds: 10
+  - id: student-tests
+    label: Submission contains at least three student-authored unit tests
+    rules:
+      - kind: test-count
+        minimum: 3
+  - id: assertion-evidence
+    label: Student tests use the Node.js assert library
+    rules:
+      - kind: test-source
+        roots:
+          - test
+        all:
+          - require\s*\(\s*["']assert["']\s*\)
+          - assert\.

@@ -1,0 +1,55 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-340/assignment-2.2
+course: WEB 340 Node.js
+assignment: "Assignment 2.2: CommonJS recipe module"
+version: 1.0.0
+project:
+  kind: node
+  entry: recipes.js
+  install: none
+requirements:
+  - id: required-files
+    label: Recipe module, demonstration program, and package file are present
+    rules:
+      - kind: files
+        paths:
+          - recipes.js
+          - index.js
+          - package.json
+  - id: create-recipe
+    label: createRecipe returns the required ingredient description
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-2.2
+        case: create-recipe
+        timeoutSeconds: 10
+  - id: set-timer
+    label: setTimer returns the required minute message and punctuation
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-2.2
+        case: set-timer
+        timeoutSeconds: 10
+  - id: quit
+    label: quit returns the required program-exit message
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-2.2
+        case: quit
+        timeoutSeconds: 10
+  - id: module-exports
+    label: CommonJS module exports all three required functions
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-2.2
+        case: module-exports
+        timeoutSeconds: 10
+  - id: program-scripts
+    label: Demonstration program and package scripts execute the required workflow
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-2.2
+        case: program-and-scripts
+        timeoutSeconds: 10

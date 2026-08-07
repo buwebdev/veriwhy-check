@@ -41,6 +41,15 @@ build/Release
 node_modules/
 jspm_packages/
 
+# VeriWhy-check local development and installation validation artifacts.
+# All generated fixtures, reports, archives, and sandbox installations belong
+# here so student or instructor data cannot be committed accidentally.
+tmp/
+
+# Reports created when a developer explicitly overrides the normal user-data
+# location with a repository-relative path.
+veriwhy-check-reports/
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 

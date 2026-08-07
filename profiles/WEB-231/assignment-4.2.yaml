@@ -1,0 +1,57 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-231/assignment-4.2
+course: WEB 231 Enterprise JavaScript I
+assignment: "Assignment 4.2: Loops (Project 3-1)"
+version: 1.1.0
+project:
+  kind: static-web
+  entry: project03-01.html
+  locate:
+    - project03-01_txt.html
+requirements:
+  - id: required-files
+    label: Required HTML and JavaScript files
+    rules:
+      - kind: file-groups
+        groups:
+          - - project03-01.html
+            - project03-01_txt.html
+          - - project03-01.js
+            - project03-01_txt.js
+  - id: page-loads
+    label: Order page loads with all menu choices
+    rules:
+      - kind: browser
+        test: WEB-231/project3-1
+        case: page-loads
+        timeoutSeconds: 20
+  - id: individual-items
+    label: Individual menu-item totals
+    rules:
+      - kind: browser
+        test: WEB-231/project3-1
+        case: individual-items
+        timeoutSeconds: 20
+  - id: combined-items
+    label: Combined menu-item total
+    rules:
+      - kind: browser
+        test: WEB-231/project3-1
+        case: combined-items
+        timeoutSeconds: 20
+  - id: deselection
+    label: Total updates when a menu item is removed
+    rules:
+      - kind: browser
+        test: WEB-231/project3-1
+        case: deselection
+        timeoutSeconds: 20
+  - id: all-items
+    label: Complete menu total
+    rules:
+      - kind: browser
+        test: WEB-231/project3-1
+        case: all-items
+        timeoutSeconds: 20

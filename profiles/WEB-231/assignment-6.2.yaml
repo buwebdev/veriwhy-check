@@ -1,0 +1,50 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-231/assignment-6.2
+course: WEB 231 Enterprise JavaScript I
+assignment: "Assignment 6.2: Debugging and error handling (Project 4-4)"
+version: 1.1.0
+project:
+  kind: static-web
+  entry: project04-04.html
+  locate:
+    - project04-04_txt.html
+requirements:
+  - id: required-files
+    label: Required HTML and JavaScript files
+    rules:
+      - kind: file-groups
+        groups:
+          - - project04-04.html
+            - project04-04_txt.html
+          - - project04-04.js
+            - project04-04_txt.js
+  - id: page-loads
+    label: Change calculator loads without browser errors
+    rules:
+      - kind: browser
+        test: WEB-231/project4-4
+        case: page-loads
+        timeoutSeconds: 20
+  - id: textbook-example
+    label: Textbook change-calculation example
+    rules:
+      - kind: browser
+        test: WEB-231/project4-4
+        case: textbook-example
+        timeoutSeconds: 20
+  - id: generalized-change
+    label: Change calculation generalizes to another transaction
+    rules:
+      - kind: browser
+        test: WEB-231/project4-4
+        case: generalized-change
+        timeoutSeconds: 20
+  - id: insufficient-cash
+    label: Insufficient cash is handled without a calculation
+    rules:
+      - kind: browser
+        test: WEB-231/project4-4
+        case: insufficient-cash
+        timeoutSeconds: 20

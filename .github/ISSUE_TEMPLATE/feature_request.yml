@@ -1,0 +1,28 @@
+# Structured educational feature-request form.
+# Author: Richard Krasso
+name: Feature request
+description: Propose an improvement to the student checking experience.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: Student need
+      description: What difficulty would this change address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the command, output, or functional check.
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Project boundaries
+      options:
+        - label: The proposal requires no student source, credentials, or private data in this issue.
+          required: true

@@ -1,0 +1,87 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-425/lab-3.1
+course: WEB 425 Angular with TypeScript
+assignment: "Lab 3.1: Test-first ability-score roller"
+version: 1.1.1
+project:
+  kind: npm
+  markers:
+    - package.json
+    - angular.json
+  install: npm-ci
+requirements:
+  - id: environment
+    label: Supported project environment
+    rules:
+      - kind: files
+        paths:
+          - .nvmrc
+          - package-lock.json
+  - id: structure
+    label: Dice service, roller component, and route
+    rules:
+      - kind: files
+        paths:
+          - src/app/dice.service.ts
+          - src/app/ability-roller/ability-roller.component.ts
+      - kind: source
+        roots:
+          - src/app/app.routes.ts
+        all:
+          - roll/:sides
+  - id: dice-contract
+    label: Dice boundaries and invalid-input contract
+    rules:
+      - kind: source
+        roots:
+          - src/app/dice.service.ts
+        all:
+          - roll\s*\(\s*sides\s*:\s*number
+          - RangeError
+          - Math\.(?:floor|ceil)
+          - Math\.random
+  - id: roller-contract
+    label: Routed input, default, collaborator, and rendered result
+    rules:
+      - kind: source
+        roots:
+          - src/app/ability-roller
+        all:
+          - ActivatedRoute
+          - DiceService
+          - rollAbility
+          - console\.warn
+          - data-testid=['"]roll-result['"]
+          - data-testid=['"]roll-button['"]
+  - id: student-tests
+    label: Cumulative tests include service and spy behavior
+    rules:
+      - kind: test-count
+        minimum: 5
+      - kind: test-source
+        roots:
+          - src/app
+        all:
+          - spyOn
+  - id: production-build
+    label: Production build succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - run
+          - build
+        timeoutSeconds: 180
+  - id: test-suite
+    label: Complete Jasmine suite succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - test
+          - --
+          - --watch=false
+          - --browsers=ChromeHeadless
+        timeoutSeconds: 180

@@ -1,0 +1,65 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-340/assignment-6.2
+course: WEB 340 Node.js
+assignment: "Assignment 6.2: Stateful HTTP character server"
+version: 1.0.0
+project:
+  kind: node
+  entry: src/server.js
+  install: npm-ci
+requirements:
+  - id: required-files
+    label: HTTP server, package files, and Jest test file are present
+    rules:
+      - kind: files
+        paths:
+          - src/server.js
+          - test/server.spec.js
+          - package.json
+          - package-lock.json
+  - id: package-scripts
+    label: Package declares the required server start and Jest test scripts
+    rules:
+      - kind: source
+        roots:
+          - package.json
+        all:
+          - '"start"\s*:\s*"node\s+src/server\.js"'
+          - '"test"\s*:\s*"jest"'
+  - id: create-confirm
+    label: Character creation and confirmation POST routes return required responses
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-6.2
+        case: create-and-confirm
+        timeoutSeconds: 15
+  - id: view-character
+    label: View route returns the same created character as JSON
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-6.2
+        case: view-created-character
+        timeoutSeconds: 15
+  - id: route-boundaries
+    label: Unsupported methods and unknown routes return 404
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-6.2
+        case: method-and-route-boundaries
+        timeoutSeconds: 15
+  - id: student-tests
+    label: Submission contains at least three student-authored Jest route tests
+    rules:
+      - kind: test-count
+        minimum: 3
+  - id: http-test-evidence
+    label: Student tests exercise HTTP requests and response status
+    rules:
+      - kind: test-source
+        roots:
+          - test
+        all:
+          - http\.(?:request|get)\s*\(
+          - statusCode

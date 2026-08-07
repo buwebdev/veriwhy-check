@@ -1,0 +1,100 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-425/lab-4.1
+course: WEB 425 Angular with TypeScript
+assignment: "Lab 4.1: Template-driven character form"
+version: 1.1.1
+project:
+  kind: npm
+  markers:
+    - package.json
+    - angular.json
+  install: npm-ci
+requirements:
+  - id: environment
+    label: Supported project environment
+    rules:
+      - kind: files
+        paths:
+          - .nvmrc
+          - package-lock.json
+  - id: structure
+    label: Typed Character model and builder component
+    rules:
+      - kind: files
+        paths:
+          - src/app/models/character.ts
+          - src/app/character-builder/character-builder.component.ts
+      - kind: source
+        roots:
+          - src/app/models/character.ts
+        all:
+          - interface\s+Character
+          - characterClass
+          - level\s*:\s*number
+          - veteran\s*:\s*boolean
+          - startingHitPoints
+  - id: form-contract
+    label: Template-driven form and labeled controls
+    rules:
+      - kind: source
+        roots:
+          - src/app/character-builder
+        all:
+          - FormsModule
+          - ngForm
+          - ngModel
+          - ngSubmit
+          - data-testid=['"]character-form['"]
+          - data-testid=['"]character-name['"]
+          - data-testid=['"]character-class['"]
+          - data-testid=['"]character-level['"]
+  - id: domain-behavior
+    label: Validation, derived hit points, storage, and reset
+    rules:
+      - kind: source
+        roots:
+          - src/app/character-builder
+        all:
+          - required
+          - min=['"]?1
+          - max=['"]?20
+          - startingHitPoints
+          - characters
+          - reset
+  - id: routing-selectors
+    label: Builder route and stable action/list selectors
+    rules:
+      - kind: source
+        roots:
+          - src/app
+        all:
+          - builder
+          - data-testid=['"]character-submit['"]
+          - data-testid=['"]character-list['"]
+  - id: student-tests
+    label: Cumulative tests cover form behavior
+    rules:
+      - kind: test-count
+        minimum: 9
+  - id: production-build
+    label: Production build succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - run
+          - build
+        timeoutSeconds: 180
+  - id: test-suite
+    label: Complete Jasmine suite succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - test
+          - --
+          - --watch=false
+          - --browsers=ChromeHeadless
+        timeoutSeconds: 180

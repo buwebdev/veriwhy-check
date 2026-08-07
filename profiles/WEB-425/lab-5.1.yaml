@@ -1,0 +1,97 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-425/lab-5.1
+course: WEB 425 Angular with TypeScript
+assignment: "Lab 5.1: Reactive sign-in and route guard"
+version: 1.1.1
+project:
+  kind: npm
+  markers:
+    - package.json
+    - angular.json
+  install: npm-ci
+requirements:
+  - id: environment
+    label: Supported project environment
+    rules:
+      - kind: files
+        paths:
+          - .nvmrc
+          - package-lock.json
+  - id: structure
+    label: Authentication service, functional guard, and sign-in
+    rules:
+      - kind: files
+        paths:
+          - src/app/auth.service.ts
+          - src/app/auth.guard.ts
+          - src/app/signin/signin.component.ts
+      - kind: source
+        roots:
+          - src/app/auth.guard.ts
+        all:
+          - CanActivateFn|authGuard
+          - UrlTree|createUrlTree
+  - id: auth-contract
+    label: Authentication state transitions
+    rules:
+      - kind: source
+        roots:
+          - src/app/auth.service.ts
+        all:
+          - isAuthenticated
+          - signin
+          - signout
+  - id: guard-contract
+    label: Guard preserves requested destination
+    rules:
+      - kind: source
+        roots:
+          - src/app/auth.guard.ts
+          - src/app/app.routes.ts
+        all:
+          - returnUrl
+          - signin
+          - canActivate
+          - builder
+  - id: reactive-form
+    label: Typed reactive form and validation
+    rules:
+      - kind: source
+        roots:
+          - src/app/signin
+        all:
+          - ReactiveFormsModule
+          - username
+          - accessCode
+          - required
+          - minLength
+          - pattern
+          - data-testid=['"]signin-form['"]
+          - data-testid=['"]signin-submit['"]
+  - id: student-tests
+    label: Cumulative tests cover forms, service, and guard
+    rules:
+      - kind: test-count
+        minimum: 15
+  - id: production-build
+    label: Production build succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - run
+          - build
+        timeoutSeconds: 180
+  - id: test-suite
+    label: Complete Jasmine suite succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - test
+          - --
+          - --watch=false
+          - --browsers=ChromeHeadless
+        timeoutSeconds: 180

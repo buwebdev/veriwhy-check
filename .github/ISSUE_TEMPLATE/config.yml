@@ -1,0 +1,10 @@
+# Issue-template routing.
+# Author: Richard Krasso
+blank_issues_enabled: false
+contact_links:
+  - name: Course or grade question
+    url: https://github.com/buwebdev/veriwhy-check/blob/main/SUPPORT.md
+    about: Use the course support channel described here instead of a public issue.
+  - name: Security or privacy report
+    url: https://github.com/buwebdev/veriwhy-check/blob/main/docs/SECURITY.md
+    about: Follow the private-reporting instructions.

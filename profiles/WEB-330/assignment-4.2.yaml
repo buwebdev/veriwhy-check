@@ -1,0 +1,46 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-330/assignment-4.2
+course: WEB 330 Enterprise JavaScript II
+assignment: "Assignment 4.2: Pointer-driven jigsaw puzzle"
+version: 1.0.0
+project:
+  kind: static-web
+  entry: project10-01.html
+  locate:
+    - project10-01_txt.html
+requirements:
+  - id: required-files
+    label: Required puzzle page, JavaScript, and image assets are present
+    rules:
+      - kind: file-groups
+        groups:
+          - - project10-01.html
+            - project10-01_txt.html
+          - - project10-01.js
+            - project10-01_txt.js
+          - - puzzle.png
+          - - piece1.png
+          - - piece48.png
+  - id: puzzle-loads
+    label: Puzzle generates 48 pieces without browser errors
+    rules:
+      - kind: browser
+        test: WEB-330/project10-1
+        case: puzzle-loads
+        timeoutSeconds: 15
+  - id: piece-set
+    label: Puzzle uses one instance of every required piece image
+    rules:
+      - kind: browser
+        test: WEB-330/project10-1
+        case: piece-set
+        timeoutSeconds: 15
+  - id: pointer-drag
+    label: Pointer input selects, raises, moves, and releases a puzzle piece
+    rules:
+      - kind: browser
+        test: WEB-330/project10-1
+        case: pointer-drag
+        timeoutSeconds: 20

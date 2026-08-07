@@ -1,0 +1,57 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-340/assignment-5.2
+course: WEB 340 Node.js
+assignment: "Assignment 5.2: Pie baker process behavior and Jest tests"
+version: 1.0.0
+project:
+  kind: node
+  entry: src/pie.js
+  install: npm-ci
+requirements:
+  - id: required-files
+    label: Pie module, package files, and Jest test file are present
+    rules:
+      - kind: files
+        paths:
+          - src/pie.js
+          - test/pie.spec.js
+          - package.json
+          - package-lock.json
+  - id: jest-script
+    label: Package test script runs Jest
+    rules:
+      - kind: source
+        roots:
+          - package.json
+        all:
+          - '"test"\s*:\s*"jest"'
+  - id: successful-pies
+    label: Complete ingredient sets return the required success message
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-5.2
+        case: successful-pies
+        timeoutSeconds: 10
+  - id: missing-ingredients
+    label: Missing ingredients produce a warning and request exit status 1
+    rules:
+      - kind: node-test
+        test: WEB-340/assignment-5.2
+        case: missing-ingredients
+        timeoutSeconds: 10
+  - id: student-tests
+    label: Submission contains at least three student-authored Jest tests
+    rules:
+      - kind: test-count
+        minimum: 3
+  - id: process-test-evidence
+    label: Student tests observe process exit and console warning behavior
+    rules:
+      - kind: test-source
+        roots:
+          - test
+        all:
+          - jest\.spyOn\s*\(\s*process
+          - jest\.spyOn\s*\(\s*console

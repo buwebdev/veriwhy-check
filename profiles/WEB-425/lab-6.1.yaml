@@ -1,0 +1,100 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-425/lab-6.1
+course: WEB 425 Angular with TypeScript
+assignment: "Lab 6.1: Dynamic character-profile form"
+version: 1.1.1
+project:
+  kind: npm
+  markers:
+    - package.json
+    - angular.json
+  install: npm-ci
+requirements:
+  - id: environment
+    label: Supported project environment
+    rules:
+      - kind: files
+        paths:
+          - .nvmrc
+          - package-lock.json
+  - id: structure
+    label: Typed profile models and profile component
+    rules:
+      - kind: files
+        paths:
+          - src/app/models/character-profile.ts
+          - src/app/character-profile/character-profile.component.ts
+      - kind: source
+        roots:
+          - src/app/models/character-profile.ts
+        all:
+          - interface\s+ProfileOption
+          - interface\s+CharacterProfile
+          - backstory
+          - alignment
+          - skills\s*:\s*string\[\]
+          - homeland
+  - id: dynamic-form
+    label: Typed dynamic reactive form with FormArray
+    rules:
+      - kind: source
+        roots:
+          - src/app/character-profile
+        all:
+          - ReactiveFormsModule
+          - FormArray
+          - data-testid=['"]profile-form['"]
+          - data-testid=['"]skill-options['"]
+          - data-testid=['"]homeland['"]
+  - id: validation
+    label: Related-control and required-field validation
+    rules:
+      - kind: source
+        roots:
+          - src/app/character-profile
+        all:
+          - backstory
+          - alignment
+          - skills
+          - homeland
+          - required
+          - valid
+  - id: transformation
+    label: Boolean choices become stored domain values
+    rules:
+      - kind: source
+        roots:
+          - src/app/character-profile
+        all:
+          - filter
+          - map
+          - profiles|characters
+          - data-testid=['"]profile-list['"]
+          - data-testid=['"]profile-submit['"]
+  - id: student-tests
+    label: Cumulative tests cover dynamic form behavior
+    rules:
+      - kind: test-count
+        minimum: 19
+  - id: production-build
+    label: Production build succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - run
+          - build
+        timeoutSeconds: 180
+  - id: test-suite
+    label: Complete Jasmine suite succeeds
+    rules:
+      - kind: command
+        executable: npm
+        args:
+          - test
+          - --
+          - --watch=false
+          - --browsers=ChromeHeadless
+        timeoutSeconds: 180

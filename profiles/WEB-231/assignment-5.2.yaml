@@ -1,0 +1,71 @@
+# Public student assessment profile
+# Author: Richard Krasso
+# This file declares visible functional requirements; it contains no grade points.
+id: WEB-231/assignment-5.2
+course: WEB 231 Enterprise JavaScript I
+assignment: "Assignment 5.2: Arrays (Project 3-2)"
+version: 1.1.0
+project:
+  kind: static-web
+  entry: project03-02.html
+  locate:
+    - project03-02_txt.html
+requirements:
+  - id: required-files
+    label: Required page, script, and gallery images
+    rules:
+      - kind: file-groups
+        groups:
+          - - project03-02.html
+            - project03-02_txt.html
+          - - project03-02.js
+            - project03-02_txt.js
+          - - slide0.jpg
+          - - slide1.jpg
+          - - slide2.jpg
+          - - slide3.jpg
+          - - slide4.jpg
+          - - slide5.jpg
+          - - slide6.jpg
+          - - slide7.jpg
+          - - slide8.jpg
+          - - slide9.jpg
+          - - slide10.jpg
+          - - slide11.jpg
+          - - slide12.jpg
+          - - slide13.jpg
+  - id: page-loads
+    label: Gallery page loads without browser errors
+    rules:
+      - kind: browser
+        test: WEB-231/project3-2
+        case: page-loads
+        timeoutSeconds: 20
+  - id: figure-count
+    label: Fourteen gallery figures are generated
+    rules:
+      - kind: browser
+        test: WEB-231/project3-2
+        case: figure-count
+        timeoutSeconds: 20
+  - id: image-sequence
+    label: Gallery uses the complete ordered image sequence
+    rules:
+      - kind: browser
+        test: WEB-231/project3-2
+        case: image-sequence
+        timeoutSeconds: 20
+  - id: caption-sequence
+    label: Gallery displays the required captions
+    rules:
+      - kind: browser
+        test: WEB-231/project3-2
+        case: caption-sequence
+        timeoutSeconds: 20
+  - id: complete-figures
+    label: Each figure contains an image and caption
+    rules:
+      - kind: browser
+        test: WEB-231/project3-2
+        case: complete-figures
+        timeoutSeconds: 20
