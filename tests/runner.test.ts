@@ -5,7 +5,20 @@
 
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { runCommand, summarizeCommandOutput } from '../src/runner.js';
+import { platformInvocation, runCommand, summarizeCommandOutput } from '../src/runner.js';
+
+test('Windows package managers run through Node.js without a command shell', () => {
+  assert.deepEqual(platformInvocation('npm', ['ci'], 'win32', 'C:\\Node\\node.exe'), {
+    executable: 'C:\\Node\\node.exe',
+    args: ['C:\\Node\\node_modules\\npm\\bin\\npm-cli.js', 'ci']
+  });
+  assert.deepEqual(platformInvocation('npx', ['tool'], 'win32', 'C:\\Node\\node.exe'), {
+    executable: 'C:\\Node\\node.exe',
+    args: ['C:\\Node\\node_modules\\npm\\bin\\npx-cli.js', 'tool']
+  });
+  assert.deepEqual(platformInvocation('npm', ['ci'], 'darwin'), { executable: 'npm', args: ['ci'] });
+  assert.deepEqual(platformInvocation('node', ['app.js'], 'win32'), { executable: 'node', args: ['app.js'] });
+});
 
 test('command summarization favors useful error lines', () => {
   const detail = summarizeCommandOutput('noise\nERROR missing route\nnoise', false, 1, null);

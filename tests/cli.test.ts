@@ -4,7 +4,9 @@
  */
 
 import assert from 'node:assert/strict';
+import { join, resolve } from 'node:path';
 import test from 'node:test';
+import { pathToFileURL } from 'node:url';
 import { commandError, isCliEntrypoint, resolveProfileInput, runCli, type CliEnvironment } from '../src/cli.js';
 
 function capture(): { environment: CliEnvironment; output: string[]; errors: string[] } {
@@ -71,9 +73,10 @@ test('uninstall rejects unknown options before reading installation data', async
 });
 
 test('installed CLI entry paths work when parent folders contain spaces', () => {
-  assert.equal(isCliEntrypoint('/Applications/Application Support/app/cli.js', 'file:///Applications/Application%20Support/app/cli.js'), true);
-  assert.equal(isCliEntrypoint(undefined, 'file:///app/cli.js'), false);
-  assert.equal(isCliEntrypoint('/different/cli.js', 'file:///app/cli.js'), false);
+  const entry = resolve(join('Application Support', 'app', 'cli.js'));
+  assert.equal(isCliEntrypoint(entry, pathToFileURL(entry).href), true);
+  assert.equal(isCliEntrypoint(undefined, pathToFileURL(entry).href), false);
+  assert.equal(isCliEntrypoint(resolve('different', 'cli.js'), pathToFileURL(entry).href), false);
 });
 
 test('assignment input accepts case differences and suggests close mistakes', () => {

@@ -7,8 +7,23 @@
  */
 
 import { spawn } from 'node:child_process';
+import { win32 } from 'node:path';
 import { chromium } from 'playwright';
 import type { ExecutionResult } from './types.js';
+
+export interface ProcessInvocation { executable: string; args: string[] }
+
+/** Run Windows package managers through bundled Node.js without a shell. */
+export function platformInvocation(
+  executable: string,
+  args: string[],
+  platform: NodeJS.Platform = process.platform,
+  nodeExecutable = process.execPath
+): ProcessInvocation {
+  if (platform !== 'win32' || (executable !== 'npm' && executable !== 'npx')) return { executable, args };
+  const cli = win32.join(win32.dirname(nodeExecutable), 'node_modules', 'npm', 'bin', `${executable}-cli.js`);
+  return { executable: nodeExecutable, args: [cli, ...args] };
+}
 
 /** Remove terminal control sequences and select the most useful failure lines. */
 export function summarizeCommandOutput(
@@ -37,7 +52,8 @@ export async function runCommand(
   timeoutSeconds: number
 ): Promise<ExecutionResult> {
   return await new Promise((resolveResult) => {
-    const child = spawn(executable, args, {
+    const invocation = platformInvocation(executable, args);
+    const child = spawn(invocation.executable, invocation.args, {
       cwd,
       // Angular's Karma launcher uses the same isolated Playwright Chromium
       // binary as browser checks. No system Chrome installation is required.
