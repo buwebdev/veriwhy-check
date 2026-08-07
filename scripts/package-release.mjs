@@ -51,15 +51,15 @@ await cp(join(packageRoot, 'tmp', 'docs-site'), join(app, 'site'), { recursive: 
 for (const file of ['package.json', 'package-lock.json', 'README.md', 'LICENSE.md', 'THIRD_PARTY_NOTICES.md']) {
   await cp(join(packageRoot, file), join(app, file));
 }
-await cp(join(packageRoot, 'node_modules'), join(app, 'node_modules'), { recursive: true });
-await run('npm', ['prune', '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund'], { cwd: app });
-await cp(process.execPath, join(payload, 'runtime', process.platform === 'win32' ? 'node.exe' : 'node'));
-// A student must not need a system Node.js installation. Copy npm from the
-// NVM-selected runtime and provide a small platform launcher beside Node.js.
 const npmSource = await firstExisting([
   resolve(dirname(process.execPath), '..', 'lib', 'node_modules', 'npm'),
   join(dirname(process.execPath), 'node_modules', 'npm')
 ]);
+await cp(join(packageRoot, 'node_modules'), join(app, 'node_modules'), { recursive: true });
+await run(process.execPath, [join(npmSource, 'bin', 'npm-cli.js'), 'prune', '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund'], { cwd: app });
+await cp(process.execPath, join(payload, 'runtime', process.platform === 'win32' ? 'node.exe' : 'node'));
+// A student must not need a system Node.js installation. Copy npm from the
+// NVM-selected runtime and provide a small platform launcher beside Node.js.
 await mkdir(join(payload, 'runtime', 'node_modules'), { recursive: true });
 await cp(npmSource, join(payload, 'runtime', 'node_modules', 'npm'), { recursive: true });
 if (process.platform === 'win32') {
