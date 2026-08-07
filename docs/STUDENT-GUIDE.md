@@ -32,7 +32,7 @@ Your instructor will give you one command to copy. Think of the command as a
 delivery address for a trusted delivery truck. It tells GitHub which official
 toolbox to bring and tells your computer where to put it.
 
-### macOS
+### macOS on Apple Silicon
 
 Open Terminal, copy the complete line below, paste it, and press Return:
 
@@ -40,7 +40,11 @@ Open Terminal, copy the complete line below, paste it, and press Return:
 curl -fsSL https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.sh | sh
 ```
 
-### Windows
+### Windows, Linux, or Intel Mac
+
+Your instructor will tell you when VeriWhy Check is available for your
+computer. Do not run an installation command until your operating-system
+package has been announced. The planned Windows command is:
 
 Open PowerShell, copy the complete line below, paste it, and press Enter:
 

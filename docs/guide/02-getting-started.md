@@ -1,6 +1,6 @@
 # Getting Started
 
-## Install on macOS
+## Install on macOS with Apple Silicon
 
 Open Terminal, copy the complete command, paste it, and press Return:
 
@@ -8,7 +8,11 @@ Open Terminal, copy the complete command, paste it, and press Return:
 curl -fsSL https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.sh | sh
 ```
 
-## Install on Windows
+## Windows, Linux, and Intel Mac
+
+Your instructor will announce when the package for your operating system is
+available. Do not run an installation command before that announcement. The
+planned Windows command is:
 
 Open PowerShell, copy the complete command, paste it, and press Enter:
 

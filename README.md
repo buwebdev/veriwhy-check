@@ -9,8 +9,9 @@ and creates local reports. It does not assign the official course grade.
 
 ## Version 1 status
 
-Version 1.0.0 is a local release candidate undergoing installation validation
-before its first GitHub release. Initial course support is:
+Version 1 is publicly released and validated for macOS on Apple Silicon.
+Windows, Linux, and Intel Mac packages remain pending until they can be built
+and tested on those operating systems. Initial course support is:
 
 - WEB 231 Enterprise JavaScript I
 - WEB 330 Enterprise JavaScript II
@@ -29,7 +30,7 @@ copy of the selected project and the copy is removed after the run. See the
 Students do not need to install Node.js, NVM, Docker, Python, Chrome, or an LLM.
 VeriWhy Check installs its own private runtime and managed checking browser.
 
-### macOS or Linux
+### macOS on Apple Silicon
 
 Open Terminal, paste this complete command, and press Return or Enter:
 
@@ -37,7 +38,13 @@ Open Terminal, paste this complete command, and press Return or Enter:
 curl -fsSL https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.sh | sh
 ```
 
-### Windows
+### Windows, Linux, and Intel Mac
+
+The installation scripts support these systems, but their release packages
+have not yet been uploaded and tested. Do not give students these installation
+commands until the maintainer announces support for their platform.
+
+The planned Windows command is:
 
 Open PowerShell, paste this complete command, and press Enter:
 

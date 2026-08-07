@@ -1,23 +1,24 @@
 # Installation
 
 **Author:** Richard Krasso  
-**Status:** Version 1 installer implemented; public release packages pending
+**Status:** Apple Silicon macOS release published and validated
 
 Version 1 provides packaging and installer support for Windows, macOS, and
-Linux on supported x64 or ARM64 computers. Public GitHub release packages have
-not yet been published.
-Each package will contain the VeriWhy-check application, a private Node.js
-runtime, public profiles, public checks, report assets, and an uninstaller.
+Linux on supported x64 or ARM64 computers. The Apple Silicon macOS package is
+published and validated. Windows, Linux, and Intel Mac packages remain pending
+until they can be built and tested on those operating systems. Each package
+contains the VeriWhy-check application, private Node.js and npm runtimes,
+public profiles, public checks, report assets, and an uninstaller.
 
 Students will not need to install Node.js, NVM, NVS, Docker, Python, Go, or an
 LLM. Static web assessment additionally installs Playwright's managed Chromium
 browser in the application's documented user-data location.
 
-Before public releases exist, installation is tested from local release
-archives and sandbox directories inside the ignored `tmp` directory. The
-installer supports explicit data and command directories so a test never
-changes the normal user installation. Each release includes a SHA-256 digest;
-the installer checks it before running any packaged code.
+The Apple Silicon release has been tested from its public GitHub download in an
+isolated directory and in the normal macOS user locations. The installer
+supports explicit data and command directories for controlled validation. Each
+release includes a SHA-256 digest; the installer checks it before running any
+packaged code.
 
 The installed layout uses versioned folders. An update installs the new folder
 first and changes the small command launcher only after the copy succeeds. The
