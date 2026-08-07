@@ -82,9 +82,9 @@ and browser. See the [student guide](docs/STUDENT-GUIDE.md) for both commands.
 
 Richard Krasso
 
-## License status
+## License
 
-Copyright is currently reserved while the noncommercial release terms and
-legal copyright holder are finalized. Do not redistribute this development
-version. The planned public license is
-[PolyForm Noncommercial 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0).
+VeriWhy-check is source-available under the
+[PolyForm Noncommercial License 1.0.0](LICENSE.md). It may be used, studied,
+changed, and redistributed for permitted noncommercial purposes, including use
+by educational institutions. Commercial use is not permitted by this license.
