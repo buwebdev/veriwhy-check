@@ -36,6 +36,26 @@ npm run check
 
 Dependencies are installed locally. Nothing is installed globally.
 
+## Manual quality and release commands
+
+Version 1 does not use automatic CI or deployment. Run these commands from the
+repository folder when you want to verify or package the application:
+
+```bash
+nvm use
+npm ci
+npm run check
+npm run lint:yaml
+npm run lint:md
+npm run docs:build
+npm run release:package
+```
+
+The commands build the application, run its tests and coverage gates, validate
+the public YAML profiles, lint the documentation, build the offline guide, and
+create the release packages. Publishing the resulting packages as a GitHub
+release remains a deliberate manual step.
+
 ## Student commands
 
 ```text

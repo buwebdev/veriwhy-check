@@ -27,7 +27,7 @@ student release. Publication is not complete until every item is checked.
 
 ## Publication
 
-- [ ] Confirm the legal copyright holder and add the approved license notice.
+- [x] Confirm the legal copyright holder and add the approved license notice.
 - [ ] Review privacy, security, support, and student guides.
 - [ ] Create the signed or approved GitHub Version 1 release.
 - [ ] Upload every platform archive and matching digest.
