@@ -33,20 +33,24 @@ export function launcherName(platform: NodeJS.Platform): string {
 
 /** Create a launcher that forwards every student argument to bundled Node.js. */
 export function launcherSource(versionRoot: string, platform: NodeJS.Platform): string {
-  const node = join(versionRoot, 'runtime', platform === 'win32' ? 'node.exe' : 'node');
+  const runtime = join(versionRoot, 'runtime');
+  const node = join(runtime, platform === 'win32' ? 'node.exe' : 'node');
   const cli = join(versionRoot, 'app', 'dist', 'src', 'cli.js');
   const browsers = join(versionRoot, 'browsers');
   const dataRoot = resolve(versionRoot, '..', '..');
-  if (platform === 'win32') return `@echo off\r\nset "VERIWHY_CHECK_DATA_ROOT=${dataRoot}"\r\nset "PLAYWRIGHT_BROWSERS_PATH=${browsers}"\r\n"${node}" "${cli}" %*\r\n`;
+  if (platform === 'win32') return `@echo off\r\nset "VERIWHY_CHECK_DATA_ROOT=${dataRoot}"\r\nset "PLAYWRIGHT_BROWSERS_PATH=${browsers}"\r\nset "PATH=${runtime};%PATH%"\r\n"${node}" "${cli}" %*\r\n`;
   const quote = (value: string): string => `'${value.replaceAll("'", "'\\''")}'`;
-  return `#!/bin/sh\nVERIWHY_CHECK_DATA_ROOT=${quote(dataRoot)} PLAYWRIGHT_BROWSERS_PATH=${quote(browsers)} exec ${quote(node)} ${quote(cli)} "$@"\n`;
+  return `#!/bin/sh\nPATH=${quote(runtime)}:"$PATH" VERIWHY_CHECK_DATA_ROOT=${quote(dataRoot)} PLAYWRIGHT_BROWSERS_PATH=${quote(browsers)} exec ${quote(node)} ${quote(cli)} "$@"\n`;
 }
 
 /** Validate the minimum signed payload structure before copying any release. */
 export async function validatePayload(payloadRoot: string): Promise<void> {
   const nodeName = process.platform === 'win32' ? 'node.exe' : 'node';
+  const npmName = process.platform === 'win32' ? 'npm.cmd' : 'npm';
   const required = [
     join(payloadRoot, 'runtime', nodeName),
+    join(payloadRoot, 'runtime', npmName),
+    join(payloadRoot, 'runtime', 'node_modules', 'npm', 'bin', 'npm-cli.js'),
     join(payloadRoot, 'app', 'package.json'),
     join(payloadRoot, 'app', 'dist', 'src', 'cli.js'),
     join(payloadRoot, 'app', 'profiles'),
@@ -76,7 +80,10 @@ export async function installPayload(
   await rm(stagingRoot, { recursive: true, force: true });
   await rm(backupRoot, { recursive: true, force: true });
   await cp(payloadRoot, stagingRoot, { recursive: true, force: true });
-  if (platform !== 'win32') await chmod(join(stagingRoot, 'runtime', 'node'), 0o755);
+  if (platform !== 'win32') {
+    await chmod(join(stagingRoot, 'runtime', 'node'), 0o755);
+    await chmod(join(stagingRoot, 'runtime', 'npm'), 0o755);
+  }
   const replacing = await pathExists(versionRoot);
   try {
     if (replacing) await rename(versionRoot, backupRoot);

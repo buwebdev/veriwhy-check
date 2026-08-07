@@ -9,9 +9,9 @@
  */
 
 import { createHash } from 'node:crypto';
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { access, chmod, cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
-import { basename, join, resolve } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import { browserCacheRoot, packageRoot } from '../dist/src/paths.js';
 import { releaseAssetName } from '../dist/src/update.js';
@@ -23,6 +23,18 @@ const stage = join(releaseRoot, 'stage');
 const payload = join(stage, 'payload');
 const app = join(payload, 'app');
 const archive = join(releaseRoot, releaseAssetName());
+
+async function firstExisting(paths) {
+  for (const path of paths) {
+    try {
+      await access(path);
+      return path;
+    } catch {
+      // Node distributions place npm differently on Unix and Windows.
+    }
+  }
+  throw new Error('The selected Node.js runtime does not include npm. Run nvm use and npm ci before packaging.');
+}
 
 await rm(stage, { recursive: true, force: true });
 await mkdir(join(payload, 'runtime'), { recursive: true });
@@ -42,6 +54,21 @@ for (const file of ['package.json', 'package-lock.json', 'README.md', 'LICENSE.m
 await cp(join(packageRoot, 'node_modules'), join(app, 'node_modules'), { recursive: true });
 await run('npm', ['prune', '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund'], { cwd: app });
 await cp(process.execPath, join(payload, 'runtime', process.platform === 'win32' ? 'node.exe' : 'node'));
+// A student must not need a system Node.js installation. Copy npm from the
+// NVM-selected runtime and provide a small platform launcher beside Node.js.
+const npmSource = await firstExisting([
+  resolve(dirname(process.execPath), '..', 'lib', 'node_modules', 'npm'),
+  join(dirname(process.execPath), 'node_modules', 'npm')
+]);
+await mkdir(join(payload, 'runtime', 'node_modules'), { recursive: true });
+await cp(npmSource, join(payload, 'runtime', 'node_modules', 'npm'), { recursive: true });
+if (process.platform === 'win32') {
+  await writeFile(join(payload, 'runtime', 'npm.cmd'), '@echo off\r\n"%~dp0node.exe" "%~dp0node_modules\\npm\\bin\\npm-cli.js" %*\r\n');
+} else {
+  const npmLauncher = join(payload, 'runtime', 'npm');
+  await writeFile(npmLauncher, '#!/bin/sh\nruntime_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"\nexec "$runtime_dir/node" "$runtime_dir/node_modules/npm/bin/npm-cli.js" "$@"\n');
+  await chmod(npmLauncher, 0o755);
+}
 await cp(browserCacheRoot(), join(payload, 'browsers'), { recursive: true });
 await cp(join(packageRoot, 'scripts', 'install.mjs'), join(stage, 'install.mjs'));
 await mkdir(releaseRoot, { recursive: true });

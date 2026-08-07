@@ -105,10 +105,13 @@ test('verified package cannot activate without an installation record', async ()
 async function payload(root: string, version: string): Promise<string> {
   const result = join(root, 'payload');
   await mkdir(join(result, 'runtime'), { recursive: true });
+  await mkdir(join(result, 'runtime', 'node_modules', 'npm', 'bin'), { recursive: true });
   await mkdir(join(result, 'app', 'dist', 'src'), { recursive: true });
   await mkdir(join(result, 'app', 'profiles'), { recursive: true });
   await mkdir(join(result, 'app', 'public-checks'), { recursive: true });
   await cp(process.execPath, join(result, 'runtime', process.platform === 'win32' ? 'node.exe' : 'node'));
+  await writeFile(join(result, 'runtime', process.platform === 'win32' ? 'npm.cmd' : 'npm'), 'npm launcher');
+  await writeFile(join(result, 'runtime', 'node_modules', 'npm', 'bin', 'npm-cli.js'), 'npm cli');
   await writeFile(join(result, 'app', 'package.json'), JSON.stringify({ type: 'module', version }));
   for (const file of ['install.js', 'files.js']) await cp(join(packageRoot, 'dist', 'src', file), join(result, 'app', 'dist', 'src', file));
   await writeFile(join(result, 'app', 'dist', 'src', 'cli.js'), 'console.log("updated")');

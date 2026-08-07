@@ -17,8 +17,15 @@ async function makePayload(root: string): Promise<string> {
   await mkdir(join(payload, 'app', 'profiles'), { recursive: true });
   await mkdir(join(payload, 'app', 'public-checks'), { recursive: true });
   const nodeName = process.platform === 'win32' ? 'node.exe' : 'node';
+  const npmName = process.platform === 'win32' ? 'npm.cmd' : 'npm';
   await writeFile(join(payload, 'runtime', nodeName), 'runtime');
-  if (process.platform !== 'win32') await chmod(join(payload, 'runtime', nodeName), 0o755);
+  await mkdir(join(payload, 'runtime', 'node_modules', 'npm', 'bin'), { recursive: true });
+  await writeFile(join(payload, 'runtime', npmName), 'npm launcher');
+  await writeFile(join(payload, 'runtime', 'node_modules', 'npm', 'bin', 'npm-cli.js'), 'npm cli');
+  if (process.platform !== 'win32') {
+    await chmod(join(payload, 'runtime', nodeName), 0o755);
+    await chmod(join(payload, 'runtime', npmName), 0o755);
+  }
   await writeFile(join(payload, 'app', 'package.json'), JSON.stringify({ version: '1.2.3' }));
   await writeFile(join(payload, 'app', 'dist', 'src', 'cli.js'), 'console.log("ready")');
   return payload;
@@ -31,6 +38,8 @@ test('launcher names and sources cover Windows and Unix argument forwarding', ()
   assert.match(launcherSource('C:\\App Files\\1.0.0', 'win32'), /%\*/);
   assert.match(launcherSource('/Application Files/1.0.0', 'linux'), /PLAYWRIGHT_BROWSERS_PATH/);
   assert.match(launcherSource('/Application Files/versions/1.0.0', 'linux'), /VERIWHY_CHECK_DATA_ROOT/);
+  assert.match(launcherSource('/Application Files/versions/1.0.0', 'linux'), /PATH=.*runtime/);
+  assert.match(launcherSource('C:\\App Files\\versions\\1.0.0', 'win32'), /set "PATH=.*runtime;%PATH%"/);
 });
 
 test('incomplete payloads fail before installation', async () => {
