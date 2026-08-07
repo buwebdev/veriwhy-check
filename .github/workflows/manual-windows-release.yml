@@ -1,0 +1,123 @@
+# Manually build and validate the VeriWhy Check Windows x64 release.
+# Author: Richard Krasso
+name: Manual Windows release
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Branch or tag to build
+        required: true
+        default: main
+        type: string
+      release_tag:
+        description: Existing GitHub release tag used only when publishing
+        required: true
+        default: v1.0.2
+        type: string
+      publish:
+        description: Upload the verified Windows package to the release
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  windows-x64:
+    name: Build and validate Windows x64
+    runs-on: windows-2025
+    timeout-minutes: 30
+    steps:
+      - name: Check out the selected source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref }}
+
+      - name: Use the project's Node.js version
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install locked development dependencies
+        run: npm ci
+
+      - name: Install the managed checking browser
+        run: npm run setup:browser
+
+      - name: Run tests and coverage requirements
+        run: npm run check
+
+      - name: Validate public YAML profiles
+        run: npm run lint:yaml
+
+      - name: Lint Markdown documentation
+        run: npm run lint:md
+
+      - name: Build the Windows x64 release package
+        run: npm run release:package
+
+      - name: Verify, install, inspect, and uninstall the package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $archive = Join-Path $PWD "tmp/releases/veriwhy-check-windows-x64.tar.gz"
+          $checksum = "$archive.sha256"
+          if (-not (Test-Path $archive) -or -not (Test-Path $checksum)) {
+            throw "The Windows archive or checksum was not created."
+          }
+
+          $expected = ((Get-Content $checksum) -split "\s+")[0].ToLower()
+          $actual = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLower()
+          if ($expected -ne $actual) {
+            throw "The Windows release package failed its checksum validation."
+          }
+
+          $validation = Join-Path $env:RUNNER_TEMP "veriwhy-check-release-validation"
+          $extracted = Join-Path $validation "extracted"
+          $data = Join-Path $validation "data"
+          $commands = Join-Path $validation "bin"
+          New-Item -ItemType Directory -Force $extracted, $data, $commands | Out-Null
+          tar -xzf $archive -C $extracted
+
+          $bundledNode = Join-Path $extracted "payload/runtime/node.exe"
+          $installer = Join-Path $extracted "install.mjs"
+          & $bundledNode $installer --data-root $data --bin-root $commands
+          if ($LASTEXITCODE -ne 0) { throw "The bundled Windows installer failed." }
+
+          $version = (Get-Content "package.json" | ConvertFrom-Json).version
+          $bundledNpm = Join-Path $data "versions/$version/runtime/npm.cmd"
+          $npmVersion = & $bundledNpm --version
+          if ($LASTEXITCODE -ne 0 -or -not $npmVersion) {
+            throw "The private npm runtime is not usable."
+          }
+
+          $launcher = Join-Path $commands "veriwhy-check.cmd"
+          & $launcher version
+          if ($LASTEXITCODE -ne 0) { throw "The installed version command failed." }
+          & $launcher doctor
+          if ($LASTEXITCODE -ne 0) { throw "The installed readiness check failed." }
+          & $launcher uninstall --dry-run
+          if ($LASTEXITCODE -ne 0) { throw "The uninstall preview failed." }
+          & $launcher uninstall
+          if ($LASTEXITCODE -ne 0) { throw "The uninstaller failed." }
+
+          for ($attempt = 0; $attempt -lt 40 -and (Test-Path $launcher); $attempt++) {
+            Start-Sleep -Milliseconds 250
+          }
+          if (Test-Path $launcher) { throw "The Windows launcher was not removed." }
+
+      - name: Upload the verified package to the selected release
+        if: ${{ inputs.publish }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "${{ inputs.release_tag }}" --repo "${{ github.repository }}"
+          gh release upload "${{ inputs.release_tag }}" `
+            "tmp/releases/veriwhy-check-windows-x64.tar.gz" `
+            "tmp/releases/veriwhy-check-windows-x64.tar.gz.sha256" `
+            --clobber `
+            --repo "${{ github.repository }}"

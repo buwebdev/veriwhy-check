@@ -160,6 +160,27 @@ the current computer. It does not create a second release.
 Version 1 should not be announced as cross-platform until its required macOS,
 Windows, and Linux packages have been uploaded and tested.
 
+### Manual Windows x64 Runner
+
+The repository includes a manual-only GitHub Windows runner. It has no push,
+pull-request, or schedule trigger and never runs unless the maintainer starts
+it deliberately.
+
+To validate the current `main` branch without publishing:
+
+```bash
+gh workflow run manual-windows-release.yml \
+  -f source_ref=main \
+  -f release_tag=v1.0.2 \
+  -f publish=false
+```
+
+After the validation succeeds, build a tagged version and upload its verified
+Windows archive by changing `source_ref` and `release_tag` to that same tag and
+setting `publish=true`. The runner performs tests, packaging, checksum
+verification, installation, private npm verification, readiness, uninstall,
+and release upload on a clean Windows x64 virtual machine.
+
 ## Check the Published Release
 
 After deployment:
