@@ -19,6 +19,7 @@
     "docs:build": "npm run build --silent && node dist/src/docs-builder.js",
     "setup:browser": "playwright install chromium",
     "release:package": "npm run docs:build --silent && node scripts/package-release.mjs",
+    "deploy": "npm run build --silent && node scripts/deploy-release.mjs",
     "start": "node dist/src/cli.js",
     "veriwhy-check": "node dist/src/cli.js"
   },

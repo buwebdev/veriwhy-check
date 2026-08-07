@@ -36,7 +36,7 @@ for (const directory of ['profiles', 'public-checks', 'docs']) {
 await mkdir(join(app, 'dist'), { recursive: true });
 await cp(join(packageRoot, 'dist', 'src'), join(app, 'dist', 'src'), { recursive: true });
 await cp(join(packageRoot, 'tmp', 'docs-site'), join(app, 'site'), { recursive: true });
-for (const file of ['package.json', 'package-lock.json', 'README.md', 'THIRD_PARTY_NOTICES.md']) {
+for (const file of ['package.json', 'package-lock.json', 'README.md', 'LICENSE.md', 'THIRD_PARTY_NOTICES.md']) {
   await cp(join(packageRoot, file), join(app, file));
 }
 await cp(join(packageRoot, 'node_modules'), join(app, 'node_modules'), { recursive: true });
