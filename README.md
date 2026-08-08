@@ -62,6 +62,9 @@ instructions, read the [complete student guide](docs/STUDENT-GUIDE.md).
 See [Known Issues](docs/KNOWN-ISSUES.md) for the documented Windows uninstall
 edge case and workaround.
 
+See [Release Notes](RELEASE-NOTES.md) for Version 1 capabilities, validation,
+supported systems, and installation commands.
+
 ## Developer setup
 
 The project requires NVM and Node.js 24.18.0 during development:
