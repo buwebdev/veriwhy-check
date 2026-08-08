@@ -42,17 +42,18 @@ test('release copy excludes Chrome app bundles and keeps the headless shell', as
   const source = join(root, 'source');
   const destination = join(root, 'destination');
   try {
+    const executable = process.platform === 'win32' ? 'chrome-headless-shell.exe' : 'chrome-headless-shell';
     const shell = join(source, 'chromium_headless_shell-1234', 'shell');
     const chromeApp = join(source, 'chromium-1234', 'Google Chrome for Testing.app', 'Contents');
     const ffmpeg = join(source, 'ffmpeg-1011');
     await mkdir(shell, { recursive: true });
     await mkdir(chromeApp, { recursive: true });
     await mkdir(ffmpeg, { recursive: true });
-    await writeFile(join(shell, 'chrome-headless-shell'), 'shell');
+    await writeFile(join(shell, executable), 'shell');
     await writeFile(join(chromeApp, 'Info.plist'), 'notifications');
     await writeFile(join(ffmpeg, 'ffmpeg'), 'ffmpeg');
     await copyHeadlessBrowserRuntime(source, destination);
-    assert.match(headlessShellExecutablePath(destination, 'darwin'), /chromium_headless_shell-1234/);
+    assert.match(headlessShellExecutablePath(destination), /chromium_headless_shell-1234/);
     assert.deepEqual(await findMacAppBundles(destination), []);
   } finally {
     await rm(root, { recursive: true, force: true });
