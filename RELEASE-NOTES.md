@@ -56,8 +56,9 @@ grade and never removes student project folders.
 Windows may leave VeriWhy Check's private runtime folder after uninstallation.
 This does not affect installation, assignment checking, reports, or updates.
 To remove the remaining files, close every terminal, open File Explorer, enter
-`%LOCALAPPDATA%` in the address bar, and remove the `VeriWhy Check` folder.
-Student projects and saved reports are not removed automatically.
+`%LOCALAPPDATA%`, and open `VeriWhy Check`. Leave `reports` in place and remove
+`versions`, `cache`, `bin`, and `install.json` if they remain. Remove the entire
+folder only if saved reports are not needed. Student projects are never removed.
 
 See [Known Issues](docs/KNOWN-ISSUES.md) for the tracked limitation.
 

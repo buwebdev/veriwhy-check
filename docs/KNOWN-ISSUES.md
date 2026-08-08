@@ -20,7 +20,10 @@ Student projects are never removed, and reports remain preserved by default.
 2. Close every Command Prompt, PowerShell, and terminal window.
 3. Open File Explorer.
 4. Enter `%LOCALAPPDATA%` in the address bar.
-5. Remove the `VeriWhy Check` folder if it remains.
+5. Open the `VeriWhy Check` folder if it remains.
+6. To keep saved reports, leave the `reports` folder and remove `versions`,
+   `cache`, `bin`, and `install.json` if they remain.
+7. If saved reports are not needed, remove the entire `VeriWhy Check` folder.
 
 The Version 1 follow-up work is to make delayed Windows cleanup reliable in
 every supported terminal and validate that the command file, private runtime,

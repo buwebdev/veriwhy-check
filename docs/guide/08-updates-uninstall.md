@@ -58,7 +58,10 @@ remains after uninstallation:
 1. Close every Command Prompt, PowerShell, and terminal window.
 2. Open File Explorer.
 3. Enter `%LOCALAPPDATA%` in the address bar and press Enter.
-4. Remove the `VeriWhy Check` folder.
+4. Open the `VeriWhy Check` folder.
+5. To keep reports, leave `reports` and remove `versions`, `cache`, `bin`, and
+   `install.json` if they remain.
+6. If reports are not needed, remove the entire `VeriWhy Check` folder.
 
 This known Version 1 issue affects only uninstallation. It does not affect
 student projects or normal assignment checks.

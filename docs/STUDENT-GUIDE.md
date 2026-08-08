@@ -171,7 +171,10 @@ Windows may leave VeriWhy Check's private runtime after uninstallation. If the
 1. Close every Command Prompt, PowerShell, and terminal window.
 2. Open File Explorer.
 3. Enter `%LOCALAPPDATA%` in the address bar and press Enter.
-4. Remove the `VeriWhy Check` folder.
+4. Open the `VeriWhy Check` folder.
+5. To keep saved reports, leave `reports` and remove `versions`, `cache`, `bin`,
+   and `install.json` if they remain.
+6. If saved reports are not needed, remove the entire `VeriWhy Check` folder.
 
 This affects only uninstallation. It does not affect assignment folders or
 normal checking. See [Known Issues](KNOWN-ISSUES.md) for the tracked issue.

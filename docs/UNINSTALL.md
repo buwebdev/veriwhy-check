@@ -25,7 +25,8 @@ On Windows, cleanup begins after the running command exits so the private Node
 runtime is no longer locked. `veriwhy-check paths` shows installed application,
 browser, report, and cache locations at any time.
 
-Windows may leave the private runtime behind. Close every Command Prompt,
-PowerShell, and terminal window, open File Explorer, enter `%LOCALAPPDATA%` in
-the address bar, and remove the `VeriWhy Check` folder if it remains. See
-[Known Issues](KNOWN-ISSUES.md) for the tracked Version 1 limitation.
+Windows may leave the private runtime behind. Close every terminal, open File
+Explorer, enter `%LOCALAPPDATA%`, and open `VeriWhy Check`. To preserve reports,
+leave `reports` and remove `versions`, `cache`, `bin`, and `install.json` if
+they remain. Remove the entire folder only when saved reports are not needed.
+See [Known Issues](KNOWN-ISSUES.md) for the tracked Version 1 limitation.

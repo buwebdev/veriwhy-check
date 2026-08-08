@@ -33,7 +33,7 @@ student release. Publication is not complete until every item is checked.
 - [x] Confirm the legal copyright holder and add the approved license notice.
 - [x] Review privacy, security, support, and student guides.
 - [x] Create the approved GitHub Version 1 release.
-- [ ] Upload both supported platform archives and matching digests.
+- [x] Upload both supported platform archives and matching digests.
 - [x] Test the public installer link without GitHub authentication.
 - [x] Test a public update from Version 1.0.0 to Version 1.0.1.
 
