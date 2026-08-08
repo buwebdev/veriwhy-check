@@ -14,7 +14,13 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 import { packageRoot } from '../dist/src/paths.js';
-import { nextReleaseVersion, nonMarkdownChanges, parseReleaseMode } from '../dist/src/release.js';
+import {
+  missingReleaseAssets,
+  nextReleaseVersion,
+  nonMarkdownChanges,
+  parseReleaseMode,
+  remoteReleaseWorkflows
+} from '../dist/src/release.js';
 import { releaseAssetName } from '../dist/src/update.js';
 
 const execute = promisify(execFile);
@@ -46,6 +52,66 @@ async function succeeds(command, arguments_) {
     return true;
   } catch {
     return false;
+  }
+}
+
+/** Pause briefly while GitHub registers a newly dispatched workflow run. */
+async function pause(milliseconds) {
+  await new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+/** Return the recent run identifiers for one manual release workflow. */
+async function workflowRunIds(workflow) {
+  const output = await capture('gh', [
+    'run', 'list', '--workflow', workflow, '--event', 'workflow_dispatch',
+    '--limit', '20', '--json', 'databaseId', '--repo', 'buwebdev/veriwhy-check'
+  ]);
+  return new Set(JSON.parse(output || '[]').map((run) => String(run.databaseId)));
+}
+
+/** Find the run created after dispatch without confusing it with an older run. */
+async function waitForNewWorkflowRun(workflow, previous) {
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    const current = await workflowRunIds(workflow);
+    const created = [...current].find((identifier) => !previous.has(identifier));
+    if (created) return created;
+    await pause(2_000);
+  }
+  throw new Error(`GitHub did not expose the new ${workflow} run within 60 seconds.`);
+}
+
+/** Build, validate, and upload the two packages not produced on this Mac. */
+async function publishRemotePackages(tag) {
+  const earlierRuns = new Map();
+  for (const workflow of remoteReleaseWorkflows) {
+    earlierRuns.set(workflow, await workflowRunIds(workflow));
+  }
+  for (const workflow of remoteReleaseWorkflows) {
+    await visible('gh', [
+      'workflow', 'run', workflow, '--ref', 'main',
+      '-f', `source_ref=${tag}`, '-f', `release_tag=${tag}`, '-f', 'publish=true',
+      '--repo', 'buwebdev/veriwhy-check'
+    ]);
+  }
+  const runs = [];
+  for (const workflow of remoteReleaseWorkflows) {
+    runs.push([workflow, await waitForNewWorkflowRun(workflow, earlierRuns.get(workflow))]);
+  }
+  for (const [workflow, identifier] of runs) {
+    console.log(`Waiting for ${workflow} (GitHub run ${identifier})...`);
+    await visible('gh', ['run', 'watch', identifier, '--exit-status', '--repo', 'buwebdev/veriwhy-check']);
+  }
+}
+
+/** Refuse to describe a release as complete when a platform asset is absent. */
+async function verifyCompleteRelease(tag) {
+  const output = await capture('gh', [
+    'release', 'view', tag, '--json', 'assets', '--jq', '.assets[].name',
+    '--repo', 'buwebdev/veriwhy-check'
+  ]);
+  const missing = missingReleaseAssets(output.split('\n').filter(Boolean));
+  if (missing.length) {
+    throw new Error(`The release is incomplete. Missing assets:\n- ${missing.join('\n- ')}`);
   }
 }
 
@@ -92,7 +158,9 @@ async function main() {
     const digest = `${archive}.sha256`;
     if (existingRelease) {
       await visible('gh', ['release', 'upload', tag, archive, digest, '--clobber', '--repo', 'buwebdev/veriwhy-check']);
-      console.log(`Uploaded this computer's package to the existing ${tag} release.`);
+      await publishRemotePackages(tag);
+      await verifyCompleteRelease(tag);
+      console.log(`Verified all supported packages in the existing ${tag} release.`);
       return;
     }
 
@@ -109,7 +177,9 @@ async function main() {
     await visible('git', ['push', 'origin', 'main']);
     await visible('git', ['push', 'origin', tag]);
     await visible('gh', ['release', 'create', tag, archive, digest, '--verify-tag', '--notes-file', releaseNotesPath, '--title', `VeriWhy Check ${tag}`, '--repo', 'buwebdev/veriwhy-check']);
-    console.log(`Published VeriWhy Check ${tag}.`);
+    await publishRemotePackages(tag);
+    await verifyCompleteRelease(tag);
+    console.log(`Published and verified VeriWhy Check ${tag} for every supported platform.`);
   } catch (error) {
     if (!committed) {
       await writeFile(manifestPath, originalManifest);

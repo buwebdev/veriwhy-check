@@ -13,9 +13,11 @@ when a requirement fails.
 
 ## Separate Testing Browser
 
-Browser checks use Playwright's managed Chrome for Testing. It is separate
-from your installed Chrome, Edge, Firefox, or Safari and does not use their
-profiles, cookies, extensions, history, bookmarks, or saved passwords.
+Browser checks use Playwright's managed headless Chromium shell. It is not a
+normal application, does not add a Chrome for Testing entry to macOS
+Notifications, and is separate from your installed Chrome, Edge, Firefox, or
+Safari. It does not use their profiles, cookies, extensions, history,
+bookmarks, or saved passwords.
 
 External page requests are blocked during a browser assessment. The assignment
 page is served only through a temporary address on your own computer.

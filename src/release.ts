@@ -10,6 +10,28 @@ import { normalizeVersion } from './update.js';
 
 export type ReleaseMode = 'current' | 'patch' | 'minor' | 'major';
 
+/** Manually dispatched builders needed in addition to the maintainer's Mac. */
+export const remoteReleaseWorkflows = [
+  'manual-macos-intel-release.yml',
+  'manual-windows-release.yml'
+] as const;
+
+/** Every platform archive and digest required before a release is complete. */
+export function requiredReleaseAssets(): string[] {
+  const archives = [
+    'veriwhy-check-macos-arm64.tar.gz',
+    'veriwhy-check-macos-x64.tar.gz',
+    'veriwhy-check-windows-x64.tar.gz'
+  ];
+  return archives.flatMap((archive) => [archive, `${archive}.sha256`]);
+}
+
+/** Identify incomplete multi-platform releases using GitHub's asset names. */
+export function missingReleaseAssets(published: string[]): string[] {
+  const available = new Set(published);
+  return requiredReleaseAssets().filter((asset) => !available.has(asset));
+}
+
 /** Accept exactly one deliberate semantic-version release choice. */
 export function parseReleaseMode(arguments_: string[]): ReleaseMode {
   if (arguments_.length !== 1 || !['current', 'patch', 'minor', 'major'].includes(arguments_[0] ?? '')) {

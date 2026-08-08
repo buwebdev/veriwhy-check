@@ -17,7 +17,7 @@
     "lint:yaml": "npm run build --silent && node dist/src/cli.js profiles validate",
     "lint:md": "markdownlint-cli2 \"**/*.md\" \"#**/node_modules/**\" \"#tmp/**\"",
     "docs:build": "npm run build --silent && node dist/src/docs-builder.js",
-    "setup:browser": "playwright install chromium",
+    "setup:browser": "playwright install --only-shell chromium",
     "release:package": "npm run docs:build --silent && node scripts/package-release.mjs",
     "deploy": "npm run build --silent && node scripts/deploy-release.mjs",
     "start": "node dist/src/cli.js",

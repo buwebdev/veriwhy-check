@@ -70,10 +70,10 @@ might otherwise check the wrong work.
 The [Project Folder Guide](project-folders.html) shows how extra copies and
 folders inside folders can cause this message.
 
-## “Managed Browser Is Missing”
+## “Managed Headless Browser Is Missing”
 
-Run the official installer again. The browser is part of the VeriWhy Check
-toolbox and does not require regular Chrome.
+Run the official installer again. The headless browser is part of the VeriWhy
+Check toolbox and does not require or change regular Chrome.
 
 ## Dependency Installation Failed
 
@@ -91,6 +91,14 @@ veriwhy-check guide --path
 
 ## Asking for Help
 
-Share the complete error message and output from `veriwhy-check doctor`. Do not
-post passwords, tokens, private repository links, or your complete assignment
-in a public issue.
+If the problem remains after running `veriwhy-check doctor`, use the
+[GitHub bug-report form](https://github.com/buwebdev/veriwhy-check/issues/new?template=bug_report.yml).
+Provide the application version, operating system, course and assignment,
+exact command, expected result, actual result, and safe readiness-check output.
+The maintainer will review the report and decide whether it is a product
+defect, setup issue, assignment question, unsupported system, or feature
+request. A report does not guarantee an application change.
+
+Do not post passwords, tokens, student information, private repository links,
+screenshots with private information, or your complete assignment in a public
+issue.

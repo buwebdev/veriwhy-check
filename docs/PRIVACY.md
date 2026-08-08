@@ -32,10 +32,12 @@ student can remove.
 
 ## Managed browser
 
-Static web checks use an application-managed Chromium browser supplied by
-Playwright. It is separate from installed Chrome, Edge, Firefox, and Safari
-profiles. External page requests are blocked during assessment. Assignment
-pages are served only through a temporary loopback address on `127.0.0.1`.
+Static web checks use an application-managed headless Chromium shell supplied
+by Playwright. It is not a normal macOS application and is separate from
+installed Chrome, Edge, Firefox, and Safari profiles. It does not register a
+Chrome for Testing entry in macOS Notifications. External page requests are
+blocked during assessment. Assignment pages are served only through a
+temporary loopback address on `127.0.0.1`.
 
 ## Network activity
 

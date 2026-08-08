@@ -1,0 +1,105 @@
+# Manually build and validate the VeriWhy Check macOS Intel release.
+# Author: Richard Krasso
+name: Manual macOS Intel release
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Branch or tag to build
+        required: true
+        default: main
+        type: string
+      release_tag:
+        description: Existing GitHub release tag used only when publishing
+        required: true
+        default: v1.0.5
+        type: string
+      publish:
+        description: Upload the verified Intel package to the release
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  macos-intel:
+    name: Build and validate macOS Intel
+    runs-on: macos-15-intel
+    timeout-minutes: 30
+    steps:
+      - name: Check out the selected source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref }}
+
+      - name: Use the project's Node.js version
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install locked development dependencies
+        run: npm ci
+
+      - name: Install only the notification-safe headless browser
+        run: npm run setup:browser
+
+      - name: Run tests and coverage requirements
+        run: npm run check
+
+      - name: Validate public YAML profiles
+        run: npm run lint:yaml
+
+      - name: Lint Markdown documentation
+        run: npm run lint:md
+
+      - name: Build the macOS Intel release package
+        run: npm run release:package
+
+      - name: Verify, install, inspect, and uninstall the package
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$PWD/tmp/releases/veriwhy-check-macos-x64.tar.gz"
+          checksum="$archive.sha256"
+          test -f "$archive"
+          test -f "$checksum"
+          (cd "$(dirname "$archive")" && shasum -a 256 -c "$(basename "$checksum")")
+
+          validation="$RUNNER_TEMP/veriwhy-check-release-validation"
+          extracted="$validation/extracted"
+          data="$validation/data"
+          commands="$validation/bin"
+          mkdir -p "$extracted" "$data" "$commands"
+          tar -xzf "$archive" -C "$extracted"
+          if find "$extracted/payload" -type d -name '*.app' -print -quit | grep -q .; then
+            echo "A macOS application bundle was found in the headless-only release." >&2
+            exit 1
+          fi
+          find "$extracted/payload/browsers" -type f -name chrome-headless-shell -print -quit | grep -q .
+
+          "$extracted/payload/runtime/node" "$extracted/install.mjs" \
+            --data-root "$data" --bin-root "$commands"
+          launcher="$commands/veriwhy-check"
+          "$launcher" version
+          "$launcher" doctor
+          "$launcher" uninstall --dry-run
+          "$launcher" uninstall
+          test ! -e "$launcher"
+          test ! -e "$data/versions"
+          test ! -e "$data/install.json"
+
+      - name: Upload the verified package to the selected release
+        if: ${{ inputs.publish }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "${{ inputs.release_tag }}" --repo "${{ github.repository }}"
+          gh release upload "${{ inputs.release_tag }}" \
+            "tmp/releases/veriwhy-check-macos-x64.tar.gz" \
+            "tmp/releases/veriwhy-check-macos-x64.tar.gz.sha256" \
+            --clobber \
+            --repo "${{ github.repository }}"

@@ -5,7 +5,14 @@
 
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { nextReleaseVersion, nonMarkdownChanges, parseReleaseMode } from '../src/release.js';
+import {
+  missingReleaseAssets,
+  nextReleaseVersion,
+  nonMarkdownChanges,
+  parseReleaseMode,
+  remoteReleaseWorkflows,
+  requiredReleaseAssets
+} from '../src/release.js';
 
 test('manual releases require one clear release type', () => {
   assert.equal(parseReleaseMode(['current']), 'current');
@@ -26,4 +33,18 @@ test('release versions follow stable semantic-version boundaries', () => {
 test('automatic release commits accept Markdown but identify other changes', () => {
   assert.deepEqual(nonMarkdownChanges(['README.md', 'docs/guide/01-welcome.MD']), []);
   assert.deepEqual(nonMarkdownChanges(['README.md', 'src/cli.ts', 'package.json', 'src/cli.ts']), ['package.json', 'src/cli.ts']);
+});
+
+test('complete releases require every supported platform archive and digest', () => {
+  const required = requiredReleaseAssets();
+  assert.equal(required.length, 6);
+  assert.deepEqual(missingReleaseAssets(required), []);
+  assert.deepEqual(missingReleaseAssets(required.slice(0, -2)), [
+    'veriwhy-check-windows-x64.tar.gz',
+    'veriwhy-check-windows-x64.tar.gz.sha256'
+  ]);
+  assert.deepEqual(remoteReleaseWorkflows, [
+    'manual-macos-intel-release.yml',
+    'manual-windows-release.yml'
+  ]);
 });

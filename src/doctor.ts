@@ -4,7 +4,7 @@
  */
 
 import { access } from 'node:fs/promises';
-import { chromium } from 'playwright';
+import { headlessShellExecutablePath } from './browser-runtime.js';
 import { browserCacheRoot, cacheRoot, dataRoot, packageRoot, profilesRoot, publicChecksRoot, reportsRoot } from './paths.js';
 import { listProfileIds } from './profile.js';
 
@@ -17,7 +17,7 @@ export async function runDoctor(): Promise<Diagnostic[]> {
   const profiles = await listProfileIds();
   diagnostics.push({ label: 'Assignment profiles', ok: profiles.length > 0, detail: profiles.length ? `${profiles.length} assignment profiles are available.` : 'No assignment profiles were found. Reinstall VeriWhy Check.' });
   try {
-    await access(chromium.executablePath());
+    await access(headlessShellExecutablePath());
     diagnostics.push({ label: 'Managed browser', ok: true, detail: 'The private checking browser is ready.' });
   } catch {
     diagnostics.push({ label: 'Managed browser', ok: false, detail: 'The checking browser is missing. Reinstall VeriWhy Check or run the browser setup command from the installation guide.' });

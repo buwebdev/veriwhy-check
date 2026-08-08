@@ -18,15 +18,43 @@ body:
   - type: input
     id: environment
     attributes:
-      label: Operating system and assignment
-      placeholder: Windows 11, WEB-425/lab-1.1
+      label: Operating system
+      placeholder: macOS 26 on Apple Silicon, macOS 26 on Intel, or Windows 11 x64
+    validations:
+      required: true
+  - type: input
+    id: assignment
+    attributes:
+      label: Course and assignment
+      placeholder: WEB-425/lab-1.1
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Steps and sanitized output
-      description: Explain what you entered, expected, and observed.
+      label: Steps to repeat the problem
+      description: List the exact command and the steps that led to the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      description: Describe what you thought VeriWhy Check would do.
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What happened instead?
+      description: Paste the complete error and safe output. Do not paste assignment code.
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Readiness-check output
+      description: Paste the output from veriwhy-check doctor after removing private information.
     validations:
       required: true
   - type: checkboxes
@@ -35,4 +63,6 @@ body:
       label: Privacy check
       options:
         - label: I removed student work, credentials, tokens, and private links.
+          required: true
+        - label: I understand that submitting this report does not guarantee that the behavior is a product defect or that a change will be made.
           required: true

@@ -9,8 +9,8 @@ and creates local reports. It does not assign the official course grade.
 
 ## Version 1 status
 
-Version 1 is publicly released for macOS on Apple Silicon and Windows x64.
-Linux, Windows ARM64, and Intel Mac packages are not currently supported.
+Version 1 supports macOS on Apple Silicon, Intel-based Mac computers, and
+Windows x64. Linux and Windows ARM64 packages are not currently supported.
 Initial course support is:
 
 - WEB 231 Enterprise JavaScript I
@@ -30,7 +30,7 @@ copy of the selected project and the copy is removed after the run. See the
 Students do not need to install Node.js, NVM, Docker, Python, Chrome, or an LLM.
 VeriWhy Check installs its own private runtime and managed checking browser.
 
-### macOS on Apple Silicon
+### macOS on Apple Silicon or Intel
 
 Open Terminal, paste this complete command, and press Return or Enter:
 
@@ -46,7 +46,8 @@ Open PowerShell, paste this complete command, and press Enter:
 irm https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.ps1 | iex
 ```
 
-Linux, Windows ARM64, and Intel Mac are not currently supported.
+The macOS command automatically selects the Apple Silicon or Intel package.
+Linux and Windows ARM64 are not currently supported.
 
 ### Confirm the installation
 
@@ -61,6 +62,11 @@ instructions, read the [complete student guide](docs/STUDENT-GUIDE.md).
 
 See [Known Issues](docs/KNOWN-ISSUES.md) for the documented Windows uninstall
 edge case and workaround.
+
+If an application problem remains after troubleshooting, use the structured
+[GitHub bug-report form](https://github.com/buwebdev/veriwhy-check/issues/new?template=bug_report.yml).
+Reports are evaluated before they are classified as defects. Do not include
+assignment code or private information in a public issue.
 
 See [Release Notes](RELEASE-NOTES.md) for Version 1 capabilities, validation,
 supported systems, and installation commands.
@@ -140,6 +146,7 @@ packaging rebuilds and bundles the guide automatically.
 - [Student installation and use guide](docs/STUDENT-GUIDE.md)
 - [Version 1 release checklist](docs/RELEASE-CHECKLIST.md)
 - [Maintainer release guide](docs/MAINTAINER-RELEASE-GUIDE.md)
+- [Support and platform lifecycle](docs/SUPPORT-POLICY.md)
 
 ## Author
 

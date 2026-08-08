@@ -32,7 +32,7 @@ Choose the command for your computer. Think of the command as a delivery
 address for a trusted delivery truck. It tells GitHub which official toolbox
 to bring and tells your computer where to put it.
 
-### macOS on Apple Silicon
+### macOS on Apple Silicon or Intel
 
 Open Terminal, copy the complete line below, paste it, and press Return:
 
@@ -48,7 +48,8 @@ Open PowerShell, copy the complete line below, paste it, and press Enter:
 irm https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.ps1 | iex
 ```
 
-Linux, Windows ARM64, and Intel Mac are not currently supported.
+The macOS command automatically selects the correct package. Linux and Windows
+ARM64 are not currently supported.
 
 The command chooses the correct package, downloads it from the official GitHub
 release, checks its digital fingerprint, and installs the complete toolbox.
@@ -64,7 +65,9 @@ The `doctor` command is like a mechanic checking a car before a trip. It does
 not change your assignment. It only confirms that the needed tools are ready.
 
 You do not need to install Node.js, NVM, Docker, Python, or Chrome just to use
-VeriWhy Check. Its installer brings its own private toolbox.
+VeriWhy Check. Its installer brings its own private toolbox. On a Mac, its
+headless testing browser does not appear as an application or add a Chrome for
+Testing item to Notifications.
 
 ## Checking an Assignment
 
@@ -141,9 +144,18 @@ veriwhy-check doctor
 veriwhy-check help
 ```
 
-If the problem continues, send your instructor the error message. Do not post
-passwords, access codes, private repository links, or your complete assignment
-in a public issue.
+If the problem continues, open the repository's
+[bug-report form](https://github.com/buwebdev/veriwhy-check/issues/new?template=bug_report.yml).
+Include the application version, your operating system, course and assignment,
+exact command, what you expected, what happened, and the safe output from
+`veriwhy-check doctor`. The maintainer will review the report and decide
+whether it is an application defect, a setup issue, an assignment question, an
+unsupported system, or a feature request. Opening an issue does not guarantee
+that the application will change.
+
+Do not post passwords, access codes, student information, private repository
+links, screenshots with private information, or your complete assignment in a
+public issue.
 
 ## Removing VeriWhy Check
 

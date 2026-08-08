@@ -8,7 +8,7 @@
 
 import { spawn } from 'node:child_process';
 import { win32 } from 'node:path';
-import { chromium } from 'playwright';
+import { headlessShellExecutablePath } from './browser-runtime.js';
 import type { ExecutionResult } from './types.js';
 
 export interface ProcessInvocation { executable: string; args: string[] }
@@ -57,7 +57,7 @@ export async function runCommand(
       cwd,
       // Angular's Karma launcher uses the same isolated Playwright Chromium
       // binary as browser checks. No system Chrome installation is required.
-      env: { ...process.env, CHROME_BIN: process.env.CHROME_BIN ?? chromium.executablePath(), CI: 'true' },
+      env: { ...process.env, CHROME_BIN: process.env.CHROME_BIN ?? headlessShellExecutablePath(), CI: 'true' },
       stdio: ['ignore', 'pipe', 'pipe']
     });
     let output = '';

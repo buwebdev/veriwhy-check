@@ -19,7 +19,8 @@ student release. Publication is not complete until every item is checked.
 
 - [x] Bundle a private Node.js runtime.
 - [x] Bundle private npm and use it without a system Node.js installation.
-- [x] Bundle the isolated Playwright browser.
+- [x] Bundle only the isolated Playwright headless browser and media helper.
+- [x] Reject macOS `.app` bundles during packaging and release validation.
 - [x] Publish and verify SHA-256 digests.
 - [x] Install releases into versioned folders before activation.
 - [x] Test custom-path installation in an ignored sandbox.
@@ -33,9 +34,11 @@ student release. Publication is not complete until every item is checked.
 - [x] Confirm the legal copyright holder and add the approved license notice.
 - [x] Review privacy, security, support, and student guides.
 - [x] Create the approved GitHub Version 1 release.
-- [x] Upload both supported platform archives and matching digests.
+- [ ] Validate Intel macOS installation, checking, and uninstallation.
+- [ ] Upload all three supported platform archives and matching digests.
 - [x] Test the public installer link without GitHub authentication.
 - [x] Test a public update from Version 1.0.0 to Version 1.0.1.
 
-Linux, Windows ARM64, and Intel Mac are outside the Version 1 supported-platform
-scope. The Windows delayed-uninstall limitation is documented separately.
+Linux and Windows ARM64 are outside the Version 1 supported-platform scope.
+The Windows delayed-uninstall limitation and resolved macOS notification issue
+are documented separately.

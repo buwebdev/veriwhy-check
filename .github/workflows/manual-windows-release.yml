@@ -44,7 +44,7 @@ jobs:
       - name: Install locked development dependencies
         run: npm ci
 
-      - name: Install the managed checking browser
+      - name: Install only the notification-safe headless browser
         run: npm run setup:browser
 
       - name: Run tests and coverage requirements
@@ -81,6 +81,14 @@ jobs:
           $commands = Join-Path $validation "bin"
           New-Item -ItemType Directory -Force $extracted, $data, $commands | Out-Null
           tar -xzf $archive -C $extracted
+
+          $entries = tar -tzf $archive
+          if (-not ($entries -match "chromium_headless_shell-")) {
+            throw "The Windows package does not contain the managed headless shell."
+          }
+          if ($entries -match "browsers/chromium-[0-9]+/") {
+            throw "The Windows package unexpectedly contains the full testing browser."
+          }
 
           $bundledNode = Join-Path $extracted "payload/runtime/node.exe"
           $installer = Join-Path $extracted "install.mjs"

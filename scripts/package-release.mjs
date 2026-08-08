@@ -14,6 +14,7 @@ import { execFile } from 'node:child_process';
 import { basename, dirname, join, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import { browserCacheRoot, packageRoot } from '../dist/src/paths.js';
+import { copyHeadlessBrowserRuntime } from '../dist/src/browser-runtime.js';
 import { releaseAssetName } from '../dist/src/update.js';
 
 const run = promisify(execFile);
@@ -69,7 +70,10 @@ if (process.platform === 'win32') {
   await writeFile(npmLauncher, '#!/bin/sh\nruntime_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"\nexec "$runtime_dir/node" "$runtime_dir/node_modules/npm/bin/npm-cli.js" "$@"\n');
   await chmod(npmLauncher, 0o755);
 }
-await cp(browserCacheRoot(), join(payload, 'browsers'), { recursive: true });
+// A full Google Chrome for Testing.app registers in macOS Notifications and
+// would be duplicated by versioned installs. The headless shell provides the
+// same rendering and automation capabilities without shipping an app bundle.
+await copyHeadlessBrowserRuntime(browserCacheRoot(), join(payload, 'browsers'));
 await cp(join(packageRoot, 'scripts', 'install.mjs'), join(stage, 'install.mjs'));
 await mkdir(releaseRoot, { recursive: true });
 await rm(archive, { force: true });

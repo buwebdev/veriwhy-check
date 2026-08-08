@@ -20,9 +20,13 @@ The release command performs these steps in order:
 7. Validates every public YAML profile.
 8. Lints every Markdown document.
 9. Converts the Markdown student guide into the bundled offline website.
-10. Builds the release package and SHA-256 checksum for this computer.
+10. Builds the Apple Silicon package and SHA-256 checksum on this computer.
 11. Commits the release, creates its Git tag, and pushes both to GitHub.
-12. Creates the GitHub release and uploads the package and checksum.
+12. Creates the GitHub release and uploads the Apple Silicon files.
+13. Starts the manual-only Intel macOS and Windows x64 release builders.
+14. Waits for both builders to test, package, install, inspect, uninstall, and
+    upload their platform files.
+15. Confirms that all three archives and all three checksums are present.
 
 If a required check fails, publication stops. A failed check is never ignored.
 
@@ -54,13 +58,17 @@ The command reads `.nvmrc` and selects Node.js 24.18.0.
 npm ci
 ```
 
-### 4. Install the Managed Test Browser
+### 4. Install the Managed Headless Test Browser
 
 ```bash
 npm run setup:browser
 ```
 
-This browser is isolated from a normal personal browser.
+This rendering engine is isolated from a normal personal browser. It supports
+DOM behavior, CSS, responsive viewports, media queries, computed styles,
+screenshots, and Angular tests without installing a macOS `.app` bundle. See
+[the resolved notification issue](KNOWN-ISSUES.md#resolved-duplicate-chrome-for-testing-notification-entries-on-macos)
+before making any future browser-packaging change.
 
 ### 5. Install and Sign In to GitHub CLI
 
@@ -140,52 +148,52 @@ Before creating a new version, update `RELEASE-NOTES.md` so its version heading
 matches the version being created. The deployment script stops if they differ
 and publishes that maintained file as the GitHub release description.
 
-## Build Packages for Other Operating Systems
+## Packages for Other Operating Systems
 
 A release package contains a platform-specific Node.js runtime and managed
-browser. Therefore, a macOS computer builds a macOS package; it cannot produce
-the real Windows or Linux package.
+headless browser. Therefore, this computer cannot build authentic Intel macOS
+or Windows x64 packages. The one release command starts the repository's two
+manual-only GitHub builders and waits for their results.
 
-After the first computer creates the release, repeat these steps on each other
-supported operating system:
+Normal publication needs only one command:
 
 ```bash
-git fetch --tags
-git checkout v1.0.0
-npm ci
-npm run setup:browser
-npm run deploy -- current
+npm run deploy -- patch
 ```
 
-Replace `v1.0.0` with the release being completed. When that GitHub release
-already exists, `current` uploads or replaces only the package and checksum for
-the current computer. It does not create a second release.
+If publication stops after the GitHub release exists, correct the cause and
+retry the same version with `npm run deploy -- current`. That command replaces
+the current computer's files, starts both remote builders again, and verifies
+the complete six-file release. It does not create another version.
 
-Version 1 supports Apple Silicon macOS and Windows x64. Other platform packages
-must be built and tested before support for them is announced.
+Version 1 supports Apple Silicon macOS, Intel macOS, and Windows x64. Other
+platform packages must be built and tested before support is announced.
 
-### Manual Windows x64 Runner
+### Manual Remote Builders
 
-The repository includes a manual-only GitHub Windows runner. It has no push,
-pull-request, or schedule trigger and never runs unless the maintainer starts
-it deliberately.
+The repository includes manual-only GitHub workflows for Intel macOS and
+Windows x64. They have no push, pull-request, or schedule trigger. The local
+release command deliberately starts them through GitHub CLI.
 
 To validate the current `main` branch without publishing:
 
 ```bash
-gh workflow run manual-windows-release.yml \
+gh workflow run manual-macos-intel-release.yml \
   -f source_ref=main \
-  -f release_tag=v1.0.2 \
+  -f release_tag=v1.0.5 \
   -f publish=false
 ```
 
-After the validation succeeds, build a tagged version and upload its verified
-Windows archive by changing `source_ref` and `release_tag` to that same tag and
-setting `publish=true`. The runner performs tests, packaging, checksum
-verification, installation, private npm verification, readiness, uninstall,
-and release upload on a clean Windows x64 virtual machine. The documented
-Version 1 delayed-runtime cleanup issue produces a warning rather than blocking
-an otherwise validated Windows release.
+Replace the workflow filename with `manual-windows-release.yml` to validate
+Windows. These commands are diagnostic alternatives; the deployment command
+starts both automatically. When publishing manually, change `source_ref` and
+`release_tag` to the same existing tag and set `publish=true`.
+
+GitHub has announced availability of the `macos-15-intel` runner through
+August 2027. Publish a final tested Intel package before that cutoff, then stop
+creating new Intel releases while leaving the frozen package downloadable.
+Follow [the support policy](SUPPORT-POLICY.md) and update it with the final
+Intel version.
 
 ## Check the Published Release
 
@@ -193,7 +201,8 @@ After deployment:
 
 1. Open <https://github.com/buwebdev/veriwhy-check/releases>.
 2. Confirm the version title and tag.
-3. Confirm the platform archive and matching `.sha256` file are present.
+3. Confirm all six files are present: three platform archives and their three
+   matching `.sha256` files.
 4. Download the archive from a normal user account.
 5. Test installation, `veriwhy-check doctor`, an assignment check, update, and
    uninstallation as required by the release checklist.
