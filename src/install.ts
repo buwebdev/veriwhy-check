@@ -38,7 +38,7 @@ export function launcherSource(versionRoot: string, platform: NodeJS.Platform): 
   const cli = join(versionRoot, 'app', 'dist', 'src', 'cli.js');
   const browsers = join(versionRoot, 'browsers');
   const dataRoot = resolve(versionRoot, '..', '..');
-  if (platform === 'win32') return `@echo off\r\nset "VERIWHY_CHECK_DATA_ROOT=${dataRoot}"\r\nset "PLAYWRIGHT_BROWSERS_PATH=${browsers}"\r\nset "PATH=${runtime};%PATH%"\r\n"${node}" "${cli}" %*\r\nset "_veriwhy_exit=%ERRORLEVEL%"\r\nset "_veriwhy_dry_run="\r\nfor %%A in (%*) do if /I "%%~A"=="--dry-run" set "_veriwhy_dry_run=1"\r\nif "%_veriwhy_exit%"=="0" if /I "%~1"=="uninstall" if not defined _veriwhy_dry_run del "%~f0" >nul 2>&1\r\nexit /b %_veriwhy_exit%\r\n`;
+  if (platform === 'win32') return `@echo off\r\nset "VERIWHY_CHECK_DATA_ROOT=${dataRoot}"\r\nset "PLAYWRIGHT_BROWSERS_PATH=${browsers}"\r\nset "PATH=${runtime};%PATH%"\r\n"${node}" "${cli}" %*\r\nset "_veriwhy_exit=%ERRORLEVEL%"\r\nset "_veriwhy_dry_run="\r\nfor %%A in (%*) do if /I "%%~A"=="--dry-run" set "_veriwhy_dry_run=1"\r\nif "%_veriwhy_exit%"=="0" if /I "%~1"=="uninstall" if not defined _veriwhy_dry_run (del "%~f0" >nul 2>&1 & exit /b 0)\r\nexit /b %_veriwhy_exit%\r\n`;
   const quote = (value: string): string => `'${value.replaceAll("'", "'\\''")}'`;
   return `#!/bin/sh\nPATH=${quote(runtime)}:"$PATH" VERIWHY_CHECK_DATA_ROOT=${quote(dataRoot)} PLAYWRIGHT_BROWSERS_PATH=${quote(browsers)} exec ${quote(node)} ${quote(cli)} "$@"\n`;
 }
