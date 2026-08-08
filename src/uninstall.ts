@@ -43,18 +43,29 @@ export async function uninstallPlan(options: UninstallOptions): Promise<{ target
   return { targets, preserved };
 }
 
+/** Build a Windows helper that waits for this process and retries locked files. */
+export function windowsRemovalScript(targets: string[], processId = process.pid): string {
+  const literals = targets.map((target) => `'${target.replaceAll("'", "''")}'`).join(',');
+  return `# VeriWhy Check deferred uninstaller. Author: Richard Krasso.\n` +
+    `Wait-Process -Id ${processId} -ErrorAction SilentlyContinue\n` +
+    `$targets = @(${literals})\n` +
+    // A .cmd launcher can remain locked briefly after its Node child exits.
+    // Retry each application-owned target rather than leaving a partial install.
+    `foreach ($target in $targets) {\n` +
+    `  for ($attempt = 0; $attempt -lt 80 -and (Test-Path -LiteralPath $target); $attempt++) {\n` +
+    `    Remove-Item -LiteralPath $target -Recurse -Force -ErrorAction SilentlyContinue\n` +
+    `    if (Test-Path -LiteralPath $target) { Start-Sleep -Milliseconds 250 }\n` +
+    `  }\n` +
+    `}\n` +
+    `Remove-Item -LiteralPath $PSScriptRoot -Recurse -Force -ErrorAction SilentlyContinue\n`;
+}
+
 /** Write a temporary Windows cleanup helper that waits for this process. */
 async function scheduleWindowsRemoval(targets: string[]): Promise<void> {
   const helperRoot = join(tmpdir(), `veriwhy-check-uninstall-${process.pid}`);
   const helper = join(helperRoot, 'uninstall.ps1');
   await mkdir(helperRoot, { recursive: true });
-  const literals = targets.map((target) => `'${target.replaceAll("'", "''")}'`).join(',');
-  const source = `# VeriWhy Check deferred uninstaller. Author: Richard Krasso.\n` +
-    `Wait-Process -Id ${process.pid} -ErrorAction SilentlyContinue\n` +
-    `$targets = @(${literals})\n` +
-    `foreach ($target in $targets) { Remove-Item -LiteralPath $target -Recurse -Force -ErrorAction SilentlyContinue }\n` +
-    `Remove-Item -LiteralPath $PSScriptRoot -Recurse -Force -ErrorAction SilentlyContinue\n`;
-  await writeFile(helper, source, 'utf8');
+  await writeFile(helper, windowsRemovalScript(targets), 'utf8');
   const child = spawn('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', helper], { detached: true, stdio: 'ignore', windowsHide: true });
   child.unref();
 }

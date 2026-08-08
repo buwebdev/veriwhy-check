@@ -8,7 +8,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import test from 'node:test';
 import { pathExists } from '../src/files.js';
-import { uninstallApplication, uninstallPlan } from '../src/uninstall.js';
+import { uninstallApplication, uninstallPlan, windowsRemovalScript } from '../src/uninstall.js';
 import { withFixture } from './helpers.js';
 
 async function installation(root: string): Promise<{ data: string; launcher: string }> {
@@ -60,4 +60,12 @@ test('explicit report removal and invalid records follow safe boundaries', async
 test('uninstaller refuses a filesystem root or home directory as its data folder', async () => {
   await assert.rejects(uninstallPlan({ dataDirectory: '/' }), /too broad/);
   if (process.env.HOME) await assert.rejects(uninstallPlan({ dataDirectory: process.env.HOME }), /too broad/);
+});
+
+test('Windows deferred cleanup waits and retries files that remain briefly locked', () => {
+  const source = windowsRemovalScript([`C:\\Program Files\\VeriWhy Check\\veriwhy-check.cmd`, `C:\\Users\\Student's Data`], 2468);
+  assert.match(source, /Wait-Process -Id 2468/);
+  assert.match(source, /attempt -lt 80/);
+  assert.match(source, /Start-Sleep -Milliseconds 250/);
+  assert.match(source, /Student''s Data/);
 });
