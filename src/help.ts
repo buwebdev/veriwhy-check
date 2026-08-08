@@ -1,21 +1,44 @@
 /**
  * @file Beginner-friendly command help, examples, and typo suggestions.
  * @author Richard Krasso
+ *
+ * Help text is part of the product interface, not an afterthought. Command
+ * names, examples, privacy language, and typo correction live together so a
+ * first-time terminal user receives consistent guidance from every entry path.
  */
 
 /** All supported top-level commands, kept in one place for help and validation. */
-export const commands = ['check', 'list', 'doctor', 'paths', 'guide', 'update', 'uninstall', 'profiles', 'help', 'version'] as const;
-export type CommandName = typeof commands[number];
+export const commands = [
+  'check',
+  'list',
+  'doctor',
+  'paths',
+  'guide',
+  'update',
+  'uninstall',
+  'profiles',
+  'help',
+  'version'
+] as const;
+export type CommandName = (typeof commands)[number];
 
 /** Small edit-distance implementation used only to suggest likely command typos. */
 export function editDistance(left: string, right: string): number {
+  // This is the space-efficient Levenshtein algorithm. One row is sufficient
+  // because each cell depends only on its left, upper, and diagonal neighbors.
   const row = Array.from({ length: right.length + 1 }, (_, index) => index);
   for (let i = 1; i <= left.length; i += 1) {
     let diagonal = row[0]!;
     row[0] = i;
     for (let j = 1; j <= right.length; j += 1) {
+      // Preserve the old diagonal value before overwriting this row position;
+      // it represents substitution cost for the two current characters.
       const above = row[j]!;
-      row[j] = Math.min(row[j]! + 1, row[j - 1]! + 1, diagonal + (left[i - 1] === right[j - 1] ? 0 : 1));
+      row[j] = Math.min(
+        row[j]! + 1,
+        row[j - 1]! + 1,
+        diagonal + (left[i - 1] === right[j - 1] ? 0 : 1)
+      );
       diagonal = above;
     }
   }
@@ -24,7 +47,12 @@ export function editDistance(left: string, right: string): number {
 
 /** Return a command suggestion only when it is close enough to be helpful. */
 export function suggestCommand(input: string): CommandName | undefined {
-  const ranked = commands.map((command) => ({ command, distance: editDistance(input.toLowerCase(), command) })).sort((a, b) => a.distance - b.distance);
+  const ranked = commands
+    .map((command) => ({ command, distance: editDistance(input.toLowerCase(), command) }))
+    .sort((a, b) => a.distance - b.distance);
+
+  // The threshold prevents an unrelated word from receiving a confident but
+  // misleading suggestion. General help is safer when no close command exists.
   return ranked[0]!.distance <= 3 ? ranked[0]!.command : undefined;
 }
 

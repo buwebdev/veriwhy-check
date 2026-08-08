@@ -1,6 +1,10 @@
 /**
  * @file Unit tests for manual release argument, version, and safety rules.
  * @author Richard Krasso
+ *
+ * Release helper tests keep semantic-version choices, clean-tree policy, remote
+ * builder names, and the six required assets deterministic before deployment
+ * code performs any Git or GitHub operation.
  */
 
 import assert from 'node:assert/strict';
@@ -32,7 +36,10 @@ test('release versions follow stable semantic-version boundaries', () => {
 
 test('automatic release commits accept Markdown but identify other changes', () => {
   assert.deepEqual(nonMarkdownChanges(['README.md', 'docs/guide/01-welcome.MD']), []);
-  assert.deepEqual(nonMarkdownChanges(['README.md', 'src/cli.ts', 'package.json', 'src/cli.ts']), ['package.json', 'src/cli.ts']);
+  assert.deepEqual(nonMarkdownChanges(['README.md', 'src/cli.ts', 'package.json', 'src/cli.ts']), [
+    'package.json',
+    'src/cli.ts'
+  ]);
 });
 
 test('complete releases require every supported platform archive and digest', () => {

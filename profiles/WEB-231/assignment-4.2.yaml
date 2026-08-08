@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-231/assignment-4.2
 course: WEB 231 Enterprise JavaScript I
-assignment: "Assignment 4.2: Loops (Project 3-1)"
+assignment: 'Assignment 4.2: Loops (Project 3-1)'
 version: 1.1.0
 project:
   kind: static-web

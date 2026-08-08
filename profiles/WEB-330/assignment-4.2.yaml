@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-330/assignment-4.2
 course: WEB 330 Enterprise JavaScript II
-assignment: "Assignment 4.2: Pointer-driven jigsaw puzzle"
+assignment: 'Assignment 4.2: Pointer-driven jigsaw puzzle'
 version: 1.0.0
 project:
   kind: static-web

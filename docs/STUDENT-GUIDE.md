@@ -6,10 +6,9 @@
 
 VeriWhy Check is a practice coach for your coding assignments.
 
-Think about building a LEGO model. Before you show it to your teacher, you may
-look at the picture on the box and check that the important pieces are in the
-right places. VeriWhy Check does something similar. It checks that the parts of
-your program work the way the assignment describes.
+Think about building a LEGO model. Before you show it to your teacher, you may look at the picture
+on the box and check that the important pieces are in the right places. VeriWhy Check does something
+similar. It checks that the parts of your program work the way the assignment describes.
 
 It does not give your official grade. Your instructor still decides that.
 
@@ -22,15 +21,14 @@ VeriWhy Check can:
 - tell you what passed and what needs attention; and
 - make a report that opens like a regular web page.
 
-It does not send your code to the internet. It does not use artificial
-intelligence. It does not look inside your normal web browser, email, photos,
-or other schoolwork.
+It does not send your code to the internet. It does not use artificial intelligence. It does not
+look inside your normal web browser, email, photos, or other schoolwork.
 
 ## Installing VeriWhy Check
 
-Choose the command for your computer. Think of the command as a delivery
-address for a trusted delivery truck. It tells GitHub which official toolbox
-to bring and tells your computer where to put it.
+Choose the command for your computer. Think of the command as a delivery address for a trusted
+delivery truck. It tells GitHub which official toolbox to bring and tells your computer where to put
+it.
 
 ### macOS on Apple Silicon or Intel
 
@@ -48,12 +46,12 @@ Open PowerShell, copy the complete line below, paste it, and press Enter:
 irm https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.ps1 | iex
 ```
 
-The macOS command automatically selects the correct package. Linux and Windows
-ARM64 are not currently supported.
+The macOS command automatically selects the correct package. Linux and Windows ARM64 are not
+currently supported.
 
-The command chooses the correct package, downloads it from the official GitHub
-release, checks its digital fingerprint, and installs the complete toolbox.
-You do not need to choose or open an installer file yourself.
+The command chooses the correct package, downloads it from the official GitHub release, checks its
+digital fingerprint, and installs the complete toolbox. You do not need to choose or open an
+installer file yourself.
 
 When it finishes, open a new terminal or PowerShell window. Enter:
 
@@ -61,18 +59,16 @@ When it finishes, open a new terminal or PowerShell window. Enter:
 veriwhy-check doctor
 ```
 
-The `doctor` command is like a mechanic checking a car before a trip. It does
-not change your assignment. It only confirms that the needed tools are ready.
+The `doctor` command is like a mechanic checking a car before a trip. It does not change your
+assignment. It only confirms that the needed tools are ready.
 
-You do not need to install Node.js, NVM, Docker, Python, or Chrome just to use
-VeriWhy Check. Its installer brings its own private toolbox. On a Mac, its
-headless testing browser does not appear as an application or add a Chrome for
-Testing item to Notifications.
+You do not need to install Node.js, NVM, Docker, Python, or Chrome just to use VeriWhy Check. Its
+installer brings its own private toolbox. On a Mac, its headless testing browser does not appear as
+an application or add a Chrome for Testing item to Notifications.
 
 ## Checking an Assignment
 
-First, move into your assignment folder in the terminal. Then enter a command
-like this:
+First, move into your assignment folder in the terminal. Then enter a command like this:
 
 ```text
 veriwhy-check check WEB-425/lab-1.1
@@ -88,22 +84,20 @@ VeriWhy Check will show the exact commands available for that course.
 
 ## Reading the Report
 
-After the check finishes, VeriWhy Check tells you where it saved `report.html`.
-Open that file in a web browser.
+After the check finishes, VeriWhy Check tells you where it saved `report.html`. Open that file in a
+web browser.
 
 - **Passed** means the requirement worked during the check.
-- **Needs attention** means you should read the message, make a correction,
-  and check again.
-- **Not checked** means that part did not run. Follow the message or ask your
-  instructor for help.
+- **Needs attention** means you should read the message, make a correction, and check again.
+- **Not checked** means that part did not run. Follow the message or ask your instructor for help.
 
-This is like checking answers on a practice worksheet. Fixing a problem and
-trying again is part of learning.
+This is like checking answers on a practice worksheet. Fixing a problem and trying again is part of
+learning.
 
 ## If You Type Something Incorrectly
 
-That is okay. VeriWhy Check explains what was wrong and shows a command under
-“Try this next.” You can copy that command and try again.
+That is okay. VeriWhy Check explains what was wrong and shows a command under “Try this next.” You
+can copy that command and try again.
 
 For the full help page, enter:
 
@@ -113,16 +107,14 @@ veriwhy-check help
 
 ## Updating the Application
 
-You do not need to uninstall and reinstall VeriWhy Check for normal updates.
-Enter:
+You do not need to uninstall and reinstall VeriWhy Check for normal updates. Enter:
 
 ```text
 veriwhy-check update
 ```
 
-The application checks the official release, performs a safety check on the
-download, and updates itself. Your assignment folders and old reports are not
-removed.
+The application checks the official release, performs a safety check on the download, and updates
+itself. Your assignment folders and old reports are not removed.
 
 ## Where Are the Files?
 
@@ -132,8 +124,8 @@ Enter this command:
 veriwhy-check paths
 ```
 
-It shows where the application keeps reports, its private checking browser,
-and support files. Think of it as a map of the application's toolbox.
+It shows where the application keeps reports, its private checking browser, and support files. Think
+of it as a map of the application's toolbox.
 
 ## Getting Help
 
@@ -146,16 +138,14 @@ veriwhy-check help
 
 If the problem continues, open the repository's
 [bug-report form](https://github.com/buwebdev/veriwhy-check/issues/new?template=bug_report.yml).
-Include the application version, your operating system, course and assignment,
-exact command, what you expected, what happened, and the safe output from
-`veriwhy-check doctor`. The maintainer will review the report and decide
-whether it is an application defect, a setup issue, an assignment question, an
-unsupported system, or a feature request. Opening an issue does not guarantee
-that the application will change.
+Include the application version, your operating system, course and assignment, exact command, what
+you expected, what happened, and the safe output from `veriwhy-check doctor`. The maintainer will
+review the report and decide whether it is an application defect, a setup issue, an assignment
+question, an unsupported system, or a feature request. Opening an issue does not guarantee that the
+application will change.
 
-Do not post passwords, access codes, student information, private repository
-links, screenshots with private information, or your complete assignment in a
-public issue.
+Do not post passwords, access codes, student information, private repository links, screenshots with
+private information, or your complete assignment in a public issue.
 
 ## Removing VeriWhy Check
 
@@ -171,22 +161,22 @@ Then remove the application with:
 veriwhy-check uninstall
 ```
 
-Your saved reports stay on the computer. VeriWhy Check never removes your
-assignment folders. If you also want to remove saved reports, use the separate
-`--remove-reports` option described in the uninstallation guide.
+Your saved reports stay on the computer. VeriWhy Check never removes your assignment folders. If you
+also want to remove saved reports, use the separate `--remove-reports` option described in the
+uninstallation guide.
 
 ### Windows Uninstall Workaround
 
-Windows may leave VeriWhy Check's private runtime after uninstallation. If the
-`VeriWhy Check` folder remains:
+Windows may leave VeriWhy Check's private runtime after uninstallation. If the `VeriWhy Check`
+folder remains:
 
 1. Close every Command Prompt, PowerShell, and terminal window.
 2. Open File Explorer.
 3. Enter `%LOCALAPPDATA%` in the address bar and press Enter.
 4. Open the `VeriWhy Check` folder.
-5. To keep saved reports, leave `reports` and remove `versions`, `cache`, `bin`,
-   and `install.json` if they remain.
+5. To keep saved reports, leave `reports` and remove `versions`, `cache`, `bin`, and `install.json`
+   if they remain.
 6. If saved reports are not needed, remove the entire `VeriWhy Check` folder.
 
-This affects only uninstallation. It does not affect assignment folders or
-normal checking. See [Known Issues](KNOWN-ISSUES.md) for the tracked issue.
+This affects only uninstallation. It does not affect assignment folders or normal checking. See
+[Known Issues](KNOWN-ISSUES.md) for the tracked issue.

@@ -1,6 +1,10 @@
 /**
  * @file Unit tests for bounded and unambiguous project discovery.
  * @author Richard Krasso
+ *
+ * This suite proves bounded, marker-based project discovery across realistic
+ * weekly folders. Missing and ambiguous cases are as important as success
+ * because the application must never guess which submission to inspect.
  */
 
 import assert from 'node:assert/strict';
@@ -17,8 +21,14 @@ const staticProfile: Pick<Profile, 'id' | 'project'> = {
 };
 
 test('project markers include canonical and textbook filenames', () => {
-  assert.deepEqual(projectMarkers(staticProfile.project), [['project08-01.html'], ['project08-01_txt.html']]);
-  assert.deepEqual(projectMarkers({ kind: 'npm', markers: ['package.json', 'angular.json'], install: 'npm-ci' }), [['package.json', 'angular.json']]);
+  assert.deepEqual(projectMarkers(staticProfile.project), [
+    ['project08-01.html'],
+    ['project08-01_txt.html']
+  ]);
+  assert.deepEqual(
+    projectMarkers({ kind: 'npm', markers: ['package.json', 'angular.json'], install: 'npm-ci' }),
+    [['package.json', 'angular.json']]
+  );
 });
 
 test('discovery finds nested weekly projects and textbook alternatives', async () => {

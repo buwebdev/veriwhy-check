@@ -1,18 +1,36 @@
 /**
  * @file Unit tests for learner-facing CLI success and correction paths.
  * @author Richard Krasso
+ *
+ * CLI tests model a beginning student's commands, mistakes, and corrections.
+ * Output is injected and captured so every exit code and learner-facing message
+ * can be verified without changing global console state.
  */
 
 import assert from 'node:assert/strict';
 import { join, resolve } from 'node:path';
 import test from 'node:test';
 import { pathToFileURL } from 'node:url';
-import { commandError, isCliEntrypoint, resolveProfileInput, runCli, type CliEnvironment } from '../src/cli.js';
+import {
+  commandError,
+  isCliEntrypoint,
+  resolveProfileInput,
+  runCli,
+  type CliEnvironment
+} from '../src/cli.js';
 
 function capture(): { environment: CliEnvironment; output: string[]; errors: string[] } {
   const output: string[] = [];
   const errors: string[] = [];
-  return { environment: { out: (value) => output.push(value), error: (value) => errors.push(value), cwd: () => process.cwd() }, output, errors };
+  return {
+    environment: {
+      out: (value) => output.push(value),
+      error: (value) => errors.push(value),
+      cwd: () => process.cwd()
+    },
+    output,
+    errors
+  };
 }
 
 test('help, version, paths, and profile list are understandable', async () => {
@@ -25,7 +43,13 @@ test('help, version, paths, and profile list are understandable', async () => {
 });
 
 test('mistyped commands, missing assignment, extra values, and invalid flags explain the correction', async () => {
-  for (const args of [['chekc'], ['check'], ['paths', 'extra'], ['list', 'WEB-425', 'extra'], ['check', 'WEB-425/lab-1.1', '--wrong']]) {
+  for (const args of [
+    ['chekc'],
+    ['check'],
+    ['paths', 'extra'],
+    ['list', 'WEB-425', 'extra'],
+    ['check', 'WEB-425/lab-1.1', '--wrong']
+  ]) {
     const state = capture();
     assert.equal(await runCli(args, state.environment), 1);
     assert.match(state.errors.join('\n'), /Try this next:/);

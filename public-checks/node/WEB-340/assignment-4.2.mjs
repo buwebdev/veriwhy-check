@@ -1,6 +1,10 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 340 Assignment 4.2 Node.js behavior checks.
  * @author Richard Krasso
+ *
+ * These cases verify the published input/output behavior and required boundary
+ * conditions. The tests avoid coupling assessment to the reference solution's
+ * identifiers, whitespace, or file-internal organization.
  */
 
 import { join } from 'node:path';
@@ -14,6 +18,8 @@ async function event(root, method, name, value) {
   equal(JSON.parse(result.stdout), { received: value, isEmitter: true }, `${name} event payload`);
 }
 
+// Independent public cases generate focused evidence instead of collapsing all
+// behaviors into one pass/fail outcome.
 export const cases = {
   async 'event-emitter-behavior'(root) {
     await event(root, 'serveCustomer', 'serve', 'Ada');
@@ -29,7 +35,8 @@ export const cases = {
     ]) {
       const result = await runNode(root, 'src/index.js', [], input);
       equal(result.code, 0, `CLI exit status for ${input.trim()}`);
-      if (!result.stdout.includes(expected)) throw new Error(`CLI output for ${input.trim()}: expected ${expected}.`);
+      if (!result.stdout.includes(expected))
+        throw new Error(`CLI output for ${input.trim()}: expected ${expected}.`);
     }
     return 'The CLI accepted serve, prepare, and rush commands and printed the required event results.';
   }

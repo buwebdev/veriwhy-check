@@ -47,6 +47,9 @@ jobs:
       - name: Install only the notification-safe headless browser
         run: npm run setup:browser
 
+      - name: Verify maintained source formatting
+        run: npm run format:check
+
       - name: Run tests and coverage requirements
         run: npm run check
 

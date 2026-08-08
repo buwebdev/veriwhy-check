@@ -1,6 +1,10 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 330 Assignment 1.3 browser behavior checks.
  * @author Richard Krasso
+ *
+ * These public cases exercise the rendered application as a user would. They
+ * validate required outputs across more than one input while allowing any
+ * internal object model or source organization that satisfies the assignment.
  */
 
 import { equal, noBrowserErrors } from '../helpers.mjs';
@@ -19,6 +23,8 @@ async function values(page) {
   };
 }
 
+// Stable case identifiers are referenced by the public profile and should change
+// only when the published assessment contract receives a new version.
 export const cases = {
   async 'page-loads'(page, state) {
     noBrowserErrors(state);

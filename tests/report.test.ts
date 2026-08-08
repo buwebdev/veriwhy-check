@@ -1,6 +1,10 @@
 /**
  * @file Unit tests for accessible, escaped, local report output.
  * @author Richard Krasso
+ *
+ * Report tests protect HTML escaping, accessible status language, summary
+ * consistency, and parity between HTML and JSON artifacts. Student-controlled
+ * values are included deliberately to prove they cannot alter report structure.
  */
 
 import assert from 'node:assert/strict';
@@ -13,14 +17,27 @@ import { withFixture } from './helpers.js';
 
 function sampleReport(): CheckReport {
   return {
-    schemaVersion: 1, runId: 'sample', generatedAt: '2026-08-07T00:00:00.000Z', projectName: 'project', projectPath: '/project',
-    profile: { id: 'WEB-231/assignment-1.3', course: 'WEB 231', assignment: 'Variables', version: '1.0.0' },
-    passed: 1, failed: 1, skipped: 1, complete: false,
+    schemaVersion: 1,
+    runId: 'sample',
+    generatedAt: '2026-08-07T00:00:00.000Z',
+    projectName: 'project',
+    projectPath: '/project',
+    profile: {
+      id: 'WEB-231/assignment-1.3',
+      course: 'WEB 231',
+      assignment: 'Variables',
+      version: '1.0.0'
+    },
+    passed: 1,
+    failed: 1,
+    skipped: 1,
+    complete: false,
     results: [
       { id: 'one', label: 'Present', status: 'pass', detail: 'Works.' },
       { id: 'two', label: '<Missing>', status: 'fail', detail: 'Fix & retry.' },
       { id: 'three', label: 'Skipped', status: 'skipped', detail: 'Not run.' }
-    ], notices: ['Local only.']
+    ],
+    notices: ['Local only.']
   };
 }
 

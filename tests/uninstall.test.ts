@@ -1,6 +1,10 @@
 /**
  * @file Unit and sandbox integration tests for transparent uninstallation.
  * @author Richard Krasso
+ *
+ * Uninstall tests emphasize destructive-action safety: manifest authority,
+ * containment, dry-run parity, report preservation, broad-path rejection, and
+ * Windows deferred cleanup are all exercised in temporary folders.
  */
 
 import assert from 'node:assert/strict';
@@ -20,7 +24,16 @@ async function installation(root: string): Promise<{ data: string; launcher: str
   await mkdir(join(root, 'bin'), { recursive: true });
   await writeFile(launcher, 'launcher');
   await writeFile(join(data, 'reports', 'report.html'), 'report');
-  await writeFile(join(data, 'install.json'), JSON.stringify({ schemaVersion: 1, activeVersion: '1.0.0', installRoot: data, launcher, installedAt: new Date().toISOString() }));
+  await writeFile(
+    join(data, 'install.json'),
+    JSON.stringify({
+      schemaVersion: 1,
+      activeVersion: '1.0.0',
+      installRoot: data,
+      launcher,
+      installedAt: new Date().toISOString()
+    })
+  );
   return { data, launcher };
 }
 
@@ -51,19 +64,29 @@ test('explicit report removal and invalid records follow safe boundaries', async
     const { data } = await installation(root);
     await uninstallApplication({ dataDirectory: data, removeReports: true, platform: 'darwin' });
     assert.equal(await pathExists(join(data, 'reports')), false);
-    await assert.rejects(uninstallPlan({ dataDirectory: data }), /No VeriWhy Check installation record/);
-    await writeFile(join(data, 'install.json'), JSON.stringify({ installRoot: root, launcher: join(root, 'bin', 'x') }));
+    await assert.rejects(
+      uninstallPlan({ dataDirectory: data }),
+      /No VeriWhy Check installation record/
+    );
+    await writeFile(
+      join(data, 'install.json'),
+      JSON.stringify({ installRoot: root, launcher: join(root, 'bin', 'x') })
+    );
     await assert.rejects(uninstallPlan({ dataDirectory: data }), /does not match/);
   });
 });
 
 test('uninstaller refuses a filesystem root or home directory as its data folder', async () => {
   await assert.rejects(uninstallPlan({ dataDirectory: '/' }), /too broad/);
-  if (process.env.HOME) await assert.rejects(uninstallPlan({ dataDirectory: process.env.HOME }), /too broad/);
+  if (process.env.HOME)
+    await assert.rejects(uninstallPlan({ dataDirectory: process.env.HOME }), /too broad/);
 });
 
 test('Windows deferred cleanup waits and retries files that remain briefly locked', () => {
-  const source = windowsRemovalScript([`C:\\Program Files\\VeriWhy Check\\veriwhy-check.cmd`, `C:\\Users\\Student's Data`], 2468);
+  const source = windowsRemovalScript(
+    [`C:\\Program Files\\VeriWhy Check\\veriwhy-check.cmd`, `C:\\Users\\Student's Data`],
+    2468
+  );
   assert.match(source, /Wait-Process -Id 2468/);
   assert.match(source, /attempt -lt 80/);
   assert.match(source, /Start-Sleep -Milliseconds 250/);

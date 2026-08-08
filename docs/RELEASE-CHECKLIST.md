@@ -2,12 +2,13 @@
 
 **Author:** Richard Krasso
 
-This checklist separates a locally verified release candidate from a public
-student release. Publication is not complete until every item is checked.
+This checklist separates a locally verified release candidate from a public student release.
+Publication is not complete until every item is checked.
 
 ## Code and Assessment Quality
 
 - [x] Compile with NVM Node.js 24.18.0.
+- [x] Verify maintained files with the locally pinned Prettier formatter.
 - [x] Run unit and integration tests.
 - [x] Enforce line, function, and branch coverage gates.
 - [x] Validate all 24 public YAML profiles.
@@ -35,10 +36,9 @@ student release. Publication is not complete until every item is checked.
 - [x] Review privacy, security, support, and student guides.
 - [x] Create the approved GitHub Version 1 release.
 - [x] Validate Intel macOS installation, checking, and uninstallation.
-- [ ] Upload all three supported platform archives and matching digests.
+- [x] Upload all three supported platform archives and matching digests.
 - [x] Test the public installer link without GitHub authentication.
 - [x] Test a public update from Version 1.0.0 to Version 1.0.1.
 
-Linux and Windows ARM64 are outside the Version 1 supported-platform scope.
-The Windows delayed-uninstall limitation and resolved macOS notification issue
-are documented separately.
+Linux and Windows ARM64 are outside the Version 1 supported-platform scope. The Windows
+delayed-uninstall limitation and resolved macOS notification issue are documented separately.

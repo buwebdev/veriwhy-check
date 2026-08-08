@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-340/assignment-6.2
 course: WEB 340 Node.js
-assignment: "Assignment 6.2: Stateful HTTP character server"
+assignment: 'Assignment 6.2: Stateful HTTP character server'
 version: 1.0.0
 project:
   kind: node

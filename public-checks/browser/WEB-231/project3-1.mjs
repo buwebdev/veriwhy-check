@@ -1,6 +1,10 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 231 Assignment 4.2 browser behavior checks.
  * @author Richard Krasso
+ *
+ * Cases verify the published form, browser health, and computed visible output.
+ * The assessment is black-box by design, allowing different correct solutions
+ * while rejecting missing interactions and incorrect results.
  */
 
 import { currency, equal, noBrowserErrors, text } from '../helpers.mjs';
@@ -20,6 +24,8 @@ async function assertTotal(page, ids, label) {
   equal(await text(page, '#billTotal'), currency(expected), label);
 }
 
+// The YAML profile chooses one name at a time, preserving a direct, auditable
+// mapping from assignment language to browser evidence.
 export const cases = {
   async 'page-loads'(page, state) {
     noBrowserErrors(state);
@@ -41,7 +47,7 @@ export const cases = {
     await assertTotal(page, ids, 'Combined order total');
     return 'A multi-item selection produced the correct order total.';
   },
-  async 'deselection'(page) {
+  async deselection(page) {
     await select(page, ['item1', 'item2', 'item4']);
     await page.locator('#item2').uncheck();
     await assertTotal(page, ['item1', 'item4'], 'Updated order total');

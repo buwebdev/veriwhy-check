@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-330/assignment-3.2
 course: WEB 330 Enterprise JavaScript II
-assignment: "Assignment 3.2: Session storage rider profile"
+assignment: 'Assignment 3.2: Session storage rider profile'
 version: 1.0.0
 project:
   kind: static-web

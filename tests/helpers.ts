@@ -11,7 +11,10 @@ import { join } from 'node:path';
 import { developmentTmpRoot } from '../src/paths.js';
 
 /** Run a test with a unique owned fixture directory and guaranteed cleanup. */
-export async function withFixture<T>(name: string, operation: (root: string) => Promise<T>): Promise<T> {
+export async function withFixture<T>(
+  name: string,
+  operation: (root: string) => Promise<T>
+): Promise<T> {
   await mkdir(developmentTmpRoot, { recursive: true });
   const root = await mkdtemp(join(developmentTmpRoot, `${name}-`));
   try {

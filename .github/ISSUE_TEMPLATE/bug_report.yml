@@ -2,7 +2,7 @@
 # Author: Richard Krasso
 name: Bug report
 description: Report a reproducible problem without sharing student work.
-title: "[Bug]: "
+title: '[Bug]: '
 labels: [bug]
 body:
   - type: markdown
@@ -64,5 +64,7 @@ body:
       options:
         - label: I removed student work, credentials, tokens, and private links.
           required: true
-        - label: I understand that submitting this report does not guarantee that the behavior is a product defect or that a change will be made.
+        - label:
+            I understand that submitting this report does not guarantee that the behavior is a
+            product defect or that a change will be made.
           required: true

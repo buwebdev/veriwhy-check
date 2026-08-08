@@ -13,19 +13,45 @@ import { pathExists } from './files.js';
 import type { Profile, ProjectConfig } from './types.js';
 
 /** Generated directories that cannot contain the student's selected project. */
-const ignoredDirectories = new Set(['.angular', '.git', '.veriwhy-check', 'coverage', 'dist', 'node_modules', 'tmp']);
+const ignoredDirectories = new Set([
+  '.angular',
+  '.git',
+  '.veriwhy-check',
+  'coverage',
+  'dist',
+  'node_modules',
+  'tmp'
+]);
 
 /** Recursively locate directories that contain every requested marker file. */
-async function findMarkedDirectories(root: string, markers: string[], maxDepth: number): Promise<string[]> {
+async function findMarkedDirectories(
+  root: string,
+  markers: string[],
+  maxDepth: number
+): Promise<string[]> {
   const matches: string[] = [];
   async function visit(directory: string, depth: number): Promise<void> {
-    if ((await Promise.all(markers.map((marker) => pathExists(join(directory, marker))))).every(Boolean)) {
+    // A directory qualifies only when every marker exists. Names such as
+    // "week-1" are organizational hints and never proof of the correct project.
+    if (
+      (await Promise.all(markers.map((marker) => pathExists(join(directory, marker))))).every(
+        Boolean
+      )
+    ) {
       matches.push(directory);
     }
     if (depth >= maxDepth) return;
+    // The depth ceiling bounds both runtime and privacy scope when a command is
+    // accidentally started from a broad parent such as Documents.
     const entries = await readdir(directory, { withFileTypes: true });
     for (const entry of entries) {
-      if (!entry.isDirectory() || entry.isSymbolicLink() || entry.name.startsWith('.') || ignoredDirectories.has(entry.name)) continue;
+      if (
+        !entry.isDirectory() ||
+        entry.isSymbolicLink() ||
+        entry.name.startsWith('.') ||
+        ignoredDirectories.has(entry.name)
+      )
+        continue;
       await visit(join(directory, entry.name), depth + 1);
     }
   }
@@ -35,6 +61,8 @@ async function findMarkedDirectories(root: string, markers: string[], maxDepth: 
 
 /** Translate a project configuration into the marker files used for discovery. */
 export function projectMarkers(project: ProjectConfig): string[][] {
+  // Static-web fallback entries are alternatives, while npm marker arrays are
+  // conjunctive. Returning groups preserves that semantic distinction.
   if (project.kind === 'npm') return [project.markers];
   if (project.kind === 'node') return [[project.entry]];
   return [[project.entry], ...(project.locate ?? []).map((entry) => [entry])];
@@ -46,11 +74,17 @@ export async function discoverProject(
   profile: Pick<Profile, 'id' | 'project'>,
   maxDepth = 4
 ): Promise<{ project?: string; candidates: string[]; message?: string }> {
-  const candidateSets = await Promise.all(projectMarkers(profile.project).map((markers) =>
-    findMarkedDirectories(searchRoot, markers, maxDepth)
-  ));
+  const candidateSets = await Promise.all(
+    projectMarkers(profile.project).map((markers) =>
+      findMarkedDirectories(searchRoot, markers, maxDepth)
+    )
+  );
+  // Searching marker alternatives in parallel keeps discovery responsive while
+  // deduplication below handles a project matching more than one alternative.
   const candidates = [...new Set(candidateSets.flat())].sort();
   if (candidates.length === 1) return { project: candidates[0]!, candidates };
+  // Zero and multiple matches are both non-destructive failures. The checker
+  // never chooses based on alphabetical order or the first traversal result.
   if (candidates.length === 0) {
     return {
       candidates,

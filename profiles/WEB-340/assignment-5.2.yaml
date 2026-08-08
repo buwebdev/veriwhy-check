@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-340/assignment-5.2
 course: WEB 340 Node.js
-assignment: "Assignment 5.2: Pie baker process behavior and Jest tests"
+assignment: 'Assignment 5.2: Pie baker process behavior and Jest tests'
 version: 1.0.0
 project:
   kind: node

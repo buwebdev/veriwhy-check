@@ -1,17 +1,30 @@
 /**
  * @file Unit and sandbox integration tests for Markdown documentation builds.
  * @author Richard Krasso
+ *
+ * Documentation tests verify stable navigation, safe HTML generation, offline
+ * search data, and stale-output cleanup. Temporary Markdown fixtures demonstrate
+ * that new guide pages require content changes rather than application edits.
  */
 
 import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import test from 'node:test';
-import { buildDocsSite, describeGuidePage, discoverGuidePages, escapeGuideHtml, renderGuidePage } from '../src/docs-builder.js';
+import {
+  buildDocsSite,
+  describeGuidePage,
+  discoverGuidePages,
+  escapeGuideHtml,
+  renderGuidePage
+} from '../src/docs-builder.js';
 import { withFixture } from './helpers.js';
 
 test('guide page descriptions use numbered filenames, headings, and searchable text', () => {
-  const page = describeGuidePage('02-getting-started.md', '# Getting Started\n\nUse `doctor` and **help**.');
+  const page = describeGuidePage(
+    '02-getting-started.md',
+    '# Getting Started\n\nUse `doctor` and **help**.'
+  );
   assert.equal(page.slug, 'getting-started');
   assert.equal(page.title, 'Getting Started');
   assert.match(page.plainText, /doctor and help/);
@@ -26,7 +39,10 @@ test('Markdown builder creates navigation, pages, assets, and offline search', a
     const output = join(root, 'output');
     await mkdir(source);
     await mkdir(theme);
-    await writeFile(join(source, '01-index.md'), '# Welcome\n\nStart here.\n\n```text\nveriwhy-check help\n```');
+    await writeFile(
+      join(source, '01-index.md'),
+      '# Welcome\n\nStart here.\n\n```text\nveriwhy-check help\n```'
+    );
     await writeFile(join(source, '02-reports.md'), '# Reports\n\nUnderstand passed results.');
     await writeFile(join(theme, 'styles.css'), 'body { color: white; }');
     await writeFile(join(theme, 'app.js'), '/* test theme */');
@@ -41,8 +57,14 @@ test('Markdown builder creates navigation, pages, assets, and offline search', a
     assert.match(index, /reports\.html/);
     assert.match(index, /Content-Security-Policy/);
     assert.match(await readFile(join(output, 'reports.html'), 'utf8'), /aria-current="page"/);
-    assert.match(await readFile(join(output, 'assets', 'search-index.js'), 'utf8'), /Understand passed results/);
-    assert.equal(await readFile(join(output, 'assets', 'styles.css'), 'utf8'), 'body { color: white; }');
+    assert.match(
+      await readFile(join(output, 'assets', 'search-index.js'), 'utf8'),
+      /Understand passed results/
+    );
+    assert.equal(
+      await readFile(join(output, 'assets', 'styles.css'), 'utf8'),
+      'body { color: white; }'
+    );
     await assert.rejects(readFile(join(output, 'retired-page.html'), 'utf8'), /ENOENT/);
     await assert.rejects(readFile(join(output, 'assets', 'retired.js'), 'utf8'), /ENOENT/);
     assert.equal(await readFile(join(output, 'development-note.txt'), 'utf8'), 'preserve me');

@@ -20,6 +20,8 @@ export function releaseBrowserEntry(name: string): boolean {
 
 /** Recursively find one filename within a small, application-owned tree. */
 function findFile(root: string, filename: string, depth = 4): string | undefined {
+  // Playwright's internal directory names vary by platform and revision. A
+  // shallow bounded search is more robust than hard-coding that private layout.
   if (depth < 0 || !existsSync(root)) return undefined;
   for (const entry of readdirSync(root, { withFileTypes: true })) {
     const candidate = join(root, entry.name);
@@ -42,6 +44,8 @@ export function headlessShellExecutablePath(
     .filter((entry) => entry.isDirectory() && entry.name.startsWith('chromium_headless_shell-'))
     .map((entry) => entry.name)
     .sort((left, right) => right.localeCompare(left, undefined, { numeric: true }));
+  // Numeric sorting matters once revision numbers have different digit counts;
+  // lexical sorting would incorrectly place revision 99 after revision 100.
   for (const revision of revisions) {
     const found = findFile(join(root, revision), executable);
     if (found) return found;
@@ -53,6 +57,8 @@ export function headlessShellExecutablePath(
 export async function findMacAppBundles(root: string): Promise<string[]> {
   const found: string[] = [];
   async function visit(directory: string): Promise<void> {
+    // Application bundles are directories on macOS. Finding even one is enough
+    // for packaging to fail because it could register in Notifications.
     for (const entry of await readdir(directory, { withFileTypes: true })) {
       if (!entry.isDirectory()) continue;
       const candidate = join(directory, entry.name);
@@ -65,11 +71,19 @@ export async function findMacAppBundles(root: string): Promise<string[]> {
 }
 
 /** Copy only the headless browser runtime and reject notification-capable apps. */
-export async function copyHeadlessBrowserRuntime(source: string, destination: string): Promise<void> {
-  const entries = (await readdir(source, { withFileTypes: true }))
-    .filter((entry) => entry.isDirectory() && releaseBrowserEntry(entry.name));
+export async function copyHeadlessBrowserRuntime(
+  source: string,
+  destination: string
+): Promise<void> {
+  const entries = (await readdir(source, { withFileTypes: true })).filter(
+    (entry) => entry.isDirectory() && releaseBrowserEntry(entry.name)
+  );
+  // Deliberately copy an allowlist rather than copying everything and deleting
+  // known unwanted items. Future Playwright cache additions therefore stay out.
   if (!entries.some((entry) => entry.name.startsWith('chromium_headless_shell-'))) {
-    throw new Error('The Playwright headless shell is missing. Run npm run setup:browser before packaging.');
+    throw new Error(
+      'The Playwright headless shell is missing. Run npm run setup:browser before packaging.'
+    );
   }
   await mkdir(destination, { recursive: true });
   for (const entry of entries) {
@@ -79,5 +93,7 @@ export async function copyHeadlessBrowserRuntime(source: string, destination: st
   if (applications.length) {
     throw new Error(`Release packaging refused macOS application bundle: ${applications[0]}`);
   }
+  // Resolve the copied executable as the final postcondition. A directory with
+  // the right name but an incomplete download must not become a release.
   headlessShellExecutablePath(destination);
 }

@@ -1,12 +1,17 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 231 Assignment 2.2 browser behavior checks.
  * @author Richard Krasso
+ *
+ * These cases exercise the required page interactions and resulting DOM state
+ * with real browser events. Any JavaScript structure can pass when it produces
+ * the published behavior without syntax, runtime, or console errors.
  */
 
 import { equal, noBrowserErrors } from '../helpers.mjs';
 
 async function submit(page, values) {
-  for (const field of ['name', 'email', 'phone']) await page.locator(`#${field}`).fill(values[field] ?? '');
+  for (const field of ['name', 'email', 'phone'])
+    await page.locator(`#${field}`).fill(values[field] ?? '');
   const dialogPromise = page.waitForEvent('dialog', { timeout: 2000 });
   const clickPromise = page.locator('#submit').click();
   let dialog;
@@ -22,6 +27,8 @@ async function submit(page, values) {
   return message;
 }
 
+// Each named case is selected independently by YAML so a report can identify
+// the exact published behavior that passed or needs attention.
 export const cases = {
   async 'page-loads'(page, state) {
     noBrowserErrors(state);
@@ -38,7 +45,11 @@ export const cases = {
     const complete = { name: 'Ada', email: 'ada@example.edu', phone: '555-0100' };
     for (const missing of ['name', 'email', 'phone']) {
       await page.reload({ waitUntil: 'load' });
-      equal(await submit(page, { ...complete, [missing]: '' }), 'Please fill in all fields', `Alert with missing ${missing}`);
+      equal(
+        await submit(page, { ...complete, [missing]: '' }),
+        'Please fill in all fields',
+        `Alert with missing ${missing}`
+      );
     }
     return 'Each missing required field displayed the incomplete-form message.';
   },

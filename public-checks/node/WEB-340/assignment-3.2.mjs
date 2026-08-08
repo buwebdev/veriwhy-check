@@ -1,6 +1,10 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 340 Assignment 3.2 Node.js behavior checks.
  * @author Richard Krasso
+ *
+ * The checker observes the assignment's public program contract using isolated,
+ * bounded Node.js execution. Equivalent solutions pass regardless of formatting
+ * or internal decomposition.
  */
 
 import { join } from 'node:path';
@@ -14,6 +18,8 @@ async function calculate(root, first, second) {
   return JSON.parse(result.stdout);
 }
 
+// Stable case names form the small public interface consumed by the assignment
+// profile; changing one requires an intentional profile contract update.
 export const cases = {
   async 'planet-distances'(root) {
     equal(await calculate(root, 'Earth', 'Mars'), { value: 0.52 }, 'Earth-to-Mars distance');
@@ -22,7 +28,11 @@ export const cases = {
     return 'The module calculated representative, reversed, and same-planet distances in astronomical units.';
   },
   async 'invalid-planets'(root) {
-    equal(await calculate(root, 'Earth', 'Pluto'), { error: 'Invalid planet name' }, 'Invalid-planet result');
+    equal(
+      await calculate(root, 'Earth', 'Pluto'),
+      { error: 'Invalid planet name' },
+      'Invalid-planet result'
+    );
     return 'The module rejected an unknown planet with the required error.';
   }
 };

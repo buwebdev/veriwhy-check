@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-330/assignment-2.2
 course: WEB 330 Enterprise JavaScript II
-assignment: "Assignment 2.2: Character generator closures"
+assignment: 'Assignment 2.2: Character generator closures'
 version: 1.0.0
 project:
   kind: static-web

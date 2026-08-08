@@ -1,6 +1,10 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 330 Assignment 2.2 browser behavior checks.
  * @author Richard Krasso
+ *
+ * Browser interactions measure the disclosed behavior of the completed page,
+ * not the formatting or naming of its source. Multiple observations prevent a
+ * static sample result from standing in for the required implementation.
  */
 
 import { equal, noBrowserErrors, normalized } from '../helpers.mjs';
@@ -16,6 +20,8 @@ const values = {
   comments: 'Morning rides'
 };
 
+// The profile invokes cases separately so each student-facing report row has one
+// focused source of executable evidence.
 export const cases = {
   async 'page-loads'(page, state) {
     noBrowserErrors(state);
@@ -36,7 +42,11 @@ export const cases = {
     ]);
     for (const [id, expected] of Object.entries(values)) {
       equal(normalized(await page.locator(`#${id}`).textContent()), expected, `${id} result`);
-      equal(await page.evaluate((key) => sessionStorage.getItem(key), id), expected, `${id} stored value`);
+      equal(
+        await page.evaluate((key) => sessionStorage.getItem(key), id),
+        expected,
+        `${id} stored value`
+      );
     }
     return 'All eight rider values persisted through session storage, navigation, and results-page rendering.';
   }

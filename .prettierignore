@@ -1,0 +1,12 @@
+# Generated and third-party content is not maintained by hand.
+dist/
+node_modules/
+tmp/
+
+# Preserve legal and third-party notice text exactly as published.
+LICENSE.md
+THIRD_PARTY_NOTICES.md
+
+# Release archives are binary artifacts, not source text.
+*.tar.gz
+*.sha256

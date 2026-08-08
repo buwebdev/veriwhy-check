@@ -1,14 +1,26 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 231 Assignment 1.3 browser behavior checks.
  * @author Richard Krasso
+ *
+ * The cases load the published page and inspect visible behavior through a real
+ * browser. They intentionally avoid grading indentation, naming, comments, or a
+ * particular internal solution so evaluation follows the disclosed functional
+ * outcome rather than the reference implementation.
  */
 
 import { equal, noBrowserErrors, normalized } from '../helpers.mjs';
 
 async function row(page, index) {
-  return await page.locator('tbody tr').nth(index).locator('td').allInnerTexts().then((cells) => cells.map(normalized));
+  return await page
+    .locator('tbody tr')
+    .nth(index)
+    .locator('td')
+    .allInnerTexts()
+    .then((cells) => cells.map(normalized));
 }
 
+// Case names match the YAML profile, making the connection between a published
+// requirement and its executable evidence explicit and reviewable.
 export const cases = {
   async 'page-loads'(page, state) {
     noBrowserErrors(state);

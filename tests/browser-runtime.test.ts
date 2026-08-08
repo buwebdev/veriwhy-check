@@ -1,6 +1,10 @@
 /**
  * @file Unit tests for notification-safe managed-browser packaging.
  * @author Richard Krasso
+ *
+ * These tests protect the notification-safe packaging decision. Temporary
+ * browser trees model both supported runtimes and forbidden macOS applications
+ * so releases cannot silently regress to shipping a full `.app` bundle.
  */
 
 import assert from 'node:assert/strict';
@@ -42,7 +46,8 @@ test('release copy excludes Chrome app bundles and keeps the headless shell', as
   const source = join(root, 'source');
   const destination = join(root, 'destination');
   try {
-    const executable = process.platform === 'win32' ? 'chrome-headless-shell.exe' : 'chrome-headless-shell';
+    const executable =
+      process.platform === 'win32' ? 'chrome-headless-shell.exe' : 'chrome-headless-shell';
     const shell = join(source, 'chromium_headless_shell-1234', 'shell');
     const chromeApp = join(source, 'chromium-1234', 'Google Chrome for Testing.app', 'Contents');
     const ffmpeg = join(source, 'ffmpeg-1011');

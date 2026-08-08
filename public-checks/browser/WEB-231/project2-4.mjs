@@ -1,6 +1,10 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 231 Assignment 3.2 browser behavior checks.
  * @author Richard Krasso
+ *
+ * The checker drives user-facing inputs and observes displayed results. Multiple
+ * data points demonstrate functional generalization without requiring a chosen
+ * loop, function name, formatting style, or file organization.
  */
 
 import { currency, equal, noBrowserErrors, text } from '../helpers.mjs';
@@ -23,10 +27,21 @@ async function assertTotals(page, ids, label) {
   equal(await text(page, '#totalBill'), currency(cost + tax), `${label} bill total`);
 }
 
+// Named cases remain small and independent so one failed scenario does not hide
+// useful evidence from a different published requirement.
 export const cases = {
   async 'page-loads'(page, state) {
     noBrowserErrors(state);
-    for (const selector of ['#chicken', '#halibut', '#burger', '#salmon', '#salad', '#foodTotal', '#foodTax', '#totalBill']) {
+    for (const selector of [
+      '#chicken',
+      '#halibut',
+      '#burger',
+      '#salmon',
+      '#salad',
+      '#foodTotal',
+      '#foodTax',
+      '#totalBill'
+    ]) {
       equal(await page.locator(selector).count(), 1, `${selector} element count`);
     }
     return 'The order page loaded without browser errors and exposed the required inputs and outputs.';
@@ -45,7 +60,7 @@ export const cases = {
     await assertTotals(page, ids, 'Combined order');
     return 'A multi-item order produced the correct subtotal, tax, and total.';
   },
-  async 'deselection'(page) {
+  async deselection(page) {
     await select(page, ['chicken', 'halibut', 'salmon']);
     await page.locator('#halibut').uncheck();
     await assertTotals(page, ['chicken', 'salmon'], 'Updated order');

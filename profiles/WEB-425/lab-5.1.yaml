@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-425/lab-5.1
 course: WEB 425 Angular with TypeScript
-assignment: "Lab 5.1: Reactive sign-in and route guard"
+assignment: 'Lab 5.1: Reactive sign-in and route guard'
 version: 1.1.1
 project:
   kind: npm

@@ -2,7 +2,7 @@
 # Author: Richard Krasso
 name: Feature request
 description: Propose an improvement to the student checking experience.
-title: "[Feature]: "
+title: '[Feature]: '
 labels: [enhancement]
 body:
   - type: textarea
@@ -24,5 +24,6 @@ body:
     attributes:
       label: Project boundaries
       options:
-        - label: The proposal requires no student source, credentials, or private data in this issue.
+        - label:
+            The proposal requires no student source, credentials, or private data in this issue.
           required: true

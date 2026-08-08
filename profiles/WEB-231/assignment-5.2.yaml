@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-231/assignment-5.2
 course: WEB 231 Enterprise JavaScript I
-assignment: "Assignment 5.2: Arrays (Project 3-2)"
+assignment: 'Assignment 5.2: Arrays (Project 3-2)'
 version: 1.1.0
 project:
   kind: static-web

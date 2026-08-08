@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-425/lab-1.1
 course: WEB 425 Angular with TypeScript
-assignment: "Lab 1.1: Application shell and home page"
+assignment: 'Lab 1.1: Application shell and home page'
 version: 1.1.2
 project:
   kind: npm
@@ -73,8 +73,9 @@ requirements:
           - <ul\b
           - (?:<li\b[\s\S]*?){3}
   - id: binding-selectors
-    label: Home page interpolates a component property and uses the published home-page and character-features data-testid
-      values
+    label:
+      Home page interpolates a component property and uses the published home-page and
+      character-features data-testid values
     rules:
       - kind: source
         roots:

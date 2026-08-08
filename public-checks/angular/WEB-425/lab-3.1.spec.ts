@@ -1,11 +1,17 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 425 Lab 3.1 Angular testing behavior checks.
  * @author Richard Krasso
+ *
+ * Lab 3.1 is the first point where student-authored unit testing is part of the
+ * course sequence. The public test verifies observable component behavior while
+ * the profile separately checks the disclosed testing evidence.
  */
 
 import { TestBed } from '@angular/core/testing';
 import { DiceService } from './dice.service';
 
+// Lab 3.1 begins testing evidence; this public suite remains separate from, and
+// never counts as, the student's own required unit tests.
 describe('VeriWhy Check public Lab 3.1 boundaries', () => {
   let service: DiceService;
 

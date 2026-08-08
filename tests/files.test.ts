@@ -1,13 +1,24 @@
 /**
  * @file Unit tests for privacy-conscious file utilities.
  * @author Richard Krasso
+ *
+ * File tests protect the selected-project privacy boundary. Fixtures include
+ * generated folders, authored source, tests, and links so listing, reading,
+ * copying, containment, and cleanup behavior can be reviewed independently.
  */
 
 import assert from 'node:assert/strict';
 import { mkdir, readFile, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import test from 'node:test';
-import { copyProject, isInside, isSafeRelativePath, listFiles, pathExists, readSources } from '../src/files.js';
+import {
+  copyProject,
+  isInside,
+  isSafeRelativePath,
+  listFiles,
+  pathExists,
+  readSources
+} from '../src/files.js';
 import { withFixture } from './helpers.js';
 
 test('safe relative path and containment checks reject traversal', () => {

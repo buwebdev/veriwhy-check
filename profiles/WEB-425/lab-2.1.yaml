@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-425/lab-2.1
 course: WEB 425 Angular with TypeScript
-assignment: "Lab 2.1: Character-class routing"
+assignment: 'Lab 2.1: Character-class routing'
 version: 1.1.1
 project:
   kind: npm
@@ -68,7 +68,7 @@ requirements:
           - src/app/classes
         all:
           - CharacterClass
-          - "@for"
+          - '@for'
           - RouterLink
           - data-testid=['"]class-list['"]
   - id: route-state

@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-340/assignment-3.2
 course: WEB 340 Node.js
-assignment: "Assignment 3.2: Planet distance module and tests"
+assignment: 'Assignment 3.2: Planet distance module and tests'
 version: 1.0.0
 project:
   kind: node

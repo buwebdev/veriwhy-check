@@ -1,6 +1,10 @@
 /**
  * @file Unit and sandbox integration tests for versioned installations.
  * @author Richard Krasso
+ *
+ * Installation tests verify payload validation, versioned activation, launcher
+ * argument forwarding, custom paths, and failure safety. All writes remain in
+ * temporary fixtures rather than a developer's normal installation.
  */
 
 import assert from 'node:assert/strict';
@@ -39,9 +43,15 @@ test('launcher names and sources cover Windows and Unix argument forwarding', ()
   assert.match(launcherSource('C:\\App Files\\1.0.0', 'win32'), /--dry-run/);
   assert.match(launcherSource('C:\\App Files\\1.0.0', 'win32'), /del "%~f0"/);
   assert.match(launcherSource('/Application Files/1.0.0', 'linux'), /PLAYWRIGHT_BROWSERS_PATH/);
-  assert.match(launcherSource('/Application Files/versions/1.0.0', 'linux'), /VERIWHY_CHECK_DATA_ROOT/);
+  assert.match(
+    launcherSource('/Application Files/versions/1.0.0', 'linux'),
+    /VERIWHY_CHECK_DATA_ROOT/
+  );
   assert.match(launcherSource('/Application Files/versions/1.0.0', 'linux'), /PATH=.*runtime/);
-  assert.match(launcherSource('C:\\App Files\\versions\\1.0.0', 'win32'), /set "PATH=.*runtime;%PATH%"/);
+  assert.match(
+    launcherSource('C:\\App Files\\versions\\1.0.0', 'win32'),
+    /set "PATH=.*runtime;%PATH%"/
+  );
 });
 
 test('incomplete payloads fail before installation', async () => {
@@ -53,13 +63,23 @@ test('incomplete payloads fail before installation', async () => {
 test('sandbox installation writes a version, launcher, and manifest', async () => {
   await withFixture('install-valid', async (root) => {
     const payload = await makePayload(root);
-    const result = await installPayload(payload, join(root, 'data'), join(root, 'bin'), process.platform);
+    const result = await installPayload(
+      payload,
+      join(root, 'data'),
+      join(root, 'bin'),
+      process.platform
+    );
     assert.equal(result.activeVersion, '1.2.3');
     assert.match(await readFile(result.launcher, 'utf8'), /veriwhy-check|cli\.js/);
     const manifest = JSON.parse(await readFile(join(root, 'data', 'install.json'), 'utf8'));
     assert.equal(manifest.activeVersion, '1.2.3');
     // A repair install of the same version must stage and replace cleanly.
-    const repaired = await installPayload(payload, join(root, 'data'), join(root, 'bin'), process.platform);
+    const repaired = await installPayload(
+      payload,
+      join(root, 'data'),
+      join(root, 'bin'),
+      process.platform
+    );
     assert.equal(repaired.activeVersion, '1.2.3');
   });
 });

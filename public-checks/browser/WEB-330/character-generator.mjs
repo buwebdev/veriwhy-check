@@ -1,6 +1,10 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 330 Assignment 5.2 character-generator browser checks.
  * @author Richard Krasso
+ *
+ * Cases validate the complete user flow from selecting inputs through rendering
+ * a generated character. Distinct combinations demonstrate generalized
+ * behavior while keeping implementation structure outside the grading scope.
  */
 
 import { equal, noBrowserErrors, normalized } from '../helpers.mjs';
@@ -13,10 +17,18 @@ async function generate(page, name, gender, characterClass) {
   return normalized(await page.locator('#characterOutput').innerText());
 }
 
+// The public profile calls these cases individually, producing one focused report
+// result for each disclosed part of the character-generation workflow.
 export const cases = {
   async 'page-loads'(page, state) {
     noBrowserErrors(state);
-    for (const selector of ['#heroName', '#heroGender', '#heroClass', '#generateHero', '#characterOutput']) {
+    for (const selector of [
+      '#heroName',
+      '#heroGender',
+      '#heroClass',
+      '#generateHero',
+      '#characterOutput'
+    ]) {
       equal(await page.locator(selector).count(), 1, `${selector} element count`);
     }
     return 'The character form loaded without browser errors and exposed every required input and output.';
@@ -32,14 +44,29 @@ export const cases = {
         keys: Object.keys(character).sort()
       };
     });
-    equal(result, {
-      name: 'Ada', gender: 'female', characterClass: 'mage', keys: ['getClass', 'getGender', 'getName', 'name']
-    }, 'Closure result');
+    equal(
+      result,
+      {
+        name: 'Ada',
+        gender: 'female',
+        characterClass: 'mage',
+        keys: ['getClass', 'getGender', 'getName', 'name']
+      },
+      'Closure result'
+    );
     return 'The factory preserved constructor values through getter closures instead of exposing those values as writable object properties.';
   },
   async 'form-results'(page) {
-    equal(await generate(page, 'Aria', 'female', 'rogue'), 'Name: Aria Gender: female Class: rogue', 'First character output');
-    equal(await generate(page, 'Borin', 'other', 'warrior'), 'Name: Borin Gender: other Class: warrior', 'Second character output');
+    equal(
+      await generate(page, 'Aria', 'female', 'rogue'),
+      'Name: Aria Gender: female Class: rogue',
+      'First character output'
+    );
+    equal(
+      await generate(page, 'Borin', 'other', 'warrior'),
+      'Name: Borin Gender: other Class: warrior',
+      'Second character output'
+    );
     return 'Submitting different form values displayed the corresponding character name, gender, and class.';
   }
 };

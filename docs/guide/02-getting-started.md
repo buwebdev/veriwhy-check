@@ -18,9 +18,9 @@ irm https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/inst
 
 Linux, Windows ARM64, and Intel Mac are not currently supported.
 
-The installer chooses the correct package, downloads it from the official
-GitHub release, checks its digital fingerprint, and installs its private
-toolbox. You do not need to install Node.js, NVM, Docker, Python, or Chrome.
+The installer chooses the correct package, downloads it from the official GitHub release, checks its
+digital fingerprint, and installs its private toolbox. You do not need to install Node.js, NVM,
+Docker, Python, or Chrome.
 
 ## Confirm the Installation
 
@@ -30,8 +30,8 @@ Open a new Terminal or PowerShell window and enter:
 veriwhy-check doctor
 ```
 
-Each item should say **READY**. If an item says **ACTION NEEDED**, follow the
-explanation beside it or see the troubleshooting page.
+Each item should say **READY**. If an item says **ACTION NEEDED**, follow the explanation beside it
+or see the troubleshooting page.
 
 ## Find the Installed Version
 

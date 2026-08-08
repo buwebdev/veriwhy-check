@@ -1,6 +1,10 @@
 /**
  * @file Unit tests for every deterministic requirement rule and status merge.
  * @author Richard Krasso
+ *
+ * The evaluator suite covers every public rule type and its status precedence.
+ * Injected services separate deterministic decision logic from processes and
+ * browsers, making false passes and skipped-behavior regressions visible.
  */
 
 import assert from 'node:assert/strict';
@@ -34,27 +38,96 @@ test('file, source, test-count, and hygiene rules distinguish present work', asy
       { kind: 'hygiene', forbidden: ['dist'] }
     ];
     for (const rule of rules) {
-      assert.equal((await evaluateRule(root, rule, { runExecutableChecks: true }, services)).status, 'pass');
+      assert.equal(
+        (await evaluateRule(root, rule, { runExecutableChecks: true }, services)).status,
+        'pass'
+      );
     }
-    assert.equal((await evaluateRule(root, { kind: 'files', paths: ['missing.js'] }, { runExecutableChecks: true }, services)).status, 'fail');
-    assert.equal((await evaluateRule(root, { kind: 'source', roots: ['src'], all: ['not-present'] }, { runExecutableChecks: true }, services)).status, 'fail');
+    assert.equal(
+      (
+        await evaluateRule(
+          root,
+          { kind: 'files', paths: ['missing.js'] },
+          { runExecutableChecks: true },
+          services
+        )
+      ).status,
+      'fail'
+    );
+    assert.equal(
+      (
+        await evaluateRule(
+          root,
+          { kind: 'source', roots: ['src'], all: ['not-present'] },
+          { runExecutableChecks: true },
+          services
+        )
+      ).status,
+      'fail'
+    );
   });
 });
 
 test('behavior services and requirement status merging honor skipped and failed work', async () => {
   await withFixture('evaluate-behavior', async (root) => {
-    const browserRule: Rule = { kind: 'browser', test: 'WEB-231/sample', case: 'render', timeoutSeconds: 5 };
-    assert.equal((await evaluateRule(root, browserRule, { runExecutableChecks: false })).status, 'skipped');
-    assert.equal((await evaluateRule(root, browserRule, { runExecutableChecks: true })).status, 'fail');
-    assert.equal((await evaluateRule(root, browserRule, { runExecutableChecks: true, browserEntry: 'index.html' }, services)).status, 'pass');
-    assert.equal((await evaluateRule(root, { kind: 'node-test', test: 'WEB-340/sample', case: 'run', timeoutSeconds: 5 }, { runExecutableChecks: true }, services)).status, 'pass');
-    assert.equal((await evaluateRule(root, { kind: 'command', executable: 'npm', args: ['test'], timeoutSeconds: 5 }, { runExecutableChecks: true }, services)).status, 'pass');
+    const browserRule: Rule = {
+      kind: 'browser',
+      test: 'WEB-231/sample',
+      case: 'render',
+      timeoutSeconds: 5
+    };
+    assert.equal(
+      (await evaluateRule(root, browserRule, { runExecutableChecks: false })).status,
+      'skipped'
+    );
+    assert.equal(
+      (await evaluateRule(root, browserRule, { runExecutableChecks: true })).status,
+      'fail'
+    );
+    assert.equal(
+      (
+        await evaluateRule(
+          root,
+          browserRule,
+          { runExecutableChecks: true, browserEntry: 'index.html' },
+          services
+        )
+      ).status,
+      'pass'
+    );
+    assert.equal(
+      (
+        await evaluateRule(
+          root,
+          { kind: 'node-test', test: 'WEB-340/sample', case: 'run', timeoutSeconds: 5 },
+          { runExecutableChecks: true },
+          services
+        )
+      ).status,
+      'pass'
+    );
+    assert.equal(
+      (
+        await evaluateRule(
+          root,
+          { kind: 'command', executable: 'npm', args: ['test'], timeoutSeconds: 5 },
+          { runExecutableChecks: true },
+          services
+        )
+      ).status,
+      'pass'
+    );
 
-    const result = await evaluateRequirement(root, {
-      id: 'combined',
-      label: 'Combined behavior',
-      rules: [{ kind: 'files', paths: ['missing.js'] }, browserRule]
-    }, { runExecutableChecks: false }, services);
+    const result = await evaluateRequirement(
+      root,
+      {
+        id: 'combined',
+        label: 'Combined behavior',
+        rules: [{ kind: 'files', paths: ['missing.js'] }, browserRule]
+      },
+      { runExecutableChecks: false },
+      services
+    );
     assert.equal(result.status, 'fail');
     assert.match(result.detail, /Missing required file/);
   });

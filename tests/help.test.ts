@@ -1,6 +1,10 @@
 /**
  * @file Unit tests for beginner help and likely-command suggestions.
  * @author Richard Krasso
+ *
+ * This suite treats help and typo correction as product behavior. Assertions
+ * protect the beginner workflow, privacy statement, examples, and the threshold
+ * that prevents misleading command guesses.
  */
 
 import assert from 'node:assert/strict';

@@ -1,14 +1,12 @@
 # Beginner CLI Guide
 
-This guide assumes that you have never used a command-line interface (CLI).
-You will learn only the commands needed to find your coursework and use
-VeriWhy Check safely.
+This guide assumes that you have never used a command-line interface (CLI). You will learn only the
+commands needed to find your coursework and use VeriWhy Check safely.
 
 ## What Is a CLI?
 
-A CLI is a text-based way to give your computer instructions. Think of it as
-an address bar for your computer: you type where you want to go and what you
-want the computer to do.
+A CLI is a text-based way to give your computer instructions. Think of it as an address bar for your
+computer: you type where you want to go and what you want the computer to do.
 
 On macOS, use **Terminal**. On Windows, use **PowerShell**.
 
@@ -24,8 +22,8 @@ On macOS, use **Terminal**. On Windows, use **PowerShell**.
 └──────────────────────────────────────────────────────────────┘
 ```
 
-Only type the command. Do not type the prompt symbol (`%`, `$`, or `>`) and do
-not type the example output.
+Only type the command. Do not type the prompt symbol (`%`, `$`, or `>`) and do not type the example
+output.
 
 ```text
 Type this:       veriwhy-check version
@@ -46,13 +44,13 @@ Do not type:   % veriwhy-check version
 2. Type `PowerShell`.
 3. Select **Windows PowerShell** or **PowerShell**.
 
-If you use Visual Studio Code, you can instead select **Terminal**, then
-**New Terminal**. Its starting folder is usually the folder open in VS Code.
+If you use Visual Studio Code, you can instead select **Terminal**, then **New Terminal**. Its
+starting folder is usually the folder open in VS Code.
 
 ## Check Your Current Location
 
-Your terminal is always working inside one folder. Check that location before
-running an assignment check.
+Your terminal is always working inside one folder. Check that location before running an assignment
+check.
 
 ### macOS Terminal
 
@@ -80,8 +78,8 @@ Path
 C:\Users\student\Documents\GitHub\web-425
 ```
 
-`pwd` means **print working directory**. A directory is another word for a
-folder. PowerShell also accepts `pwd` as a short form of `Get-Location`.
+`pwd` means **print working directory**. A directory is another word for a folder. PowerShell also
+accepts `pwd` as a short form of `Get-Location`.
 
 ## See What Is in the Current Folder
 
@@ -97,8 +95,7 @@ ls
 Get-ChildItem
 ```
 
-PowerShell also accepts `ls` as a short form. A course repository might look
-like this:
+PowerShell also accepts `ls` as a short form. A course repository might look like this:
 
 ```text
 week-1    week-2    week-3    README.md
@@ -145,8 +142,7 @@ PowerShell users can enter `Get-Location` instead of `pwd` in these examples.
 
 ## Move Up One Folder
 
-Two periods mean the parent folder—the folder one level above the current
-one.
+Two periods mean the parent folder—the folder one level above the current one.
 
 ```text
 cd ..
@@ -176,8 +172,7 @@ The tilde (`~`) is a shortcut for your personal user folder.
 
 ## Enter a Complete Folder Path
 
-You do not have to move one folder at a time. Enter the complete path in
-quotation marks:
+You do not have to move one folder at a time. Enter the complete path in quotation marks:
 
 ### macOS example
 
@@ -197,16 +192,15 @@ Quotation marks are required when a folder name contains spaces:
 cd "C:\Users\student\My Courses\web-340"
 ```
 
-Without quotation marks, the terminal may treat each word as a separate
-instruction.
+Without quotation marks, the terminal may treat each word as a separate instruction.
 
 ## Understand Path Shortcuts
 
-| Shortcut | Meaning | Example |
-| --- | --- | --- |
-| `.` | Current folder | `./week-2` |
-| `..` | One folder above | `../week-1` |
-| `~` | Your user folder | `~/Documents` |
+| Shortcut   | Meaning                | Example              |
+| ---------- | ---------------------- | -------------------- |
+| `.`        | Current folder         | `./week-2`           |
+| `..`       | One folder above       | `../week-1`          |
+| `~`        | Your user folder       | `~/Documents`        |
 | `/` or `\` | Separates folder names | `week-2/cooking-app` |
 
 VeriWhy Check accepts a quoted complete path, so use one if you are uncertain.
@@ -215,16 +209,15 @@ VeriWhy Check accepts a quoted complete path, so use one if you are uncertain.
 
 Look for the files that identify the kind of project.
 
-If folders and files are new to you, read the
-[Project Folder Guide](project-folders.html) first. It explains these ideas in
-basic English and shows complete examples for every supported course.
+If folders and files are new to you, read the [Project Folder Guide](project-folders.html) first. It
+explains these ideas in basic English and shows complete examples for every supported course.
 
-| Course | What you should usually see |
-| --- | --- |
-| WEB 231 | The assignment `.html` and `.js` files |
-| WEB 330 | The assignment `.html` and `.js` files |
+| Course  | What you should usually see                   |
+| ------- | --------------------------------------------- |
+| WEB 231 | The assignment `.html` and `.js` files        |
+| WEB 330 | The assignment `.html` and `.js` files        |
 | WEB 340 | `package.json` and the assigned Node.js files |
-| WEB 425 | `angular.json`, `package.json`, and `src` |
+| WEB 425 | `angular.json`, `package.json`, and `src`     |
 
 Example WEB 340 location:
 
@@ -247,8 +240,8 @@ rpg-character-builder       ← open this folder and run the lab check here
 ```
 
 The WEB 425 repository and project folder are normally the same folder. The
-[Project Folder Guide](project-folders.html) explains why this looks different
-from courses that use separate week folders.
+[Project Folder Guide](project-folders.html) explains why this looks different from courses that use
+separate week folders.
 
 ## Run Your First Check
 
@@ -284,8 +277,8 @@ Your report is ready:
   /your/local/report/location/report.html
 ```
 
-Your exact output may differ. Look for **Your report is ready**. The next line
-tells you where the student-facing HTML report was saved.
+Your exact output may differ. Look for **Your report is ready**. The next line tells you where the
+student-facing HTML report was saved.
 
 ## Check a Project Without Moving Into It
 
@@ -305,47 +298,47 @@ On Windows, use your Windows path inside quotation marks.
 
 ## All VeriWhy Check Commands
 
-| What you want to do | Command |
-| --- | --- |
-| Get a short introduction | `veriwhy-check help` |
-| Open the visual guide | `veriwhy-check guide` |
-| Show the guide file location | `veriwhy-check guide --path` |
-| Check one assignment | `veriwhy-check check COURSE/ASSIGNMENT` |
-| Check a particular folder | `veriwhy-check check COURSE/ASSIGNMENT "FOLDER"` |
+| What you want to do                          | Command                                               |
+| -------------------------------------------- | ----------------------------------------------------- |
+| Get a short introduction                     | `veriwhy-check help`                                  |
+| Open the visual guide                        | `veriwhy-check guide`                                 |
+| Show the guide file location                 | `veriwhy-check guide --path`                          |
+| Check one assignment                         | `veriwhy-check check COURSE/ASSIGNMENT`               |
+| Check a particular folder                    | `veriwhy-check check COURSE/ASSIGNMENT "FOLDER"`      |
 | Inspect files without running behavior tests | `veriwhy-check check COURSE/ASSIGNMENT --static-only` |
-| List all available checks | `veriwhy-check list` |
-| List one course | `veriwhy-check list WEB-425` |
-| Test whether the installation is ready | `veriwhy-check doctor` |
-| Show saved file locations | `veriwhy-check paths` |
-| Show the installed version | `veriwhy-check version` |
-| Install the latest release | `veriwhy-check update` |
-| Preview uninstallation | `veriwhy-check uninstall --dry-run` |
-| Uninstall but preserve reports | `veriwhy-check uninstall` |
-| Uninstall and remove reports | `veriwhy-check uninstall --remove-reports` |
+| List all available checks                    | `veriwhy-check list`                                  |
+| List one course                              | `veriwhy-check list WEB-425`                          |
+| Test whether the installation is ready       | `veriwhy-check doctor`                                |
+| Show saved file locations                    | `veriwhy-check paths`                                 |
+| Show the installed version                   | `veriwhy-check version`                               |
+| Install the latest release                   | `veriwhy-check update`                                |
+| Preview uninstallation                       | `veriwhy-check uninstall --dry-run`                   |
+| Uninstall but preserve reports               | `veriwhy-check uninstall`                             |
+| Uninstall and remove reports                 | `veriwhy-check uninstall --remove-reports`            |
 
-The uninstall commands are included for completeness. Do not run them while
-you are trying to check an assignment.
+The uninstall commands are included for completeness. Do not run them while you are trying to check
+an assignment.
 
 ## Helpful Terminal Controls
 
-| Action | macOS Terminal | Windows PowerShell |
-| --- | --- | --- |
-| Run the command | Return | Enter |
-| Paste copied text | Command + V | Control + V |
-| Stop a running command | Control + C | Control + C |
-| Show an earlier command | Up Arrow | Up Arrow |
-| Clear the visible screen | `clear` | `Clear-Host` |
+| Action                   | macOS Terminal | Windows PowerShell |
+| ------------------------ | -------------- | ------------------ |
+| Run the command          | Return         | Enter              |
+| Paste copied text        | Command + V    | Control + V        |
+| Stop a running command   | Control + C    | Control + C        |
+| Show an earlier command  | Up Arrow       | Up Arrow           |
+| Clear the visible screen | `clear`        | `Clear-Host`       |
 
-Stopping a command with Control + C does not delete your assignment. It only
-asks the currently running command to stop.
+Stopping a command with Control + C does not delete your assignment. It only asks the currently
+running command to stop.
 
 ## Troubleshooting: No Project Was Found
 
-This message means VeriWhy Check could not identify the assignment under the
-folder it searched. It does not mean that your work was deleted.
+This message means VeriWhy Check could not identify the assignment under the folder it searched. It
+does not mean that your work was deleted.
 
-The [Project Folder Guide](project-folders.html) can help you recognize the
-correct project folder before you continue.
+The [Project Folder Guide](project-folders.html) can help you recognize the correct project folder
+before you continue.
 
 Follow this sequence:
 
@@ -374,15 +367,14 @@ veriwhy-check check WEB-340/assignment-2.2 "./week-2/cooking-app"
 
 ## Troubleshooting: Multiple Projects Were Found
 
-VeriWhy Check found more than one possible project and refused to guess. Give
-it the exact folder:
+VeriWhy Check found more than one possible project and refused to guess. Give it the exact folder:
 
 ```text
 veriwhy-check check WEB-231/assignment-2.2 "./week-2/project2-2"
 ```
 
-The exact folder names can be different. Use `ls` or `Get-ChildItem` to read
-the names on your computer, and copy those names into the command.
+The exact folder names can be different. Use `ls` or `Get-ChildItem` to read the names on your
+computer, and copy those names into the command.
 
 ## Troubleshooting: Command Not Found
 
@@ -403,8 +395,8 @@ Try these steps:
 3. Enter `veriwhy-check doctor` again.
 4. If it still fails, rerun the official installer.
 
-Your current folder does not cause a **command not found** message. That
-message concerns the VeriWhy Check installation.
+Your current folder does not cause a **command not found** message. That message concerns the
+VeriWhy Check installation.
 
 ## Troubleshooting: Folder Not Found
 
@@ -421,21 +413,20 @@ Enter `ls` or `Get-ChildItem` and copy the folder name exactly as displayed.
 
 ## Troubleshooting: You Entered the Wrong Command
 
-VeriWhy Check explains unsupported commands and shows a corrected example.
-You can always return to the main help:
+VeriWhy Check explains unsupported commands and shows a corrected example. You can always return to
+the main help:
 
 ```text
 veriwhy-check help
 ```
 
-Use the Up Arrow to recall the previous command, correct the typing, and press
-Return or Enter again.
+Use the Up Arrow to recall the previous command, correct the typing, and press Return or Enter
+again.
 
 ## Troubleshooting: A Check Appears Stuck
 
-Angular and Node.js projects may need time to prepare dependencies, build, and
-run tests. If the terminal is still displaying new activity, allow it to
-continue.
+Angular and Node.js projects may need time to prepare dependencies, build, and run tests. If the
+terminal is still displaying new activity, allow it to continue.
 
 If there is no new activity for several minutes:
 
@@ -452,15 +443,14 @@ Display every location used by the application:
 veriwhy-check paths
 ```
 
-The output labels the saved reports folder. You can also copy the report path
-printed at the end of a completed check.
+The output labels the saved reports folder. You can also copy the report path printed at the end of
+a completed check.
 
 ## Commands to Avoid
 
-You do not need administrator commands or file-deletion commands to use
-VeriWhy Check. Do not enter commands such as `sudo`, `rm`, `del`, or
-`Remove-Item` merely to solve a checking error. Ask your instructor for help
-before using a command that changes permissions or removes files.
+You do not need administrator commands or file-deletion commands to use VeriWhy Check. Do not enter
+commands such as `sudo`, `rm`, `del`, or `Remove-Item` merely to solve a checking error. Ask your
+instructor for help before using a command that changes permissions or removes files.
 
 ## A Safe Practice Exercise
 
@@ -474,5 +464,5 @@ veriwhy-check doctor
 veriwhy-check list WEB-425
 ```
 
-On Windows, replace `pwd` and `ls` with `Get-Location` and `Get-ChildItem` if
-you prefer the complete PowerShell command names.
+On Windows, replace `pwd` and `ls` with `Get-Location` and `Get-ChildItem` if you prefer the
+complete PowerShell command names.

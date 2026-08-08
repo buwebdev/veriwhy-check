@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-231/assignment-2.2
 course: WEB 231 Enterprise JavaScript I
-assignment: "Assignment 2.2: Form validation (Project 2-2)"
+assignment: 'Assignment 2.2: Form validation (Project 2-2)'
 version: 1.1.0
 project:
   kind: static-web

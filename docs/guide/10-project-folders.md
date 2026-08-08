@@ -1,13 +1,12 @@
 # Project Folder Guide
 
-This guide assumes that folders, files, and computer projects are new to you.
-It explains where to save your course work and which folder to use with
-VeriWhy Check.
+This guide assumes that folders, files, and computer projects are new to you. It explains where to
+save your course work and which folder to use with VeriWhy Check.
 
 ## What Is a File?
 
-A **file** holds one piece of work. A file can hold code, text, a picture, or
-settings for an application.
+A **file** holds one piece of work. A file can hold code, text, a picture, or settings for an
+application.
 
 You can think of a file as one sheet of paper:
 
@@ -21,22 +20,21 @@ You can think of a file as one sheet of paper:
 
 The letters after the period help the computer understand the file:
 
-| Ending | What the file usually contains |
-| --- | --- |
-| `.html` | The content and parts of a web page |
-| `.css` | Colors, spacing, and page appearance |
-| `.js` | JavaScript instructions |
-| `.ts` | TypeScript instructions |
+| Ending  | What the file usually contains       |
+| ------- | ------------------------------------ |
+| `.html` | The content and parts of a web page  |
+| `.css`  | Colors, spacing, and page appearance |
+| `.js`   | JavaScript instructions              |
+| `.ts`   | TypeScript instructions              |
 | `.json` | Application information and settings |
-| `.md` | Written instructions |
+| `.md`   | Written instructions                 |
 
-Do not remove or change a file ending unless your assignment tells you to do
-so.
+Do not remove or change a file ending unless your assignment tells you to do so.
 
 ## What Is a Folder?
 
-A **folder** holds files and other folders. It works like a paper folder that
-keeps related work together.
+A **folder** holds files and other folders. It works like a paper folder that keeps related work
+together.
 
 ```text
 course-work/                 ← folder
@@ -46,13 +44,13 @@ course-work/                 ← folder
     └── script.js            ← file inside week-1
 ```
 
-The lines in this picture only show what is inside each folder. You do not
-type the lines or arrows into your computer.
+The lines in this picture only show what is inside each folder. You do not type the lines or arrows
+into your computer.
 
 ## What Is a Project Folder?
 
-A **project folder** holds all parts of one programming project. Files that
-work together must stay together inside this folder.
+A **project folder** holds all parts of one programming project. Files that work together must stay
+together inside this folder.
 
 Think of it as one school binder:
 
@@ -64,22 +62,20 @@ One binder
     └── src/                 ← source-code folder
 ```
 
-VeriWhy Check looks for special files to recognize a project. For example, an
-Angular project normally has `angular.json` and `package.json`.
+VeriWhy Check looks for special files to recognize a project. For example, an Angular project
+normally has `angular.json` and `package.json`.
 
 ## What Is a Repository?
 
-A **repository**, often called a **repo**, is a project folder that Git tracks.
-Git can remember changes to your files. GitHub can store a copy of the
-repository online.
+A **repository**, often called a **repo**, is a project folder that Git tracks. Git can remember
+changes to your files. GitHub can store a copy of the repository online.
 
 For these courses, a repository may hold:
 
 - One project that grows each week, or
 - Several week folders with a different assignment in each folder.
 
-You do not need to understand how Git works to recognize the folder pictures
-in this guide.
+You do not need to understand how Git works to recognize the folder pictures in this guide.
 
 ## How to Read a Folder Picture
 
@@ -107,8 +103,8 @@ web-340\week-2\cooking-app
 
 ## WEB 231 Folder Example
 
-WEB 231 assignments use HTML and JavaScript files. A student repository can
-hold one folder for each week.
+WEB 231 assignments use HTML and JavaScript files. A student repository can hold one folder for each
+week.
 
 ```text
 web-231/
@@ -122,9 +118,8 @@ web-231/
         └── project02-02.js
 ```
 
-The textbook starter files may end in `_txt`, such as
-`project01-02_txt.html`. VeriWhy Check accepts the textbook name and the
-renamed assignment name.
+The textbook starter files may end in `_txt`, such as `project01-02_txt.html`. VeriWhy Check accepts
+the textbook name and the renamed assignment name.
 
 You can run a check inside the project folder:
 
@@ -133,8 +128,7 @@ cd "web-231/week-1/project1-2"
 veriwhy-check check WEB-231/assignment-1.3
 ```
 
-You can also remain in the main course folder and tell VeriWhy Check where the
-project is:
+You can also remain in the main course folder and tell VeriWhy Check where the project is:
 
 ```text
 veriwhy-check check WEB-231/assignment-1.3 "./week-1/project1-2"
@@ -156,8 +150,8 @@ web-330/
         └── JavaScript files
 ```
 
-The textbook files may still contain `_txt` in their names. VeriWhy Check can
-recognize both supported forms.
+The textbook files may still contain `_txt` in their names. VeriWhy Check can recognize both
+supported forms.
 
 Example check from the main course folder:
 
@@ -167,8 +161,7 @@ veriwhy-check check WEB-330/assignment-1.3 "./week-1/project8-1"
 
 ## WEB 340 Folder Example
 
-WEB 340 projects use Node.js. Each assignment project normally has its own
-`package.json` file.
+WEB 340 projects use Node.js. Each assignment project normally has its own `package.json` file.
 
 ```text
 web-340/
@@ -191,8 +184,8 @@ veriwhy-check check WEB-340/assignment-2.2 "./week-2/cooking-app"
 
 ## WEB 425 Folder Example
 
-WEB 425 uses one Angular project that grows during the course. The repository
-and the project folder are normally the same folder.
+WEB 425 uses one Angular project that grows during the course. The repository and the project folder
+are normally the same folder.
 
 ```text
 rpg-character-builder/       ← repository and project folder
@@ -204,8 +197,8 @@ rpg-character-builder/       ← repository and project folder
     └── app/
 ```
 
-Open `rpg-character-builder` in Visual Studio Code. Do not open only the `src`
-folder or only the `app` folder.
+Open `rpg-character-builder` in Visual Studio Code. Do not open only the `src` folder or only the
+`app` folder.
 
 Run each lab check from `rpg-character-builder`:
 
@@ -249,15 +242,13 @@ RPG-CHARACTER-BUILDER
 └── src
 ```
 
-If the Explorer only shows `src` or `app`, you may have opened a folder that
-is too far inside the project. Select **File**, then **Open Folder**, and open
-the complete project folder instead.
+If the Explorer only shows `src` or `app`, you may have opened a folder that is too far inside the
+project. Select **File**, then **Open Folder**, and open the complete project folder instead.
 
 ## How to Check the Folder in the Terminal
 
-If the terminal is new to you, the
-[Beginner CLI Guide](cli-basics.html) explains how to open it, type a command,
-and understand what the computer shows you.
+If the terminal is new to you, the [Beginner CLI Guide](cli-basics.html) explains how to open it,
+type a command, and understand what the computer shows you.
 
 Open a new terminal in Visual Studio Code:
 
@@ -295,8 +286,8 @@ Compare the displayed names with the course examples in this guide.
 
 ## Common Problem: The ZIP File Was Not Opened
 
-A downloaded ZIP file is a closed package that holds other files. Your tools
-usually need the normal folder inside it.
+A downloaded ZIP file is a closed package that holds other files. Your tools usually need the normal
+folder inside it.
 
 ```text
 Downloads/
@@ -306,8 +297,7 @@ Downloads/
 
 ### macOS
 
-Double-click the ZIP file in Finder. macOS creates the normal folder beside
-it.
+Double-click the ZIP file in Finder. macOS creates the normal folder beside it.
 
 ### Windows
 
@@ -315,8 +305,8 @@ it.
 2. Select **Extract All**.
 3. Select **Extract**.
 
-Open the extracted folder in Visual Studio Code. Do not open the ZIP file as
-if it were the project folder.
+Open the extracted folder in Visual Studio Code. Do not open the ZIP file as if it were the project
+folder.
 
 ## Common Problem: The Project Is Inside Too Many Copies
 
@@ -331,13 +321,11 @@ rpg-character-builder/
         └── src
 ```
 
-The correct project folder is the deepest `rpg-character-builder` in this
-picture because it directly contains `angular.json`, `package.json`, and
-`src`.
+The correct project folder is the deepest `rpg-character-builder` in this picture because it
+directly contains `angular.json`, `package.json`, and `src`.
 
-Open that deepest folder in Visual Studio Code, or give VeriWhy Check its
-complete path. Do not delete the other folders until you know which copy holds
-your newest work.
+Open that deepest folder in Visual Studio Code, or give VeriWhy Check its complete path. Do not
+delete the other folders until you know which copy holds your newest work.
 
 ## Common Problem: Two Copies of the Same Project
 
@@ -349,23 +337,23 @@ rpg-character-builder-copy
 rpg-character-builder-final
 ```
 
-VeriWhy Check may report **Multiple Projects Were Found** because it will not
-guess which copy is correct.
+VeriWhy Check may report **Multiple Projects Were Found** because it will not guess which copy is
+correct.
 
-Open each copy and check the files. Find the copy with your newest work. Then
-give VeriWhy Check that exact folder:
+Open each copy and check the files. Find the copy with your newest work. Then give VeriWhy Check
+that exact folder:
 
 ```text
 veriwhy-check check WEB-425/lab-1.1 "./rpg-character-builder-final"
 ```
 
-Do not delete the other copies merely to make the message disappear. First
-make sure that you have found and saved your correct work.
+Do not delete the other copies merely to make the message disappear. First make sure that you have
+found and saved your correct work.
 
 ## Common Problem: A Required File Is Missing
 
-A project file may have been moved, renamed, or saved in a different folder.
-Compare your folder with the assignment instructions.
+A project file may have been moved, renamed, or saved in a different folder. Compare your folder
+with the assignment instructions.
 
 For example, this is not a complete Angular project folder:
 
@@ -374,11 +362,11 @@ rpg-character-builder/
 └── src/
 ```
 
-The same folder should also have `angular.json`, `package.json`, and the other
-project files shown earlier.
+The same folder should also have `angular.json`, `package.json`, and the other project files shown
+earlier.
 
-Do not create an empty replacement file only to make its name appear. Find the
-original project or starter files and restore the correct file contents.
+Do not create an empty replacement file only to make its name appear. Find the original project or
+starter files and restore the correct file contents.
 
 ## Common Problem: Files from Different Assignments Are Mixed Together
 
@@ -399,8 +387,8 @@ all-my-work/
 └── cooking-app files
 ```
 
-Separate project folders make it easier for you, Visual Studio Code, and
-VeriWhy Check to identify the correct assignment.
+Separate project folders make it easier for you, Visual Studio Code, and VeriWhy Check to identify
+the correct assignment.
 
 ## A Safe Folder Check
 
@@ -412,6 +400,5 @@ Before running VeriWhy Check, answer these questions:
 4. For WEB 425, can I see `angular.json`, `package.json`, and `src` together?
 5. Did I keep different assignments in different folders?
 
-If you are still unsure, do not move or delete files. Take a screenshot of the
-folder in Finder, File Explorer, or Visual Studio Code and ask your instructor
-for help.
+If you are still unsure, do not move or delete files. Take a screenshot of the folder in Finder,
+File Explorer, or Visual Studio Code and ask your instructor for help.

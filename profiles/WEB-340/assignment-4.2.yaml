@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-340/assignment-4.2
 course: WEB 340 Node.js
-assignment: "Assignment 4.2: Taco stand EventEmitter and CLI"
+assignment: 'Assignment 4.2: Taco stand EventEmitter and CLI'
 version: 1.0.0
 project:
   kind: node

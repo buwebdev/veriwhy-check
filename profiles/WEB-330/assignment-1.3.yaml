@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-330/assignment-1.3
 course: WEB 330 Enterprise JavaScript II
-assignment: "Assignment 1.3: Customized timer object"
+assignment: 'Assignment 1.3: Customized timer object'
 version: 1.0.0
 project:
   kind: static-web

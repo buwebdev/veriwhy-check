@@ -1,6 +1,10 @@
 /**
- * @file Public functional check used by VeriWhy Check.
+ * @file WEB 340 Assignment 1.3 Node.js behavior checks.
  * @author Richard Krasso
+ *
+ * The cases execute the submitted program with the checker's private Node.js
+ * runtime and compare observable results. They do not grade source formatting,
+ * naming preferences, comments, or undocumented implementation details.
  */
 
 import { equal, runNode } from '../helpers.mjs';
@@ -12,6 +16,8 @@ async function conversion(root, pounds, expected) {
   equal(result.stderr.trim(), '', `Error output for ${pounds} pounds`);
 }
 
+// YAML selects cases by these stable names, preserving a direct mapping from the
+// published assignment contract to executable Node.js evidence.
 export const cases = {
   async 'representative-conversions'(root) {
     await conversion(root, '10', '4.54');

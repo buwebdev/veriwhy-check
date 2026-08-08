@@ -3,7 +3,7 @@
 # This file declares visible functional requirements; it contains no grade points.
 id: WEB-340/assignment-2.2
 course: WEB 340 Node.js
-assignment: "Assignment 2.2: CommonJS recipe module"
+assignment: 'Assignment 2.2: CommonJS recipe module'
 version: 1.0.0
 project:
   kind: node
