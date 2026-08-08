@@ -1,6 +1,6 @@
 # VeriWhy Check Release Notes
 
-## Version 1.0.3
+## Version 1.0.4
 
 VeriWhy Check Version 1 is the first student-ready release of the local
 coursework checker. It helps students check functional assignment requirements
