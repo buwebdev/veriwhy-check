@@ -136,6 +136,10 @@ Use one of these commands:
 
 Most documentation, profile, and defect corrections should use `patch`.
 
+Before creating a new version, update `RELEASE-NOTES.md` so its version heading
+matches the version being created. The deployment script stops if they differ
+and publishes that maintained file as the GitHub release description.
+
 ## Build Packages for Other Operating Systems
 
 A release package contains a platform-specific Node.js runtime and managed

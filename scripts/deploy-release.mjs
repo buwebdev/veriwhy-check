@@ -53,13 +53,18 @@ async function main() {
   const mode = parseReleaseMode(process.argv.slice(2));
   const manifestPath = join(packageRoot, 'package.json');
   const lockPath = join(packageRoot, 'package-lock.json');
+  const releaseNotesPath = join(packageRoot, 'RELEASE-NOTES.md');
   const originalManifest = await readFile(manifestPath, 'utf8');
   const originalLock = await readFile(lockPath, 'utf8');
   const manifest = JSON.parse(originalManifest);
   const target = nextReleaseVersion(manifest.version, mode);
   const tag = `v${target}`;
+  const releaseNotes = await readFile(releaseNotesPath, 'utf8');
   const unexpected = nonMarkdownChanges(await changedPaths());
 
+  if (!releaseNotes.includes(`## Version ${target}`)) {
+    throw new Error(`Update RELEASE-NOTES.md with a “## Version ${target}” heading before publishing.`);
+  }
   if (unexpected.length > 0) {
     throw new Error(`Commit or remove these non-Markdown changes before releasing:\n- ${unexpected.join('\n- ')}`);
   }
@@ -103,7 +108,7 @@ async function main() {
     }
     await visible('git', ['push', 'origin', 'main']);
     await visible('git', ['push', 'origin', tag]);
-    await visible('gh', ['release', 'create', tag, archive, digest, '--verify-tag', '--generate-notes', '--title', `VeriWhy Check ${tag}`, '--repo', 'buwebdev/veriwhy-check']);
+    await visible('gh', ['release', 'create', tag, archive, digest, '--verify-tag', '--notes-file', releaseNotesPath, '--title', `VeriWhy Check ${tag}`, '--repo', 'buwebdev/veriwhy-check']);
     console.log(`Published VeriWhy Check ${tag}.`);
   } catch (error) {
     if (!committed) {
