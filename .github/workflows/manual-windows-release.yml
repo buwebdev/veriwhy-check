@@ -108,6 +108,8 @@ jobs:
             Start-Sleep -Milliseconds 250
           }
           if (Test-Path $launcher) { throw "The Windows launcher was not removed." }
+          if (Test-Path (Join-Path $data "versions")) { throw "The private Windows runtime was not removed." }
+          if (Test-Path (Join-Path $data "install.json")) { throw "The Windows installation record was not removed." }
 
       - name: Upload the verified package to the selected release
         if: ${{ inputs.publish }}

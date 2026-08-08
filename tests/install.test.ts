@@ -36,6 +36,8 @@ test('launcher names and sources cover Windows and Unix argument forwarding', ()
   assert.equal(launcherName('darwin'), 'veriwhy-check');
   assert.match(launcherSource('/Application Files/1.0.0', 'darwin'), /"\$@"/);
   assert.match(launcherSource('C:\\App Files\\1.0.0', 'win32'), /%\*/);
+  assert.match(launcherSource('C:\\App Files\\1.0.0', 'win32'), /--dry-run/);
+  assert.match(launcherSource('C:\\App Files\\1.0.0', 'win32'), /del "%~f0"/);
   assert.match(launcherSource('/Application Files/1.0.0', 'linux'), /PLAYWRIGHT_BROWSERS_PATH/);
   assert.match(launcherSource('/Application Files/versions/1.0.0', 'linux'), /VERIWHY_CHECK_DATA_ROOT/);
   assert.match(launcherSource('/Application Files/versions/1.0.0', 'linux'), /PATH=.*runtime/);

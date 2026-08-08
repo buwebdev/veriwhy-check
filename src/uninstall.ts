@@ -77,7 +77,9 @@ export async function uninstallApplication(options: UninstallOptions): Promise<U
   const existing = [];
   for (const target of plan.targets) if (await pathExists(target)) existing.push(target);
   if ((options.platform ?? process.platform) === 'win32') {
-    await scheduleWindowsRemoval(existing);
+    // The .cmd launcher removes itself after its Node child returns. Process
+    // the remaining application data first so a locked launcher cannot delay it.
+    await scheduleWindowsRemoval([...existing.slice(1), ...existing.slice(0, 1)]);
     return { scheduled: true, removed: existing, preserved: plan.preserved };
   }
   for (const target of existing) await rm(target, { recursive: true, force: true });
