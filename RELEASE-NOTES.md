@@ -45,8 +45,7 @@ grade and never removes student project folders.
 
 ### Quality Checks
 
-- 73 automated tests complete: 71 pass and 2 loopback-browser tests are skipped
-  only when the execution sandbox does not permit a local listener.
+- All 73 automated tests pass on the supported clean release systems.
 - Line, function, and branch coverage requirements pass.
 - All 24 YAML assignment profiles validate.
 - All Markdown documentation passes the VS Code-compatible Markdown linter.
