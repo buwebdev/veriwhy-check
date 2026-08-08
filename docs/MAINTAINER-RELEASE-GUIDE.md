@@ -157,8 +157,8 @@ Replace `v1.0.0` with the release being completed. When that GitHub release
 already exists, `current` uploads or replaces only the package and checksum for
 the current computer. It does not create a second release.
 
-Version 1 should not be announced as cross-platform until its required macOS,
-Windows, and Linux packages have been uploaded and tested.
+Version 1 supports Apple Silicon macOS and Windows x64. Other platform packages
+must be built and tested before support for them is announced.
 
 ### Manual Windows x64 Runner
 
@@ -179,7 +179,9 @@ After the validation succeeds, build a tagged version and upload its verified
 Windows archive by changing `source_ref` and `release_tag` to that same tag and
 setting `publish=true`. The runner performs tests, packaging, checksum
 verification, installation, private npm verification, readiness, uninstall,
-and release upload on a clean Windows x64 virtual machine.
+and release upload on a clean Windows x64 virtual machine. The documented
+Version 1 delayed-runtime cleanup issue produces a warning rather than blocking
+an otherwise validated Windows release.
 
 ## Check the Published Release
 

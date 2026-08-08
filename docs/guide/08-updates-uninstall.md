@@ -49,3 +49,16 @@ veriwhy-check uninstall --remove-reports
 
 On Windows, file removal begins after the running command closes so the private
 runtime is no longer in use.
+
+### Windows Uninstall Workaround
+
+Windows may leave the private runtime behind. If the `VeriWhy Check` folder
+remains after uninstallation:
+
+1. Close every Command Prompt, PowerShell, and terminal window.
+2. Open File Explorer.
+3. Enter `%LOCALAPPDATA%` in the address bar and press Enter.
+4. Remove the `VeriWhy Check` folder.
+
+This known Version 1 issue affects only uninstallation. It does not affect
+student projects or normal assignment checks.

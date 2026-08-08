@@ -25,16 +25,17 @@ student release. Publication is not complete until every item is checked.
 - [x] Test custom-path installation in an ignored sandbox.
 - [x] Test Version 1 in the normal macOS installation locations.
 - [x] Test a known-good WEB 425 Angular project using only the bundled runtime.
-- [ ] Test Version 1 on a clean Windows x64 computer.
+- [x] Test Version 1 installation and checking on a clean Windows x64 runner.
+- [x] Document the Windows delayed-uninstall issue and workaround.
 
 ## Publication
 
 - [x] Confirm the legal copyright holder and add the approved license notice.
 - [x] Review privacy, security, support, and student guides.
 - [x] Create the approved GitHub Version 1 release.
-- [ ] Upload every platform archive and matching digest.
+- [ ] Upload both supported platform archives and matching digests.
 - [x] Test the public installer link without GitHub authentication.
 - [x] Test a public update from Version 1.0.0 to Version 1.0.1.
 
-The unchecked platform items do not block the validated Apple Silicon macOS
-release. They block announcing Windows, Linux, or Intel Mac support.
+Linux, Windows ARM64, and Intel Mac are outside the Version 1 supported-platform
+scope. The Windows delayed-uninstall limitation is documented separately.

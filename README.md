@@ -9,9 +9,9 @@ and creates local reports. It does not assign the official course grade.
 
 ## Version 1 status
 
-Version 1 is publicly released and validated for macOS on Apple Silicon.
-Windows, Linux, and Intel Mac packages remain pending until they can be built
-and tested on those operating systems. Initial course support is:
+Version 1 is publicly released for macOS on Apple Silicon and Windows x64.
+Linux, Windows ARM64, and Intel Mac packages are not currently supported.
+Initial course support is:
 
 - WEB 231 Enterprise JavaScript I
 - WEB 330 Enterprise JavaScript II
@@ -38,19 +38,15 @@ Open Terminal, paste this complete command, and press Return or Enter:
 curl -fsSL https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.sh | sh
 ```
 
-### Windows, Linux, and Intel Mac
-
-The installation scripts support these systems, but their release packages
-have not yet been uploaded and tested. Do not give students these installation
-commands until the maintainer announces support for their platform.
-
-The planned Windows command is:
+### Windows x64
 
 Open PowerShell, paste this complete command, and press Enter:
 
 ```powershell
 irm https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.ps1 | iex
 ```
+
+Linux, Windows ARM64, and Intel Mac are not currently supported.
 
 ### Confirm the installation
 
@@ -62,6 +58,9 @@ veriwhy-check doctor
 
 For beginner-friendly installation, command, folder, update, and uninstall
 instructions, read the [complete student guide](docs/STUDENT-GUIDE.md).
+
+See [Known Issues](docs/KNOWN-ISSUES.md) for the documented Windows uninstall
+edge case and workaround.
 
 ## Developer setup
 

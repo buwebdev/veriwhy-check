@@ -8,17 +8,15 @@ Open Terminal, copy the complete command, paste it, and press Return:
 curl -fsSL https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.sh | sh
 ```
 
-## Windows, Linux, and Intel Mac
-
-Your instructor will announce when the package for your operating system is
-available. Do not run an installation command before that announcement. The
-planned Windows command is:
+## Install on Windows x64
 
 Open PowerShell, copy the complete command, paste it, and press Enter:
 
 ```text
 irm https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.ps1 | iex
 ```
+
+Linux, Windows ARM64, and Intel Mac are not currently supported.
 
 The installer chooses the correct package, downloads it from the official
 GitHub release, checks its digital fingerprint, and installs its private

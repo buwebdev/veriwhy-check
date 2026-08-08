@@ -1,12 +1,10 @@
 # Installation
 
 **Author:** Richard Krasso  
-**Status:** Apple Silicon macOS release published and validated
+**Status:** Apple Silicon macOS and Windows x64 releases available
 
-Version 1 provides packaging and installer support for Windows, macOS, and
-Linux on supported x64 or ARM64 computers. The Apple Silicon macOS package is
-published and validated. Windows, Linux, and Intel Mac packages remain pending
-until they can be built and tested on those operating systems. Each package
+Version 1 supports macOS on Apple Silicon and Windows x64. Linux, Windows
+ARM64, and Intel Mac are not currently supported. Each published package
 contains the VeriWhy-check application, private Node.js and npm runtimes,
 public profiles, public checks, report assets, and an uninstaller.
 
@@ -15,7 +13,8 @@ LLM. Static web assessment additionally installs Playwright's managed Chromium
 browser in the application's documented user-data location.
 
 The Apple Silicon release has been tested from its public GitHub download in an
-isolated directory and in the normal macOS user locations. The installer
+isolated directory and in the normal macOS user locations. The Windows x64
+package has been built, installed, and checked on a clean Windows runner. The installer
 supports explicit data and command directories for controlled validation. Each
 release includes a SHA-256 digest; the installer checks it before running any
 packaged code.

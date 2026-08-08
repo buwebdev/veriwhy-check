@@ -28,9 +28,9 @@ or other schoolwork.
 
 ## Installing VeriWhy Check
 
-Your instructor will give you one command to copy. Think of the command as a
-delivery address for a trusted delivery truck. It tells GitHub which official
-toolbox to bring and tells your computer where to put it.
+Choose the command for your computer. Think of the command as a delivery
+address for a trusted delivery truck. It tells GitHub which official toolbox
+to bring and tells your computer where to put it.
 
 ### macOS on Apple Silicon
 
@@ -40,17 +40,15 @@ Open Terminal, copy the complete line below, paste it, and press Return:
 curl -fsSL https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.sh | sh
 ```
 
-### Windows, Linux, or Intel Mac
-
-Your instructor will tell you when VeriWhy Check is available for your
-computer. Do not run an installation command until your operating-system
-package has been announced. The planned Windows command is:
+### Windows x64
 
 Open PowerShell, copy the complete line below, paste it, and press Enter:
 
 ```text
 irm https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.ps1 | iex
 ```
+
+Linux, Windows ARM64, and Intel Mac are not currently supported.
 
 The command chooses the correct package, downloads it from the official GitHub
 release, checks its digital fingerprint, and installs the complete toolbox.
@@ -164,3 +162,16 @@ veriwhy-check uninstall
 Your saved reports stay on the computer. VeriWhy Check never removes your
 assignment folders. If you also want to remove saved reports, use the separate
 `--remove-reports` option described in the uninstallation guide.
+
+### Windows Uninstall Workaround
+
+Windows may leave VeriWhy Check's private runtime after uninstallation. If the
+`VeriWhy Check` folder remains:
+
+1. Close every Command Prompt, PowerShell, and terminal window.
+2. Open File Explorer.
+3. Enter `%LOCALAPPDATA%` in the address bar and press Enter.
+4. Remove the `VeriWhy Check` folder.
+
+This affects only uninstallation. It does not affect assignment folders or
+normal checking. See [Known Issues](KNOWN-ISSUES.md) for the tracked issue.
