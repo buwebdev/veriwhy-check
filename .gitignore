@@ -41,6 +41,10 @@ build/Release
 node_modules/
 jspm_packages/
 
+# macOS Finder metadata
+.DS_Store
+**/.DS_Store
+
 # VeriWhy-check local development and installation validation artifacts.
 # All generated fixtures, reports, archives, and sandbox installations belong
 # here so student or instructor data cannot be committed accidentally.
