@@ -8,7 +8,7 @@
  */
 
 import assert from 'node:assert/strict';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import test from 'node:test';
 import { checkProject, prepareProject, resolveBrowserEntry } from '../src/checker.js';
@@ -85,7 +85,7 @@ test('dependency preparation reports a corrective failure instead of a process t
   });
 });
 
-test('Angular preparation injects the public check only into the prepared project', async () => {
+test('Angular preparation reserves the public-check filename for the isolated assignment run', async () => {
   await withFixture('checker-angular', async (root) => {
     const profile: Profile = {
       id: 'WEB-425/lab-1.1',
@@ -110,10 +110,9 @@ test('Angular preparation injects the public check only into the prepared projec
         packages: { '': { name: 'empty', version: '1.0.0' } }
       })
     );
+    await mkdir(join(root, 'src', 'app'), { recursive: true });
+    await writeFile(join(root, 'src', 'app', 'veriwhy-check.public.spec.ts'), 'stale check');
     await prepareProject(root, profile);
-    assert.match(
-      await readFile(join(root, 'src', 'app', 'veriwhy-check.public.spec.ts'), 'utf8'),
-      /Richard Krasso/
-    );
+    await assert.rejects(() => access(join(root, 'src', 'app', 'veriwhy-check.public.spec.ts')));
   });
 });

@@ -55,10 +55,17 @@ requirement.
 - `hygiene` rejects generated folders that should not be submitted.
 - `browser` runs one named public browser case.
 - `node-test` runs one named public Node.js case.
+- `angular-test` runs either the cumulative student suite or the assignment behavior check.
 - `command` runs an allowlisted npm command with explicit arguments.
 
 Profile paths must remain inside the selected project. General command rules allow only npm;
 profiles cannot contain shell command strings.
+
+An `angular-test` rule requires `suite: student` or `suite: assignment`. The student suite runs
+every student-authored Angular specification without injecting the public assignment check. The
+assignment suite injects only the profile's public check into the disposable project, runs only that
+file, and removes it. This keeps the two outcomes separate in reports and prevents the checker from
+counting its own test as student work.
 
 ## Assessment Boundary
 

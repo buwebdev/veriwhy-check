@@ -7,7 +7,7 @@
  * requirements, writes the durable report, and removes the temporary copy.
  */
 
-import { copyFile, mkdtemp, mkdir } from 'node:fs/promises';
+import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { basename, join, resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
@@ -47,16 +47,10 @@ export async function prepareProject(root: string, profile: Profile): Promise<vo
   // Static coursework has no dependency graph, and profiles may explicitly
   // forbid installation. Returning here avoids unnecessary network activity.
   if (profile.project.kind === 'static-web' || profile.project.install === 'none') return;
-  // Angular checks are public. Injecting the selected file into only the
-  // disposable copy avoids changing the student's actual project.
-  if (profile.course.startsWith('WEB 425')) {
-    const publicTest = join(publicChecksRoot, 'angular', `${profile.id}.spec.ts`);
-    if (await pathExists(publicTest)) {
-      const destination = join(root, 'src', 'app', 'veriwhy-check.public.spec.ts');
-      await mkdir(join(root, 'src', 'app'), { recursive: true });
-      await copyFile(publicTest, destination);
-    }
-  }
+  // Remove the checker's reserved filename from the disposable copy before
+  // student tests run. The assignment-only evaluator injects a fresh bundled
+  // check later and removes it immediately after that isolated run.
+  await rm(join(root, 'src', 'app', 'veriwhy-check.public.spec.ts'), { force: true });
   const result = await runCommand(
     'npm',
     ['ci', '--prefer-offline', '--no-audit', '--no-fund'],
@@ -95,6 +89,8 @@ export async function checkProject(
     await copyProject(discovery.project, temporaryProject);
     if (!options.staticOnly) await prepareProject(temporaryProject, profile);
     const browserEntry = await resolveBrowserEntry(temporaryProject, profile);
+    const publicAngularCheck = join(publicChecksRoot, 'angular', `${profile.id}.spec.ts`);
+    const hasPublicAngularCheck = await pathExists(publicAngularCheck);
     const results = [];
     // Requirements run in profile order so the report follows the published
     // assignment language and remains easy to compare with the instructions.
@@ -102,6 +98,7 @@ export async function checkProject(
       results.push(
         await evaluateRequirement(temporaryProject, requirement, {
           runExecutableChecks: !options.staticOnly,
+          ...(hasPublicAngularCheck ? { publicAngularCheck } : {}),
           ...(browserEntry ? { browserEntry } : {})
         })
       );

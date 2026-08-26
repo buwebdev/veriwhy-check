@@ -79,6 +79,18 @@ not require or change regular Chrome.
 Confirm that the project has its `package.json` and `package-lock.json`. An Angular or Node.js
 project may need internet access to obtain dependencies declared by the project.
 
+## A WEB 425 Unit Test Failed
+
+Read the requirement label in the report:
+
+- **Cumulative student-authored unit tests** means at least one test in your project failed. Start
+  with the first failing test named in the evidence.
+- **Assignment behavior requirements** means the current lab's published application behavior needs
+  attention. Compare the evidence with the lab instructions.
+
+Labs 1.1 and 2.1 do not evaluate student unit tests. Beginning with Lab 3.1, all cumulative student
+tests must pass.
+
 ## The Guide Did Not Open
 
 Display its location and open that file in your preferred browser:

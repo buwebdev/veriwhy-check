@@ -4,7 +4,7 @@
 id: WEB-425/lab-3.1
 course: WEB 425 Angular with TypeScript
 assignment: 'Lab 3.1: Test-first ability-score roller'
-version: 1.1.1
+version: 1.2.0
 project:
   kind: npm
   markers:
@@ -56,15 +56,18 @@ requirements:
           - data-testid=['"]roll-result['"]
           - data-testid=['"]roll-button['"]
   - id: student-tests
-    label: Cumulative tests include service and spy behavior
+    label: Cumulative student-authored unit tests
     rules:
       - kind: test-count
-        minimum: 5
+        minimum: 4
       - kind: test-source
         roots:
           - src/app
         all:
           - spyOn
+      - kind: angular-test
+        suite: student
+        timeoutSeconds: 180
   - id: production-build
     label: Production build succeeds
     rules:
@@ -75,13 +78,8 @@ requirements:
           - build
         timeoutSeconds: 180
   - id: test-suite
-    label: Complete Jasmine suite succeeds
+    label: Assignment behavior requirements
     rules:
-      - kind: command
-        executable: npm
-        args:
-          - test
-          - --
-          - --watch=false
-          - --browsers=ChromeHeadless
+      - kind: angular-test
+        suite: assignment
         timeoutSeconds: 180

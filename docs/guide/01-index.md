@@ -48,3 +48,5 @@ veriwhy-check paths
 
 Use the navigation menu to learn how to install the application, check an assignment, understand a
 report, solve common problems, update, or uninstall.
+
+Open **VeriWhy Check Release Notes** in the navigation to see what changed in the installed release.

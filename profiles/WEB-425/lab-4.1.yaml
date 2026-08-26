@@ -4,7 +4,7 @@
 id: WEB-425/lab-4.1
 course: WEB 425 Angular with TypeScript
 assignment: 'Lab 4.1: Template-driven character form'
-version: 1.1.1
+version: 1.2.0
 project:
   kind: npm
   markers:
@@ -74,10 +74,13 @@ requirements:
           - data-testid=['"]character-submit['"]
           - data-testid=['"]character-list['"]
   - id: student-tests
-    label: Cumulative tests cover form behavior
+    label: Cumulative student-authored unit tests
     rules:
       - kind: test-count
-        minimum: 9
+        minimum: 8
+      - kind: angular-test
+        suite: student
+        timeoutSeconds: 180
   - id: production-build
     label: Production build succeeds
     rules:
@@ -88,13 +91,8 @@ requirements:
           - build
         timeoutSeconds: 180
   - id: test-suite
-    label: Complete Jasmine suite succeeds
+    label: Assignment behavior requirements
     rules:
-      - kind: command
-        executable: npm
-        args:
-          - test
-          - --
-          - --watch=false
-          - --browsers=ChromeHeadless
+      - kind: angular-test
+        suite: assignment
         timeoutSeconds: 180

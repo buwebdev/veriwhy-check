@@ -6,7 +6,7 @@
  * so unit tests can prove evaluator decisions without launching real tools.
  */
 
-import { readFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { runBrowserCheck } from './browser-check.js';
 import { listFiles, pathExists, readSources } from './files.js';
@@ -18,6 +18,7 @@ import type { ExecutionResult, Requirement, RequirementResult, Rule } from './ty
 export interface EvaluationOptions {
   runExecutableChecks: boolean;
   browserEntry?: string;
+  publicAngularCheck?: string;
 }
 
 /** Injectable side-effect services used by behavior and command rules. */
@@ -126,6 +127,50 @@ export async function evaluateRule(
   }
   if (!options.runExecutableChecks)
     return { status: 'skipped', detail: 'Executable behavior was skipped by --static-only.' };
+  if (rule.kind === 'angular-test') {
+    if (rule.suite === 'student') {
+      const studentResult = await services.command(
+        'npm',
+        ['test', '--', '--watch=false', '--browsers=ChromeHeadless'],
+        root,
+        rule.timeoutSeconds
+      );
+      return {
+        status: studentResult.passed ? 'pass' : 'fail',
+        detail: studentResult.detail
+      };
+    }
+    if (!options.publicAngularCheck) {
+      return {
+        status: 'fail',
+        detail:
+          'The assignment behavior check is unavailable. Run veriwhy-check update and try again.'
+      };
+    }
+    const injectedCheck = join(root, 'src', 'app', 'veriwhy-check.public.spec.ts');
+    await mkdir(join(root, 'src', 'app'), { recursive: true });
+    await copyFile(options.publicAngularCheck, injectedCheck);
+    try {
+      const assignmentResult = await services.command(
+        'npm',
+        [
+          'test',
+          '--',
+          '--watch=false',
+          '--browsers=ChromeHeadless',
+          '--include=src/app/veriwhy-check.public.spec.ts'
+        ],
+        root,
+        rule.timeoutSeconds
+      );
+      return {
+        status: assignmentResult.passed ? 'pass' : 'fail',
+        detail: assignmentResult.detail
+      };
+    } finally {
+      await rm(injectedCheck, { force: true });
+    }
+  }
   let result: ExecutionResult;
   // Executable rules are dispatched through typed services rather than profile
   // shell strings. This preserves the public configuration safety boundary.

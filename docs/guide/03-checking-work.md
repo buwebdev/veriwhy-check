@@ -54,3 +54,12 @@ veriwhy-check check WEB-425/lab-1.1 --static-only
 
 Behavior requirements will appear as **Not checked**. Use this option only for diagnosis; a complete
 pre-submission check should run the behavior tests.
+
+## WEB 425 Unit Tests
+
+Labs 1.1 and 2.1 do not check student-authored unit tests. If an older generated test fails, that
+failure does not change the assignment behavior result.
+
+Lab 3.1 begins your cumulative unit-test suite. Beginning with Lab 3, every student-authored unit
+test must pass. The report displays the cumulative student tests separately from the assignment
+behavior requirements so you know whether to investigate a test or the application behavior.

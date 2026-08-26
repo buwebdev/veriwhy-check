@@ -19,6 +19,7 @@ export type Rule =
   | { kind: 'hygiene'; forbidden: string[] }
   | { kind: 'browser'; test: string; case: string; timeoutSeconds: number }
   | { kind: 'node-test'; test: string; case: string; timeoutSeconds: number }
+  | { kind: 'angular-test'; suite: 'student' | 'assignment'; timeoutSeconds: number }
   | { kind: 'command'; executable: 'npm'; args: string[]; timeoutSeconds: number };
 
 /** Project discovery and preparation behavior selected by a profile. */

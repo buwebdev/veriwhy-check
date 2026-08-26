@@ -16,6 +16,7 @@ import {
   describeGuidePage,
   discoverGuidePages,
   escapeGuideHtml,
+  includeReleaseNotes,
   renderGuidePage
 } from '../src/docs-builder.js';
 import { withFixture } from './helpers.js';
@@ -82,5 +83,18 @@ test('page rendering escapes generated navigation labels and discovers errors', 
     await writeFile(join(root, 'duplicate', '01-page.md'), '# One');
     await writeFile(join(root, 'duplicate', '02-page.md'), '# Two');
     await assert.rejects(discoverGuidePages(join(root, 'duplicate')), /duplicate names/);
+  });
+});
+
+test('release notes enter the offline guide from the maintained root document', async () => {
+  await withFixture('docs-release-notes', async (root) => {
+    const releaseNotes = join(root, 'RELEASE-NOTES.md');
+    await writeFile(releaseNotes, '# VeriWhy Check Release Notes\n\n## Version 1.0.6\n');
+    const pages = await includeReleaseNotes(
+      [describeGuidePage('01-index.md', '# Welcome\n\nStart here.')],
+      releaseNotes
+    );
+    assert.equal(pages.at(-1)?.slug, 'release-notes');
+    assert.match(pages.at(-1)?.plainText ?? '', /Version 1\.0\.6/);
   });
 });

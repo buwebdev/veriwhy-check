@@ -1,5 +1,56 @@
 # VeriWhy Check Release Notes
 
+## Version 1.0.6
+
+VeriWhy Check 1.0.6 corrects the WEB 425 Angular unit-test boundary and makes test results easier to
+understand.
+
+### WEB 425 Test Isolation
+
+- Labs 1.1 and 2.1 run only the current assignment behavior check. Generated or unrelated student
+  unit tests cannot make these labs report **Needs attention**.
+- Lab 3.1 begins the cumulative student-authored unit-test suite.
+- Labs 3.1 through 6.1 run cumulative student tests separately from the current assignment behavior
+  check.
+- The cumulative minimums are 4, 8, 14, and 18 tests for Labs 3.1 through 6.1.
+- The checker never counts its injected assignment test as student-authored work.
+
+### Clearer Reports
+
+WEB 425 reports now use two direct requirement labels when both apply:
+
+- **Cumulative student-authored unit tests**
+- **Assignment behavior requirements**
+
+Labs 1.1 and 2.1 display only the assignment behavior requirement because unit testing is not part
+of those labs.
+
+### Documentation
+
+- The offline guide explains when WEB 425 unit testing begins and how to interpret both testing
+  requirements.
+- The maintained `RELEASE-NOTES.md` file is now included automatically in the offline guide. There
+  is no second release-history document to update.
+
+### Quality Checks
+
+- The complete automated test and coverage gates pass.
+- All 24 public YAML assignment profiles validate.
+- A Lab 2 regression project with an intentionally failing unrelated unit test passed all eight
+  assignment requirements.
+- A complete Lab 3 project displayed separate passing results for cumulative student tests and
+  assignment behavior.
+- A known broken Lab 2 project continued to report **Needs attention**, confirming that isolation
+  does not create a false pass.
+
+### Update an Existing Installation
+
+```text
+veriwhy-check update
+```
+
+After the update finishes, run `veriwhy-check version` and `veriwhy-check doctor`.
+
 ## Version 1.0.5
 
 VeriWhy Check Version 1 is the first student-ready release of the local coursework checker. It helps

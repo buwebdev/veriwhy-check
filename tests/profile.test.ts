@@ -10,7 +10,7 @@
 
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { parseProfileSource } from '../src/profile.js';
+import { loadProfile, parseProfileSource } from '../src/profile.js';
 
 const validProfile = `
 id: WEB-330/assignment-1.3
@@ -42,6 +42,43 @@ test('valid profile source produces a typed public contract', () => {
   assert.equal(profile.project.kind, 'static-web');
   assert.equal(profile.requirements.length, 2);
   assert.equal(profile.requirements[1]?.rules[0]?.kind, 'browser');
+});
+
+test('WEB 425 profiles publish the intended Angular testing boundaries', async () => {
+  for (const id of ['WEB-425/lab-1.1', 'WEB-425/lab-2.1']) {
+    const profile = await loadProfile(id);
+    const angularRules = profile.requirements
+      .flatMap(({ rules }) => rules)
+      .filter((rule) => rule.kind === 'angular-test');
+    assert.deepEqual(
+      angularRules.map(({ suite }) => suite),
+      ['assignment']
+    );
+  }
+
+  const minimums = new Map([
+    ['WEB-425/lab-3.1', 4],
+    ['WEB-425/lab-4.1', 8],
+    ['WEB-425/lab-5.1', 14],
+    ['WEB-425/lab-6.1', 18]
+  ]);
+  for (const [id, minimum] of minimums) {
+    const profile = await loadProfile(id);
+    const angularRules = profile.requirements
+      .flatMap(({ rules }) => rules)
+      .filter((rule) => rule.kind === 'angular-test');
+    assert.deepEqual(
+      angularRules.map(({ suite }) => suite),
+      ['student', 'assignment']
+    );
+    const countRules = profile.requirements
+      .flatMap(({ rules }) => rules)
+      .filter((rule) => rule.kind === 'test-count');
+    assert.deepEqual(
+      countRules.map((rule) => rule.minimum),
+      [minimum]
+    );
+  }
 });
 
 test('profile parser rejects unknown keys, duplicate ids, and traversal', () => {
@@ -113,6 +150,15 @@ test('profile parser covers supported project and deterministic rule variants', 
       'kind: command\n        executable: npm\n        args: [run, build]\n        timeoutSeconds: 120'
     );
   assert.equal(parseProfileSource('WEB-330/assignment-1.3', npmProfile).project.kind, 'npm');
+
+  const angularProfile = npmProfile.replace(
+    'kind: command\n        executable: npm\n        args: [run, build]\n        timeoutSeconds: 120',
+    'kind: angular-test\n        suite: assignment\n        timeoutSeconds: 180'
+  );
+  assert.equal(
+    parseProfileSource('WEB-330/assignment-1.3', angularProfile).requirements[1]?.rules[0]?.kind,
+    'angular-test'
+  );
 });
 
 test('profile parser explains malformed YAML and common schema mistakes', () => {
@@ -176,6 +222,7 @@ test('profile parser rejects empty, mistyped, and unsupported rule values', () =
     replaceBrowser(
       'kind: command\n        executable: npm\n        args: []\n        timeoutSeconds: 20'
     ),
+    replaceBrowser('kind: angular-test\n        suite: combined\n        timeoutSeconds: 20'),
     replaceBrowser('kind: unsupported'),
     validProfile.replace('id: timer-behavior', 'id: Invalid ID'),
     validProfile.replace(

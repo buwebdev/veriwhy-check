@@ -21,6 +21,18 @@ a control that does not respond.
 The application could not run that behavior or you selected `--static-only`. This is not the same as
 passing. Follow the report explanation.
 
+## WEB 425 Testing Results
+
+Beginning with Lab 3.1, reports contain two different testing requirements:
+
+- **Cumulative student-authored unit tests** means every unit test you have written through the
+  current lab ran successfully.
+- **Assignment behavior requirements** means the application demonstrated the published behavior for
+  the current lab.
+
+Labs 1.1 and 2.1 show only the assignment behavior requirement because those labs do not require
+student-authored unit tests.
+
 ## Reports Are Formative
 
 The report is pre-submission practice feedback. It does not guarantee that an assignment is complete

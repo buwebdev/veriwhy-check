@@ -84,6 +84,23 @@ export async function discoverGuidePages(sourceRoot: string): Promise<GuidePage[
   return pages;
 }
 
+/** Add maintained release notes to the guide without duplicating their Markdown source. */
+export async function includeReleaseNotes(
+  pages: GuidePage[],
+  releaseNotesPath = join(packageRoot, 'RELEASE-NOTES.md')
+): Promise<GuidePage[]> {
+  const releaseNotes = describeGuidePage(
+    '11-release-notes.md',
+    await readFile(releaseNotesPath, 'utf8')
+  );
+  if (pages.some(({ slug }) => slug === releaseNotes.slug)) {
+    throw new Error(`Guide pages produce duplicate name: ${releaseNotes.slug}.`);
+  }
+  // RELEASE-NOTES.md remains the only maintained history. The synthetic
+  // numbered filename controls navigation order only in generated output.
+  return [...pages, releaseNotes];
+}
+
 /** Render the shared shell around one converted Markdown document. */
 export async function renderGuidePage(page: GuidePage, pages: GuidePage[]): Promise<string> {
   // Navigation text and URLs are escaped even though maintainers author them;
@@ -116,7 +133,12 @@ export async function buildDocsSite(
   outputRoot = join(packageRoot, 'tmp', 'docs-site'),
   themeRoot = join(packageRoot, 'docs', 'theme')
 ): Promise<{ outputRoot: string; pages: GuidePage[] }> {
-  const pages = await discoverGuidePages(sourceRoot);
+  const discovered = await discoverGuidePages(sourceRoot);
+  const bundledSourceRoot = join(packageRoot, 'docs', 'guide');
+  const pages =
+    resolve(sourceRoot) === resolve(bundledSourceRoot)
+      ? await includeReleaseNotes(discovered)
+      : discovered;
   // Remove only files owned by the documentation generator. This prevents a
   // deleted Markdown page from surviving as stale HTML while preserving any
   // unrelated development artifacts someone may keep beside the output.

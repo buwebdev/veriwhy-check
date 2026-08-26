@@ -26,6 +26,19 @@ public profile versions independently identify assessment contract changes.
 - Recorded successful publication of all three Version 1.0.5 platform archives and their checksums
   in the release checklist.
 
+## [1.0.6] - 2026-08-26
+
+### Fixed
+
+- Isolated WEB 425 Labs 1.1 and 2.1 from unrelated generated student unit tests.
+- Separated cumulative student tests from assignment behavior checks in Labs 3.1 through 6.1.
+
+### Changed
+
+- Updated the Lab 3 through Lab 6 cumulative test minimums to 4, 8, 14, and 18.
+- Added the maintained release notes to the generated offline student guide without creating a
+  duplicate Markdown source.
+
 ## [1.0.5] - 2026-08-08
 
 ### Added

@@ -185,6 +185,17 @@ function parseRule(value: unknown, field: string): Rule {
     return { kind, forbidden };
   }
   if (kind === 'browser' || kind === 'node-test') return behaviorRule(value, field, kind);
+  if (kind === 'angular-test') {
+    assertKeys(value, ['kind', 'suite', 'timeoutSeconds'], field);
+    if (value.suite !== 'student' && value.suite !== 'assignment') {
+      throw new Error(`${field}.suite must be student or assignment.`);
+    }
+    return {
+      kind,
+      suite: value.suite,
+      timeoutSeconds: timeout(value.timeoutSeconds, `${field}.timeoutSeconds`, 600)
+    };
+  }
   if (kind === 'command') {
     // Version 1 permits only npm as a general command. Profiles cannot introduce
     // arbitrary shells or executables despite being readable configuration.

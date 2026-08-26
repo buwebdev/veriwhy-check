@@ -8,7 +8,7 @@
  */
 
 import assert from 'node:assert/strict';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { access, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import test from 'node:test';
 import { evaluateRequirement, evaluateRule, type EvaluationServices } from '../src/evaluator.js';
@@ -130,5 +130,52 @@ test('behavior services and requirement status merging honor skipped and failed 
     );
     assert.equal(result.status, 'fail');
     assert.match(result.detail, /Missing required file/);
+  });
+});
+
+test('Angular student and assignment suites execute through separate boundaries', async () => {
+  await withFixture('evaluate-angular-boundaries', async (root) => {
+    await mkdir(join(root, 'src', 'app'), { recursive: true });
+    const publicCheck = join(root, 'bundled-assignment.spec.ts');
+    await writeFile(publicCheck, "it('checks assignment behavior', () => {});\n");
+    const calls: string[][] = [];
+    const boundaryServices: EvaluationServices = {
+      ...services,
+      command: async (_executable, args, cwd) => {
+        calls.push(args);
+        const assignmentOnly = args.includes('--include=src/app/veriwhy-check.public.spec.ts');
+        try {
+          await access(join(cwd, 'src', 'app', 'veriwhy-check.public.spec.ts'));
+          return assignmentOnly ? passed : { passed: false, detail: 'Unexpected injected check.' };
+        } catch {
+          return assignmentOnly
+            ? { passed: false, detail: 'Assignment check was not injected.' }
+            : passed;
+        }
+      }
+    };
+
+    const studentResult = await evaluateRule(
+      root,
+      { kind: 'angular-test', suite: 'student', timeoutSeconds: 10 },
+      { runExecutableChecks: true },
+      boundaryServices
+    );
+    assert.equal(studentResult.status, 'pass');
+
+    const assignmentResult = await evaluateRule(
+      root,
+      { kind: 'angular-test', suite: 'assignment', timeoutSeconds: 10 },
+      { runExecutableChecks: true, publicAngularCheck: publicCheck },
+      boundaryServices
+    );
+    assert.equal(assignmentResult.status, 'pass');
+    assert.equal(calls.length, 2);
+    assert.equal(
+      calls[0]?.some((argument) => argument.startsWith('--include=')),
+      false
+    );
+    assert.equal(calls[1]?.includes('--include=src/app/veriwhy-check.public.spec.ts'), true);
+    await assert.rejects(() => access(join(root, 'src', 'app', 'veriwhy-check.public.spec.ts')));
   });
 });

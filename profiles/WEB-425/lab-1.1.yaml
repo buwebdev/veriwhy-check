@@ -4,7 +4,7 @@
 id: WEB-425/lab-1.1
 course: WEB 425 Angular with TypeScript
 assignment: 'Lab 1.1: Application shell and home page'
-version: 1.1.2
+version: 1.2.0
 project:
   kind: npm
   markers:
@@ -94,13 +94,8 @@ requirements:
           - build
         timeoutSeconds: 180
   - id: test-suite
-    label: Published integrated behavior requirements
+    label: Assignment behavior requirements
     rules:
-      - kind: command
-        executable: npm
-        args:
-          - test
-          - --
-          - --watch=false
-          - --browsers=ChromeHeadless
+      - kind: angular-test
+        suite: assignment
         timeoutSeconds: 180
