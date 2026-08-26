@@ -1,0 +1,14 @@
+# Keep maintained text files consistent across macOS and Windows checkouts.
+# Author: Richard Krasso
+
+* text=auto eol=lf
+
+# Windows launchers must retain their platform-native command-script behavior.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Release archives and image assets are binary and must never be normalized.
+*.gz binary
+*.ico binary
+*.png binary
+
