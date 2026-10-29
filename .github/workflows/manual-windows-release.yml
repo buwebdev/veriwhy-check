@@ -35,6 +35,26 @@ jobs:
         with:
           ref: ${{ inputs.source_ref }}
 
+      - name: Reproduce the published Windows installation experience
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          irm https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.ps1 | iex
+
+          # A newly opened terminal receives the persisted machine and user PATH
+          # values. Reconstruct that environment because a child installer cannot
+          # modify the already-running GitHub Actions PowerShell process.
+          $machinePath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+          $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+          $env:Path = "$machinePath;$userPath"
+
+          $command = Get-Command veriwhy-check -ErrorAction SilentlyContinue
+          if (-not $command) {
+            throw "REPRODUCED: the published installer completed, but veriwhy-check is absent from the persisted Windows PATH."
+          }
+
+          veriwhy-check doctor
+
       - name: Use the project's Node.js version
         uses: actions/setup-node@v7
         with:
