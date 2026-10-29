@@ -48,11 +48,6 @@ jobs:
           $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
           $env:Path = "$machinePath;$userPath"
 
-          $command = Get-Command veriwhy-check -ErrorAction SilentlyContinue
-          if (-not $command) {
-            throw "REPRODUCED: the published installer completed, but veriwhy-check is absent from the persisted Windows PATH."
-          }
-
           veriwhy-check doctor
 
       - name: Use the project's Node.js version
