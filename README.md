@@ -50,12 +50,35 @@ are not currently supported.
 
 ### Confirm the installation
 
-On Windows, close the entire Windows Terminal or PowerShell application after installation and
-reopen PowerShell. On macOS, open a new Terminal window. Then enter:
+After installation, start a new terminal session so your computer can recognize the
+`veriwhy-check` command.
+
+#### Windows
+
+1. Close the entire Windows Terminal or PowerShell application. Closing only the current tab is not
+   enough.
+2. Open PowerShell again.
+
+#### macOS
+
+1. Open a new Terminal window.
+
+#### Windows and macOS
+
+Run the following command to confirm which version is installed:
+
+```text
+veriwhy-check version
+```
+
+Then run the system check:
 
 ```text
 veriwhy-check doctor
 ```
+
+The doctor command checks whether VeriWhy Check and its required components are installed and ready
+to use.
 
 For beginner-friendly installation, command, folder, update, and uninstall instructions, read the
 [complete student guide](docs/STUDENT-GUIDE.md).
