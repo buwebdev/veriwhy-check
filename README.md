@@ -57,7 +57,7 @@ After installation, start a new terminal session so your computer can recognize 
 
 1. Close the entire Windows Terminal or PowerShell application. Closing only the current tab is not
    enough.
-2. Open PowerShell again.
+2. Reopen Windows Terminal or PowerShell and start a PowerShell session.
 
 #### macOS
 
