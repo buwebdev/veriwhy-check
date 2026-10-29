@@ -28,6 +28,12 @@ Publication is not complete until every item is checked.
 - [x] Test Version 1 in the normal macOS installation locations.
 - [x] Test a known-good WEB 425 Angular project using only the bundled runtime.
 - [x] Test Version 1 installation and checking on a clean Windows x64 runner.
+- [x] Upgrade the actual public Windows Version 1.0.6 package with the Version 1.0.7 candidate.
+- [x] Confirm fresh and repeated Windows installation leave exactly one user-PATH entry.
+- [x] Preserve a saved report through Windows upgrading, repeated installation, and removal.
+- [x] Invoke `version`, `doctor`, and `list WEB-330` by command name in a refreshed Windows
+      environment.
+- [x] Remove only VeriWhy Check's Windows PATH entry during uninstallation.
 - [x] Document the Windows delayed-uninstall issue and workaround.
 
 ## Publication
