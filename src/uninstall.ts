@@ -11,9 +11,10 @@
 import { spawn } from 'node:child_process';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { isInside, pathExists } from './files.js';
 import type { InstallManifest } from './install.js';
+import { removeWindowsCommandPath } from './windows-path.js';
 
 export interface UninstallOptions {
   /** Exact data root recorded during installation. */
@@ -35,7 +36,7 @@ export interface UninstallResult {
 /** Read and constrain the install record before identifying deletion targets. */
 export async function uninstallPlan(
   options: UninstallOptions
-): Promise<{ targets: string[]; preserved: string[] }> {
+): Promise<{ targets: string[]; preserved: string[]; commandDirectory: string }> {
   const root = resolve(options.dataDirectory);
   // Even a corrupted manifest must never make a filesystem root or home folder
   // eligible for recursive deletion. This guard precedes manifest parsing.
@@ -61,7 +62,7 @@ export async function uninstallPlan(
     );
   const targets = [resolve(manifest.launcher), ...owned];
   const preserved = options.removeReports ? [] : [join(root, 'reports')];
-  return { targets, preserved };
+  return { targets, preserved, commandDirectory: dirname(resolve(manifest.launcher)) };
 }
 
 /** Build a Windows helper that waits for this process and retries locked files. */
@@ -114,6 +115,10 @@ export async function uninstallApplication(options: UninstallOptions): Promise<U
   // from the result rather than treated as a destructive-operation failure.
   for (const target of plan.targets) if (await pathExists(target)) existing.push(target);
   if ((options.platform ?? process.platform) === 'win32') {
+    // Remove the discoverability entry before scheduling locked application
+    // files for deletion. The helper removes only this exact directory and
+    // preserves every unrelated user PATH entry.
+    await removeWindowsCommandPath(plan.commandDirectory);
     // The .cmd launcher removes itself after its Node child returns. Process
     // the remaining application data first so a locked launcher cannot delay it.
     await scheduleWindowsRemoval([...existing.slice(1), ...existing.slice(0, 1)]);

@@ -39,9 +39,23 @@ try {
   // dependencies and delegates mutation to the separately tested installer.
   const installer = await import(new URL('./payload/app/dist/src/install.js', import.meta.url));
   const result = await installer.installPayload(join(archiveRoot, 'payload'), dataRoot, binRoot);
+  // A normal Windows installation needs one persistent user-PATH entry so a
+  // newly opened PowerShell window can discover the stable command launcher.
+  // Controlled validation with a custom bin root remains isolated and does not
+  // change the maintainer or runner account's normal PATH.
+  if (process.platform === 'win32' && binRoot.toLowerCase() === defaultBinRoot.toLowerCase()) {
+    const windowsPath = await import(
+      new URL('./payload/app/dist/src/windows-path.js', import.meta.url)
+    );
+    await windowsPath.addWindowsCommandPath(binRoot);
+  }
   console.log(`VeriWhy Check ${result.activeVersion} is installed.`);
   console.log(`Command location: ${result.launcher}`);
-  console.log('Open a new terminal and enter: veriwhy-check doctor');
+  console.log(
+    process.platform === 'win32'
+      ? 'Close the entire Windows Terminal or PowerShell application, reopen PowerShell, and enter: veriwhy-check doctor'
+      : 'Open a new terminal and enter: veriwhy-check doctor'
+  );
 } catch (error) {
   // A concise terminal error is required here because the offline visual guide
   // and report writer are not available until installation succeeds.

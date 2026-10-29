@@ -22,3 +22,9 @@ running any packaged code.
 The installed layout uses versioned folders. An update installs the new folder first and changes the
 small command launcher only after the copy succeeds. The previous version is not damaged by a failed
 copy.
+
+On Windows, installation and updating register the application-owned `bin` directory in the current
+user's PATH. Repeated installation removes an equivalent prior entry before adding the canonical
+directory, so it cannot create duplicates. Uninstallation removes only that exact entry. Students
+must close the entire Windows Terminal or PowerShell application after installation or updating so
+the next process receives the saved environment.

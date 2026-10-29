@@ -53,7 +53,8 @@ The command chooses the correct package, downloads it from the official GitHub r
 digital fingerprint, and installs the complete toolbox. You do not need to choose or open an
 installer file yourself.
 
-When it finishes, open a new terminal or PowerShell window. Enter:
+When it finishes, Windows students should close the entire Windows Terminal or PowerShell
+application and reopen PowerShell. macOS students should open a new Terminal window. Enter:
 
 ```text
 veriwhy-check doctor

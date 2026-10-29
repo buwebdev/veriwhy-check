@@ -187,8 +187,12 @@ export async function updateApplication(
   // releases, preserving one audited implementation of version switching.
   if (!install.passed)
     throw new Error(`The verified update could not be activated. ${install.detail}`);
+  const confirmation =
+    (options.platform ?? process.platform) === 'win32'
+      ? 'Close the entire Windows Terminal or PowerShell application, reopen PowerShell, and run veriwhy-check doctor.'
+      : 'Run veriwhy-check doctor to confirm it is ready.';
   return {
     changed: true,
-    message: `VeriWhy Check was updated from ${current} to ${latest}. Run veriwhy-check doctor to confirm it is ready.`
+    message: `VeriWhy Check was updated from ${current} to ${latest}. ${confirmation}`
   };
 }

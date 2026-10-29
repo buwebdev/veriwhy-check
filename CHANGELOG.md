@@ -26,6 +26,20 @@ public profile versions independently identify assessment contract changes.
 - Recorded successful publication of all three Version 1.0.5 platform archives and their checksums
   in the release checklist.
 
+## [1.0.7] - 2026-10-28
+
+### Fixed
+
+- Registered the Windows command directory in the user PATH during normal installation and updates.
+- Prevented repair installations from creating duplicate Windows PATH entries.
+- Removed only VeriWhy Check's exact PATH entry during Windows uninstallation.
+
+### Changed
+
+- Expanded Windows release validation to upgrade the actual public Version 1.0.6 package, reinstall
+  the candidate over itself, preserve a saved report, invoke commands by name in a refreshed
+  environment, and verify PATH cleanup during removal.
+
 ## [1.0.6] - 2026-08-26
 
 ### Fixed

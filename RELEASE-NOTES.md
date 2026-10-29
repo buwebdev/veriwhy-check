@@ -1,5 +1,42 @@
 # VeriWhy Check Release Notes
 
+## Version 1.0.7
+
+VeriWhy Check 1.0.7 repairs Windows command discovery after installation and updating.
+
+### Windows Installation Repair
+
+- Fresh Windows installations add the VeriWhy Check command directory to the current user's PATH.
+- Repair installations and updates remove an equivalent prior entry before adding the canonical
+  directory, preventing duplicates.
+- Windows uninstallation removes only VeriWhy Check's PATH entry and preserves unrelated entries.
+- Reports and student projects remain unchanged during installation, repair, updating, and normal
+  removal.
+
+### Windows Validation
+
+- The defect was independently reproduced with the published Version 1.0.6 package on a clean
+  Windows runner.
+- The release process now begins with the actual public Version 1.0.6 package, upgrades it with the
+  candidate package, and confirms that `veriwhy-check` works by command name.
+- Reinstalling the candidate over itself must leave exactly one PATH entry and preserve a saved
+  report.
+- Uninstallation must remove command discovery while retaining the saved report.
+
+### Repair a Version 1.0.6 Installation
+
+Rerun the documented Windows installation command:
+
+```powershell
+irm https://raw.githubusercontent.com/buwebdev/veriwhy-check/v1.0.0/install/install.ps1 | iex
+```
+
+Close the entire Windows Terminal or PowerShell application, reopen PowerShell, and run:
+
+```text
+veriwhy-check doctor
+```
+
 ## Version 1.0.6
 
 VeriWhy Check 1.0.6 corrects the WEB 425 Angular unit-test boundary and makes test results easier to

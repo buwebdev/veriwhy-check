@@ -3,6 +3,22 @@
 **Author:** Richard Krasso  
 **Applies to:** VeriWhy Check Version 1
 
+## Resolved in 1.0.7: Windows Command Was Not Registered
+
+Version 1.0.6 installed the Windows application and created its command launcher under
+`%LOCALAPPDATA%\VeriWhy Check\bin`, but it did not add that directory to the user PATH. A newly
+opened PowerShell window therefore reported that `veriwhy-check` was not recognized even though the
+installer said it had completed.
+
+Version 1.0.7 adds one exact user-PATH entry after activating the launcher. Fresh installation,
+upgrading from the public Version 1.0.6 package, and reinstalling Version 1.0.7 are tested on a
+clean Windows runner. Repeated installation cannot create duplicate entries. Uninstallation removes
+only the VeriWhy Check entry and preserves unrelated PATH values.
+
+Students repairing Version 1.0.6 can rerun the documented Windows installer after Version 1.0.7 is
+published. They should then close the entire Windows Terminal or PowerShell application, reopen
+PowerShell, and run `veriwhy-check doctor`.
+
 ## Windows Uninstall Can Leave Application Files Behind
 
 Normal installation, checking, report creation, help, and updating are not affected by this issue.

@@ -50,7 +50,8 @@ are not currently supported.
 
 ### Confirm the installation
 
-Open a new Terminal or PowerShell window and enter:
+On Windows, close the entire Windows Terminal or PowerShell application after installation and
+reopen PowerShell. On macOS, open a new Terminal window. Then enter:
 
 ```text
 veriwhy-check doctor

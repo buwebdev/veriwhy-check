@@ -24,7 +24,8 @@ Docker, Python, or Chrome.
 
 ## Confirm the Installation
 
-Open a new Terminal or PowerShell window and enter:
+On Windows, close the entire Windows Terminal or PowerShell application and reopen PowerShell. On
+macOS, open a new Terminal window. Then enter:
 
 ```text
 veriwhy-check doctor

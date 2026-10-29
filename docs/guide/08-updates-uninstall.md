@@ -20,6 +20,10 @@ veriwhy-check doctor
 The updated release includes its matching assignment profiles, checks, and offline documentation
 website.
 
+On Windows, close the entire Windows Terminal or PowerShell application after an update. Reopen
+PowerShell before running the version and doctor commands so the new process receives the saved
+command location.
+
 ## Preview Uninstallation
 
 ```text
@@ -35,7 +39,8 @@ veriwhy-check uninstall
 ```
 
 This removes the command, installed versions, managed browser, cache, and installation record. It
-never removes student project folders. Saved reports remain on the computer.
+also removes VeriWhy Check's exact Windows user-PATH entry without changing other entries. It never
+removes student project folders. Saved reports remain on the computer.
 
 ## Remove Reports Too
 

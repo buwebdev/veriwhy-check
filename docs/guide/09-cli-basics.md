@@ -390,8 +390,9 @@ The term 'veriwhy-check' is not recognized...
 
 Try these steps:
 
-1. Close Terminal or PowerShell.
-2. Open a new Terminal or PowerShell window.
+1. On Windows, close the entire Windows Terminal or PowerShell application. Closing only one tab may
+   keep the old Windows environment. On macOS, close Terminal.
+2. Open a new Terminal or PowerShell application.
 3. Enter `veriwhy-check doctor` again.
 4. If it still fails, rerun the official installer.
 

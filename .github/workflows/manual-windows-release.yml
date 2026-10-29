@@ -62,6 +62,93 @@ jobs:
       - name: Build the Windows x64 release package
         run: npm run release:package
 
+      - name: Verify normal Windows install, repair, PATH, and removal
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          function Refresh-ProcessPath {
+            $machinePath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+            $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+            $env:Path = "$machinePath;$userPath"
+          }
+
+          function Assert-OneCommandPath([string] $commandDirectory) {
+            $expected = $commandDirectory.TrimEnd("\")
+            $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+            $matches = @(
+              ($userPath -split ";") |
+                Where-Object { $_.Trim().TrimEnd("\") -ieq $expected }
+            )
+            if ($matches.Count -ne 1) {
+              throw "Expected exactly one VeriWhy Check PATH entry; found $($matches.Count)."
+            }
+          }
+
+          $applicationRoot = Join-Path $env:LOCALAPPDATA "VeriWhy Check"
+          $commandDirectory = Join-Path $applicationRoot "bin"
+          $launcher = Join-Path $commandDirectory "veriwhy-check.cmd"
+          $report = Join-Path $applicationRoot "reports\path-upgrade-regression.txt"
+          if (Test-Path $applicationRoot) {
+            Remove-Item -LiteralPath $applicationRoot -Recurse -Force
+          }
+
+          # Begin with the actual defective public release so this test proves
+          # the repair path that existing students will use.
+          $oldRoot = Join-Path $env:RUNNER_TEMP "veriwhy-check-v1.0.6"
+          $oldArchive = Join-Path $oldRoot "veriwhy-check-windows-x64.tar.gz"
+          New-Item -ItemType Directory -Force $oldRoot | Out-Null
+          Invoke-WebRequest `
+            "https://github.com/buwebdev/veriwhy-check/releases/download/v1.0.6/veriwhy-check-windows-x64.tar.gz" `
+            -OutFile $oldArchive
+          tar -xzf $oldArchive -C $oldRoot
+          & (Join-Path $oldRoot "payload\runtime\node.exe") (Join-Path $oldRoot "install.mjs")
+          if ($LASTEXITCODE -ne 0) { throw "The public Version 1.0.6 installer failed." }
+          Refresh-ProcessPath
+          if (Get-Command veriwhy-check -ErrorAction SilentlyContinue) {
+            throw "Version 1.0.6 unexpectedly registered its command in PATH."
+          }
+
+          New-Item -ItemType Directory -Force (Split-Path $report) | Out-Null
+          Set-Content -LiteralPath $report -Value "preserve this report"
+
+          # Upgrade the real 1.0.6 installation with the candidate package.
+          $candidateRoot = Join-Path $env:RUNNER_TEMP "veriwhy-check-candidate"
+          $candidateArchive = Join-Path $PWD "tmp/releases/veriwhy-check-windows-x64.tar.gz"
+          New-Item -ItemType Directory -Force $candidateRoot | Out-Null
+          tar -xzf $candidateArchive -C $candidateRoot
+          & (Join-Path $candidateRoot "payload\runtime\node.exe") `
+            (Join-Path $candidateRoot "install.mjs")
+          if ($LASTEXITCODE -ne 0) { throw "The candidate repair installation failed." }
+
+          Refresh-ProcessPath
+          if (-not (Get-Command veriwhy-check -ErrorAction SilentlyContinue)) {
+            throw "The candidate installer did not make veriwhy-check discoverable by name."
+          }
+          Assert-OneCommandPath $commandDirectory
+          if (-not (Test-Path $report)) { throw "The upgrade removed a saved report." }
+          veriwhy-check version
+          veriwhy-check doctor
+          veriwhy-check list WEB-330
+
+          # Reinstall the candidate over itself to prove repair idempotence.
+          & (Join-Path $candidateRoot "payload\runtime\node.exe") `
+            (Join-Path $candidateRoot "install.mjs")
+          if ($LASTEXITCODE -ne 0) { throw "The repeated repair installation failed." }
+          Refresh-ProcessPath
+          Assert-OneCommandPath $commandDirectory
+          if (-not (Test-Path $report)) { throw "The repeated installation removed a saved report." }
+          veriwhy-check doctor
+
+          # PATH cleanup is synchronous even though Windows may defer deletion
+          # of its running private Node.js files until the command exits.
+          veriwhy-check uninstall
+          Refresh-ProcessPath
+          if (Get-Command veriwhy-check -ErrorAction SilentlyContinue) {
+            throw "Uninstallation left the VeriWhy Check command in PATH."
+          }
+          if (-not (Test-Path $report)) { throw "Uninstallation removed a preserved report." }
+
       - name: Verify, install, inspect, and uninstall the package
         shell: pwsh
         run: |

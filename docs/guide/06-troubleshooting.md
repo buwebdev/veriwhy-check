@@ -8,9 +8,10 @@ veriwhy-check doctor
 
 ## “Command Not Found”
 
-Close the terminal, open a new one, and try again. If the problem continues, run the official
-installation command again. Reinstalling the same version is safe and replaces it through a staged
-repair.
+On Windows, close the entire Windows Terminal or PowerShell application, reopen PowerShell, and try
+again. Closing only one tab may keep the old Windows environment. On macOS, close Terminal and open
+it again. If the problem continues, run the official installation command again. Reinstalling the
+same version is safe and replaces it through a staged repair without removing reports.
 
 ## “No Project Was Found”
 
